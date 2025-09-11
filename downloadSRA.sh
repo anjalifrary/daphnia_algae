@@ -1,3 +1,5 @@
+# test comment
+
 #!/usr/bin/env bash
 #
 #SBATCH -J download_SRA # A single job name for the array
