@@ -10,6 +10,9 @@
 #SBATCH -p standard
 #SBATCH --account berglandlab_standard
 
+#this is an edit
+
+
 wd=/scratch/ejy4bu/compBio
 ### run as: sbatch --array=1-$( wc -l < /project/berglandlab/anjali/metadata/algae_paths_anjali.csv )%10 ~/daphnia_algae/downloadSRA.sh
 ### sacct -j 64052181
