@@ -13,6 +13,9 @@
 #this is edit
 
 
+#sacct -j 3283279 // to see the updated job status
+
+
 wd=/scratch/ejy4bu/compBio
 ### run as: sbatch --array=1-$( wc -l < /project/berglandlab/anjali/metadata/algae_paths_anjali.csv )%10 ~/daphnia_algae/downloadSRA.sh
 ### sacct -j 64052181
