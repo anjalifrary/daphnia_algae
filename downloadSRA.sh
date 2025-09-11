@@ -10,7 +10,7 @@
 #SBATCH -p standard
 #SBATCH --account berglandlab_standard
 
-#this is another edit
+#this is edit
 
 
 wd=/scratch/ejy4bu/compBio
