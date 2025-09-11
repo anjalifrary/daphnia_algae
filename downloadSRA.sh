@@ -11,6 +11,7 @@
 #SBATCH --account berglandlab_standard
 
 #this is an edit
+#this is another edit
 
 
 wd=/scratch/ejy4bu/compBio
