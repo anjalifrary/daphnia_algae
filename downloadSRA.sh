@@ -10,7 +10,6 @@
 #SBATCH -p standard
 #SBATCH --account berglandlab_standard
 
-#this is an edit
 #this is another edit
 
 
