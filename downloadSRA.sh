@@ -10,9 +10,6 @@
 #SBATCH -p standard
 #SBATCH --account berglandlab_standard
 
-#this is edit
-
-
 #sacct -j 3283279 // to see the updated job status
 
 
