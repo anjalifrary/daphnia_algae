@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#SBATCH -J makebams       # Job name
+#SBATCH -J makebams    # Job name
 #SBATCH --ntasks=1        # Single task per job
 #SBATCH --cpus-per-task=10 # Number of CPU cores per task
 #SBATCH -N 1              # Run on one node
@@ -65,44 +65,3 @@ mv ${outfq}/${samp}_finalmap* ${outbam}/
 rm -f ${outfq}/${samp}.*
 
 echo "Finished processing ${samp}"
-
-
-
-
-module load gatk
-
-
-samtools faidx /scratch/ejy4bu/Reference_genomes/chlorella_ref/GCA_023343905.1_cvul_genomic.fa
-
-gatk CreateSequenceDictionary \
-   -R /scratch/ejy4bu/Reference_genomes/chlorella_ref/GCA_023343905.1_cvul_genomic.fa \
-   -O /scratch/ejy4bu/Reference_genomes/chlorella_ref/GCA_023343905.1_cvul_genomic.dict
-
-java -jar $EBROOTPICARD/picard.jar AddOrReplaceReadGroups \
--I /scratch/ejy4bu/compBio/fastq/chlorella_Reed_finalmap.bam \
--O /scratch/ejy4bu/compBio/fastq/chlorella_Reed_finalmap_RG.bam \
--LB "library" \
--PL "ILLumina" \
--PU "platunit" \
--SM ${samp} #check
-
-# Index Bam files
-java -jar $EBROOTPICARD/picard.jar BuildBamIndex \
--I /scratch/ejy4bu/compBio/fastq/chlorella_Reed_finalmap_RG.bam
-
-
-
-#Need to make gvcf files of more than just one bam file
-
-gatk HaplotypeCaller \
--R ${ref_path} \
--I /scratch/ejy4bu/compBio/fastq/chlorella_Reed_finalmap_RG.bam \
--O /scratch/ejy4bu/compBio/fastq/chlorella_Reed.g.vcf \
--ERC GVCF
-
-
-
-#update path names for outputs and error out
-#confirm reference paths are accurate (line 29)
-#line 35 - what should the pathname be? what is HMW
-#line 42 - shouldn't this be reverse in 3B?

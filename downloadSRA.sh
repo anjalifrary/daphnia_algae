@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #
-#SBATCH -J download_SRA # A single job name for the array
-#SBATCH --ntasks-per-node=10 # one core
-#SBATCH -N 1 # on one node
+#SBATCH -J download_SRA       # A single job name for the array
+#SBATCH --ntasks-per-node=10  # one core
+#SBATCH -N 1                  # on one node
 #SBATCH -t 6:00:00 ### 6 hours
 #SBATCH --mem 10G
 #SBATCH -o /scratch/ejy4bu/compBio/logs/prefetch.%A_%a.out # Standard output %A_%a contains job info 
