@@ -19,14 +19,15 @@ module load samtools
 module load picard
 
 # Define working directories
-outfq="/scratch/ejy4bu/microbiota/chlorella/fastq"
-outbam="/scratch/ejy4bu/microbiota/chlorella/mapped_bam"
+outfq="/scratch/ejy4bu/compBio/fastq"
+outbam="/scratch/ejy4bu/compBio/mapped_bam"
 
 # Ensure output directories exist
 mkdir -p "${outfq}" "${outbam}"
 
 # Extract fields (assuming CSV format: sample_id,reference_path)
-ref_path=/scratch/ejy4bu/Reference_genomes/chlorella_ref/GCA_023343905.1_cvul_genomic.fa
+ref_path=/project/berglandlab/anjali/metadata/algae_paths_anjali # is this the right csv or should it be something else
+# ref_path=/scratch/ejy4bu/Reference_genomes/chlorella_ref/GCA_023343905.1_cvul_genomic.fa
 
 #ref_path=/scratch/ejy4bu/Reference_genomes/post_kraken/assembly.hap2_onlydaps.fasta
 
@@ -81,16 +82,16 @@ gatk CreateSequenceDictionary \
    -O /scratch/ejy4bu/Reference_genomes/chlorella_ref/GCA_023343905.1_cvul_genomic.dict
 
 java -jar $EBROOTPICARD/picard.jar AddOrReplaceReadGroups \
--I /scratch/ejy4bu/microbiota/chlorella/fastq/chlorella_Reed_finalmap.bam \
--O /scratch/ejy4bu/microbiota/chlorella/fastq/chlorella_Reed_finalmap_RG.bam \
+-I /scratch/ejy4bu/compBio/fastq/chlorella_Reed_finalmap.bam \
+-O /scratch/ejy4bu/compBio/fastq/chlorella_Reed_finalmap_RG.bam \
 -LB "library" \
 -PL "ILLumina" \
 -PU "platunit" \
--SM chlorella_reed
+-SM chlorella_Reed
 
 # Index Bam files
 java -jar $EBROOTPICARD/picard.jar BuildBamIndex \
--I /scratch/ejy4bu/microbiota/chlorella/fastq/chlorella_Reed_finalmap_RG.bam
+-I /scratch/ejy4bu/compBio/fastq/chlorella_Reed_finalmap_RG.bam
 
 
 
@@ -98,7 +99,7 @@ java -jar $EBROOTPICARD/picard.jar BuildBamIndex \
 
 gatk HaplotypeCaller \
 -R ${ref_path} \
--I /scratch/ejy4bu/microbiota/chlorella/fastq/chlorella_Reed_finalmap_RG.bam \
--O /scratch/ejy4bu/microbiota/chlorella/fastq/chlorella_Reed.g.vcf \
+-I /scratch/ejy4bu/compBio/fastq/chlorella_Reed_finalmap_RG.bam \
+-O /scratch/ejy4bu/compBio/fastq/chlorella_Reed.g.vcf \
 -ERC GVCF
 
