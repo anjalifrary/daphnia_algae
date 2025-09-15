@@ -19,49 +19,25 @@ module load samtools
 module load picard
 
 # Define working directories
-outfq="/scratch/ejy4bu/compBio/fastq"
+infq="/scratch/ejy4bu/compBio/fastq"
+outfq="/scratch/ejy4bu/compBio/bams"
 outbam="/scratch/ejy4bu/compBio/mapped_bam"
 
 # Ensure output directories exist
-mkdir -p "${outfq}" "${outbam}"
+mkdir -p "${infq}" "${outfq}" "${outbam}"
 
 # Extract fields (assuming CSV format: sample_id,reference_path)
 ref_path=/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa
 
+
+#ijob -A berglandlab -c10 -p standard --mem=40G
+
+samp=long_read_Chlorella_read
+
 # Map to reference genome (assembled reads)
-bwa mem -t 10 -K 100000000 -Y ${ref_path} /project/berglandlab/chlorella_sequencing/HMW/HMWDNAElvis3/m84128_250121_222443_s2.hifi_reads.bc2104.fastq | \
-samtools view -Suh -q 20 -F 0x100 | \
+bwa mem -t 10 -K 100000000 -Y ${ref_path} /project/berglandlab/chlorella_sequencing/raw_longread_from_Reed/m84128_250121_222443_s2.hifi_reads.bc2104.fq.gz | \
+# /project/berglandlab/chlorella_sequencing/HMW/HMWDNAElvis3/m84128_250121_222443_s2.hifi_reads.bc2104.fastq | \
+#-F 0x100 is to map secondary reads (repetitive regions)
+samtools view -Suh -q 20 -F 0x100 | \ 
 samtools sort --threads 10 -o ${outfq}/chlorella_Reed.sort.bam
 samtools index ${outfq}/${samp}.sort.bam
-
-# Map unassembled reads
-bwa mem -t 10 -K 100000000 -Y ${ref_path} \
-${outfq}/${samp}/${samp}.unassembled.forward.fastq  \
-${outfq}/${samp}/${samp}.unassembled.reverse.fastq | \
-samtools view -Suh -q 20 -F 0x100 | \
-samtools sort --threads 10 -o ${outfq}/${samp}.filt.unassembled.sort.bam
-samtools index ${outfq}/${samp}.filt.unassembled.sort.bam
-
-# Merge assembled and unassembled BAM files
-samtools merge ${outfq}/${samp}.filt.merged.bam \
-    ${outfq}/${samp}.sort.bam \
-    ${outfq}/${samp}.filt.unassembled.sort.bam
-
-# Index merged BAM
-samtools index ${outfq}/${samp}.filt.merged.bam
-
-# Mark duplicates
-java -jar $EBROOTPICARD/picard.jar MarkDuplicates \
-    REMOVE_DUPLICATES=true \
-    INPUT=${outfq}/chlorella_Reed.sort.bam \
-    OUTPUT=${outfq}/chlorella_Reed_finalmap.bam \
-    METRICS_FILE=${outfq}/${samp}_finalmap_mdups.metrics \
-    CREATE_INDEX=true
-
-# Move final BAM to output directory
-mv ${outfq}/${samp}_finalmap* ${outbam}/
-
-# Remove intermediate files
-rm -f ${outfq}/${samp}.*
-
-echo "Finished processing ${samp}"
