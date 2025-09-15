@@ -79,6 +79,5 @@ if [ -f "/scratch/ejy4bu/compBio/fastq/${sranum}" ]; then
   rm /scratch/ejy4bu/compBio/fastq/${sranum}
 fi
 
-#worked up to here
 rm /scratch/ejy4bu/compBio/sra/${sranum}.sra
 #cat /home/ejy4bu/daphnia_algae/data/runs.csv | nl | grep "SRR12463313"
