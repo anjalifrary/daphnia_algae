@@ -5,8 +5,8 @@
 #SBATCH -N 1              # Run on one node
 #SBATCH -t 0-10:00        # 10 hours runtime
 #SBATCH --mem=100G        # Memory per node
-#SBATCH -o /scratch/rjp5nc/erroroutputs/down.%A_%a.out  # Standard output
-#SBATCH -e /scratch/rjp5nc/erroroutputs/down.%A_%a.err  # Standard error
+#SBATCH -o /scratch/ejy4bu/erroroutputs/down.%A_%a.out  # Standard output
+#SBATCH -e /scratch/ejy4bu/erroroutputs/down.%A_%a.err  # Standard error
 #SBATCH -p standard       # Partition
 #SBATCH --account=berglandlab
 
@@ -19,19 +19,19 @@ module load samtools
 module load picard
 
 # Define working directories
-outfq="/scratch/rjp5nc/microbiota/chlorella/fastq"
-outbam="/scratch/rjp5nc/microbiota/chlorella/mapped_bam"
+outfq="/scratch/ejy4bu/microbiota/chlorella/fastq"
+outbam="/scratch/ejy4bu/microbiota/chlorella/mapped_bam"
 
 # Ensure output directories exist
 mkdir -p "${outfq}" "${outbam}"
 
 # Extract fields (assuming CSV format: sample_id,reference_path)
-ref_path=/scratch/rjp5nc/Reference_genomes/chlorella_ref/GCA_023343905.1_cvul_genomic.fa
+ref_path=/scratch/ejy4bu/Reference_genomes/chlorella_ref/GCA_023343905.1_cvul_genomic.fa
 
-#ref_path=/scratch/rjp5nc/Reference_genomes/post_kraken/assembly.hap2_onlydaps.fasta
+#ref_path=/scratch/ejy4bu/Reference_genomes/post_kraken/assembly.hap2_onlydaps.fasta
 
 # Map to reference genome (assembled reads)
-bwa mem -t 10 -K 100000000 -Y ${ref_path} /scratch/rjp5nc/HMW/HMWDNAElvis3/m84128_250121_222443_s2.hifi_reads.bc2104.fastq | \
+bwa mem -t 10 -K 100000000 -Y ${ref_path} /scratch/ejy4bu/HMW/HMWDNAElvis3/m84128_250121_222443_s2.hifi_reads.bc2104.fastq | \
 samtools view -Suh -q 20 -F 0x100 | \
 samtools sort --threads 10 -o ${outfq}/chlorella_Reed.sort.bam
 samtools index ${outfq}/${samp}.sort.bam
@@ -74,15 +74,15 @@ echo "Finished processing ${samp}"
 module load gatk
 
 
-samtools faidx /scratch/rjp5nc/Reference_genomes/chlorella_ref/GCA_023343905.1_cvul_genomic.fa
+samtools faidx /scratch/ejy4bu/Reference_genomes/chlorella_ref/GCA_023343905.1_cvul_genomic.fa
 
 gatk CreateSequenceDictionary \
-   -R /scratch/rjp5nc/Reference_genomes/chlorella_ref/GCA_023343905.1_cvul_genomic.fa \
-   -O /scratch/rjp5nc/Reference_genomes/chlorella_ref/GCA_023343905.1_cvul_genomic.dict
+   -R /scratch/ejy4bu/Reference_genomes/chlorella_ref/GCA_023343905.1_cvul_genomic.fa \
+   -O /scratch/ejy4bu/Reference_genomes/chlorella_ref/GCA_023343905.1_cvul_genomic.dict
 
 java -jar $EBROOTPICARD/picard.jar AddOrReplaceReadGroups \
--I /scratch/rjp5nc/microbiota/chlorella/fastq/chlorella_Reed_finalmap.bam \
--O /scratch/rjp5nc/microbiota/chlorella/fastq/chlorella_Reed_finalmap_RG.bam \
+-I /scratch/ejy4bu/microbiota/chlorella/fastq/chlorella_Reed_finalmap.bam \
+-O /scratch/ejy4bu/microbiota/chlorella/fastq/chlorella_Reed_finalmap_RG.bam \
 -LB "library" \
 -PL "ILLumina" \
 -PU "platunit" \
@@ -90,7 +90,7 @@ java -jar $EBROOTPICARD/picard.jar AddOrReplaceReadGroups \
 
 # Index Bam files
 java -jar $EBROOTPICARD/picard.jar BuildBamIndex \
--I /scratch/rjp5nc/microbiota/chlorella/fastq/chlorella_Reed_finalmap_RG.bam
+-I /scratch/ejy4bu/microbiota/chlorella/fastq/chlorella_Reed_finalmap_RG.bam
 
 
 
@@ -98,7 +98,7 @@ java -jar $EBROOTPICARD/picard.jar BuildBamIndex \
 
 gatk HaplotypeCaller \
 -R ${ref_path} \
--I /scratch/rjp5nc/microbiota/chlorella/fastq/chlorella_Reed_finalmap_RG.bam \
--O /scratch/rjp5nc/microbiota/chlorella/fastq/chlorella_Reed.g.vcf \
+-I /scratch/ejy4bu/microbiota/chlorella/fastq/chlorella_Reed_finalmap_RG.bam \
+-O /scratch/ejy4bu/microbiota/chlorella/fastq/chlorella_Reed.g.vcf \
 -ERC GVCF
 
