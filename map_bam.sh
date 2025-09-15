@@ -10,6 +10,17 @@
 #SBATCH -p standard       # Partition
 #SBATCH --account=berglandlab
 
+
+#sbatch file.sh
+#Submitted batch job 3436256
+#sacct -j 3436256
+#squeue -u (yourcomputingid)
+#scancel 3436256 #to cancel the job
+
+
+
+
+
 # Load necessary modules
 module load gcc htslib
 module load sratoolkit/3.1.1
@@ -36,8 +47,10 @@ samp=long_read_Chlorella_read
 
 # Map to reference genome (assembled reads)
 bwa mem -t 10 -K 100000000 -Y ${ref_path} /project/berglandlab/chlorella_sequencing/raw_longread_from_Reed/m84128_250121_222443_s2.hifi_reads.bc2104.fq.gz | \
-# /project/berglandlab/chlorella_sequencing/HMW/HMWDNAElvis3/m84128_250121_222443_s2.hifi_reads.bc2104.fastq | \
-#-F 0x100 is to map secondary reads (repetitive regions)
 samtools view -Suh -q 20 -F 0x100 | \ 
 samtools sort --threads 10 -o ${outfq}/chlorella_Reed.sort.bam
 samtools index ${outfq}/${samp}.sort.bam
+
+
+# /project/berglandlab/chlorella_sequencing/HMW/HMWDNAElvis3/m84128_250121_222443_s2.hifi_reads.bc2104.fastq | \
+#-F 0x100 is to map secondary reads (repetitive regions)
