@@ -52,6 +52,7 @@ samtools sort --threads 10 -o ${outfq}/${samp}.sort.bam
 
 samtools index ${outfq}/${samp}.sort.bam
 
+samtools view -h /scratch/ejy4bu/compBio/bams/chlorella_Reed.sort.bam > /scratch/ejy4bu/compBio/bams/chlorella_Reed.sort.sam
 
 # /project/berglandlab/chlorella_sequencing/HMW/HMWDNAElvis3/m84128_250121_222443_s2.hifi_reads.bc2104.fastq | \
 #-F 0x100 is to map secondary reads (repetitive regions)
