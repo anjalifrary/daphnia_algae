@@ -32,7 +32,7 @@ module load picard
 # Define working directories
 infq="/scratch/ejy4bu/compBio/fastq"
 outfq="/scratch/ejy4bu/compBio/bams"
-outbam="/scratch/ejy4bu/compBio/mapped_bam"
+#outbam="/scratch/ejy4bu/compBio/mapped_bam"
 
 # Ensure output directories exist
 mkdir -p "${infq}" "${outfq}" "${outbam}"
@@ -46,9 +46,10 @@ ref_path=/project/berglandlab/chlorella_sequencing/reference_genome/GCA_02334390
 samp=long_read_Chlorella_read
 
 # Map to reference genome (assembled reads)
-bwa mem -t 10 -K 100000000 -Y ${ref_path} /project/berglandlab/chlorella_sequencing/raw_longread_from_Reed/m84128_250121_222443_s2.hifi_reads.bc2104.fq.gz | \
-samtools view -Suh -q 20 -F 0x100 | \
-samtools sort --threads 10 -o ${outfq}/chlorella_Reed.sort.bam
+bwa mem -t 10 -K 100000000 -Y ${ref_path} /project/berglandlab/chlorella_sequencing/raw_longread_from_Reed/m84128_250121_222443_s2.hifi_reads.bc2104.fq.gz |
+samtools view -uh -q 20 -F 0x100 | \
+samtools sort --threads 10 -o ${outfq}/${samp}.sort.bam
+
 samtools index ${outfq}/${samp}.sort.bam
 
 
