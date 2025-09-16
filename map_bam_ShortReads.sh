@@ -44,6 +44,7 @@ ref_path=/project/berglandlab/chlorella_sequencing/reference_genome/GCA_02334390
 
 #iterate through directories that contain the forward and reverse short read fastq files
 #map to reference genome (assembled reads)
+:<<testing
 for samp_directory in ${infq}/*; 
     do
         samp=$(basename ${samp_directory})
@@ -59,6 +60,23 @@ for samp_directory in ${infq}/*;
 
         samtools index ${outbam}/${samp}.sort.bam
 done
+testing
+
+#test sample /scratch/ejy4bu/compBio/fastq/SRR14426881
+samp_directory="/scratch/ejy4bu/compBio/fastq/SRR14426881"
+samp=$(basename ${samp_directory})
+
+forward=$(ls ${samp_directory}/*_1.fastq)
+reverse=$(ls ${samp_directory}/*_2.fastq)
+
+echo "Processing sample : ${samp}"
+
+bwa mem -t 10 -K 100000000 -Y ${ref_path} ${forward} ${reverse} | \
+samtools view -uh -q 20 -F 0x100 | \
+samtools sort --threads 10 -o ${outbam}/${samp}.sort.bam
+
+samtools index ${outbam}/${samp}.sort.bam
+
 
 
 :<<end-comment
