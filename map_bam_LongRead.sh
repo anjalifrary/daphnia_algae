@@ -24,18 +24,17 @@
 # Load necessary modules
 module load gcc htslib
 module load sratoolkit/3.1.1
-module load trimmomatic
+# module load trimmomatic
 module load bwa
 module load samtools
-module load picard
+# module load picard
 
 # Define working directories
 infq="/scratch/ejy4bu/compBio/fastq"
-outfq="/scratch/ejy4bu/compBio/bams"
-#outbam="/scratch/ejy4bu/compBio/mapped_bam"
+outbam="/scratch/ejy4bu/compBio/bams"
 
-# Ensure output directories exist
-mkdir -p "${infq}" "${outfq}" "${outbam}"
+# Ensure directories exist
+mkdir -p "${infq}" "${outbam}" 
 
 # Extract fields (assuming CSV format: sample_id,reference_path)
 ref_path=/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa
@@ -45,14 +44,16 @@ ref_path=/project/berglandlab/chlorella_sequencing/reference_genome/GCA_02334390
 
 samp=long_read_Chlorella_read
 
-# Map to reference genome (assembled reads)
-bwa mem -t 10 -K 100000000 -Y ${ref_path} /project/berglandlab/chlorella_sequencing/raw_longread_from_Reed/m84128_250121_222443_s2.hifi_reads.bc2104.fq.gz |
+long_read="/project/berglandlab/chlorella_sequencing/raw_longread_from_Reed/m84128_250121_222443_s2.hifi_reads.bc2104.fq.gz"
+
+# Map to reference genome (assembled reads) // should we be saving the unfiltered data? -q 20 -F 0x100
+bwa mem -t 10 -K 100000000 -Y ${ref_path} ${long_read} | \
 samtools view -uh -q 20 -F 0x100 | \
-samtools sort --threads 10 -o ${outfq}/${samp}.sort.bam
+samtools sort --threads 10 -o ${outbam}/${samp}.sort.bam
 
-samtools index ${outfq}/${samp}.sort.bam
+samtools index ${outbam}/${samp}.sort.bam
 
-samtools view -h /scratch/ejy4bu/compBio/bams/chlorella_Reed.sort.bam > /scratch/ejy4bu/compBio/bams/chlorella_Reed.sort.sam
+# samtools view -h /scratch/ejy4bu/compBio/bams/chlorella_Reed.sort.bam > /scratch/ejy4bu/compBio/bams/chlorella_Reed.sort.sam
 
 # /project/berglandlab/chlorella_sequencing/HMW/HMWDNAElvis3/m84128_250121_222443_s2.hifi_reads.bc2104.fastq | \
 #-F 0x100 is to map secondary reads (repetitive regions)

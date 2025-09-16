@@ -24,18 +24,18 @@
 # Load necessary modules
 module load gcc htslib
 module load sratoolkit/3.1.1
-module load trimmomatic
+#module load trimmomatic
 module load bwa
 module load samtools
-module load picard
+#module load picard
 
 # Define working directories
 infq="/scratch/ejy4bu/compBio/fastq"
-outfq="/scratch/ejy4bu/compBio/bams"
+outbam="/scratch/ejy4bu/compBio/bams"
 #outbam="/scratch/ejy4bu/compBio/mapped_bam"
 
 # Ensure output directories exist
-mkdir -p "${infq}" "${outfq}" 
+mkdir -p "${infq}" "${outbam}" 
 #"${outbam}"
 
 # Extract fields (assuming CSV format: sample_id,reference_path)
@@ -43,6 +43,7 @@ ref_path=/project/berglandlab/chlorella_sequencing/reference_genome/GCA_02334390
 
 
 #iterate through directories that contain the forward and reverse short read fastq files
+#map to reference genome (assembled reads)
 for samp_directory in ${infq}/*; 
     do
         samp=$(basename ${samp_directory})
@@ -54,9 +55,9 @@ for samp_directory in ${infq}/*;
 
         bwa mem -t 10 -K 100000000 -Y ${ref_path} ${forward} ${reverse} | \
         samtools view -uh -q 20 -F 0x100 | \
-        samtools sort --threads 10 -o ${outfq}/${samp}.sort.bam
+        samtools sort --threads 10 -o ${outbam}/${samp}.sort.bam
 
-        samtools index ${outfq}/${samp}.sort.bam
+        samtools index ${outbam}/${samp}.sort.bam
 done
 
 
@@ -67,9 +68,9 @@ samp=long_read_Chlorella_read
 # Map to reference genome (assembled reads)
 bwa mem -t 10 -K 100000000 -Y ${ref_path} /project/berglandlab/chlorella_sequencing/raw_longread_from_Reed/m84128_250121_222443_s2.hifi_reads.bc2104.fq.gz |
 samtools view -uh -q 20 -F 0x100 | \
-samtools sort --threads 10 -o ${outfq}/${samp}.sort.bam
+samtools sort --threads 10 -o ${outbam}/${samp}.sort.bam
 
-samtools index ${outfq}/${samp}.sort.bam
+samtools index ${outbam}/${samp}.sort.bam
 
 # samtools view -h /scratch/ejy4bu/compBio/bams/chlorella_Reed.sort.bam > /scratch/ejy4bu/compBio/bams/chlorella_Reed.sort.sam
 
