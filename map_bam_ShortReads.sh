@@ -46,24 +46,50 @@ ref_path=/project/berglandlab/chlorella_sequencing/reference_genome/GCA_02334390
 #map to reference genome (assembled reads)
 for samp_directory in ${infq}/*; 
     do
-        samp=$(basename ${samp_directory})
+        samp=$(basename "${samp_directory}")
 
-        forward=$(ls ${samp_directory}/*_1.fastq)
-        reverse=$(ls ${samp_directory}/*_2.fastq)
+        forward="${samp_directory}"/*_1.fastq
+        reverse="${samp_directory}"/*_2.fastq
+
+        if [[ ! -f $forward || ! -f $reverse ]]; then
+            echo "Skipping ${samp} (missing fastq files)"
+            continue
+        fi 
 
         echo "Processing sample : ${samp}"
 
         bwa mem -t 10 -K 100000000 -Y ${ref_path} ${forward} ${reverse} | \
         samtools view -uh -q 20 -F 0x100 | \
-        samtools sort --threads 10 -o ${outbam}/${samp}.sort.bam
+        samtools sort --threads 10 -o "${outbam}/${samp}.sort.bam"
 
-        samtools index ${outbam}/${samp}.sort.bam
+        samtools index "${outbam}/${samp}.sort.bam"
 done
 
 
-:<<test-one-sample
+
 #test sample /scratch/ejy4bu/compBio/fastq/SRR14426881
-samp_directory="/scratch/ejy4bu/compBio/fastq/SRR14426881"
+test="SRR14476638"
+samp_directory="/scratch/ejy4bu/compBio/fastq/${test}"
+samp=$(basename "${samp_directory}")
+
+forward="${samp_directory}"/*_1.fastq
+reverse="${samp_directory}"/*_2.fastq
+
+if [[ ! -f $forward || ! -f $reverse ]]; then
+    echo "Skipping ${samp} (missing fastq files)"
+    exit 1
+fi 
+
+echo "Processing sample : ${samp}"
+
+bwa mem -t 10 -K 100000000 -Y ${ref_path} ${forward} ${reverse} | \
+samtools view -uh -q 20 -F 0x100 | \
+samtools sort --threads 10 -o "${outbam}/${samp}.sort.bam"
+
+samtools index "${outbam}/${samp}.sort.bam"
+
+:<<test-one-sample
+
 samp=$(basename ${samp_directory})
 
 forward=$(ls ${samp_directory}/*_1.fastq)
