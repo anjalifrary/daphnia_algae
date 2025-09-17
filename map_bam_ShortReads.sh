@@ -41,7 +41,7 @@ mkdir -p "${infq}" "${outbam}"
 # Extract fields (assuming CSV format: sample_id,reference_path)
 ref_path=/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa
 
-
+:<<iterate
 #iterate through directories that contain the forward and reverse short read fastq files
 #map to reference genome (assembled reads)
 for samp_directory in ${infq}/*; 
@@ -64,7 +64,7 @@ for samp_directory in ${infq}/*;
 
         samtools index "${outbam}/${samp}.sort.bam"
 done
-
+iterate
 
 
 #test sample /scratch/ejy4bu/compBio/fastq/SRR14426881
