@@ -42,14 +42,17 @@ mkdir -p "${infq}" "${outbam}"
 ref_path=/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa
 
 :<<iterate
+# array of sample directories for parallelization
 #iterate through directories that contain the forward and reverse short read fastq files
 #map to reference genome (assembled reads)
+sample_folders=($(ls -d ${infq}/*/))
+
 for samp_directory in ${infq}/*; 
     do
         samp=$(basename "${samp_directory}")
 
-        forward="${samp_directory}"/*_1.fastq
-        reverse="${samp_directory}"/*_2.fastq
+        forward=(${samp_directory}/*_1.fastq)
+        reverse=(${samp_directory}/*_2.fastq)
 
         if [[ ! -f $forward || ! -f $reverse ]]; then
             echo "Skipping ${samp} (missing fastq files)"
