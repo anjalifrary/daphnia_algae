@@ -68,16 +68,15 @@ iterate
 
 
 #test sample /scratch/ejy4bu/compBio/fastq/SRR14426881
-test="SRR14476638"
-samp_directory="/scratch/ejy4bu/compBio/fastq/${test}"
+# test="SRR14476638"
+samp_directory="/scratch/ejy4bu/compBio/fastq/SRR14476638"
 samp=$(basename "${samp_directory}")
 
-forward="${samp_directory}"/*_1.fastq
-reverse="${samp_directory}"/*_2.fastq
+forward=(${samp_directory}/*_1.fastq)
+reverse=(${samp_directory}/*_2.fastq)
 
 if [[ ! -f $forward || ! -f $reverse ]]; then
     echo "Skipping ${samp} (missing fastq files)"
-    exit 1
 fi 
 
 echo "Processing sample : ${samp}"
