@@ -41,12 +41,33 @@ mkdir -p "${infq}" "${outbam}"
 # Extract fields (assuming CSV format: sample_id,reference_path)
 ref_path=/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa
 
-:<<iterate
+
 # array of sample directories for parallelization
 #iterate through directories that contain the forward and reverse short read fastq files
 #map to reference genome (assembled reads)
-sample_folders=($(ls -d ${infq}/*/))
+sample_folders=($(ls -d ${infq}/*/)) #Array to folder paths
 
+samp_dir="${sample_folders[$SLURM_ARRAY_TASK_ID-1]}"
+samp=$(basename "${samp_dir}")
+
+forward=${samp_dir}/*_1.fastq
+reverse=${samp_dir}/*_2.fastq
+
+:<<skip_if
+if [ ! -f $forward || ! -f $reverse ]; then
+    echo "Skipping ${samp} (missing fastq files)"
+fi 
+skip_if
+
+echo "Processing sample : ${samp}"
+
+bwa mem -t 10 -K 100000000 -Y ${ref_path} ${forward} ${reverse} | \
+samtools view -uh -q 20 -F 0x100 | \
+samtools sort --threads 10 -o "${outbam}/${samp}.sort.bam"
+
+samtools index "${outbam}/${samp}.sort.bam"
+
+:<<iterative
 for samp_directory in ${infq}/*; 
     do
         samp=$(basename "${samp_directory}")
@@ -67,9 +88,10 @@ for samp_directory in ${infq}/*;
 
         samtools index "${outbam}/${samp}.sort.bam"
 done
-iterate
+iterative
 
 
+:<<test
 #test sample /scratch/ejy4bu/compBio/fastq/SRR14426881
 # test="SRR14476638"
 samp_directory="/scratch/ejy4bu/compBio/fastq/SRR14476638"
@@ -89,43 +111,7 @@ samtools view -uh -q 20 -F 0x100 | \
 samtools sort --threads 10 -o "${outbam}/${samp}.sort.bam"
 
 samtools index "${outbam}/${samp}.sort.bam"
-
-:<<test-one-sample
-
-samp=$(basename ${samp_directory})
-
-forward=$(ls ${samp_directory}/*_1.fastq)
-reverse=$(ls ${samp_directory}/*_2.fastq)
-
-echo "Processing sample : ${samp}"
-
-bwa mem -t 10 -K 100000000 -Y ${ref_path} ${forward} ${reverse} | \
-samtools view -uh -q 20 -F 0x100 | \
-samtools sort --threads 10 -o ${outbam}/${samp}.sort.bam
-
-samtools index ${outbam}/${samp}.sort.bam
-
-test-one-sample
+test
 
 # to make bam viewable as a sam file
 # samtools view -h /scratch/ejy4bu/compBio/bams/SRR14426881.sort.bam > /scratch/ejy4bu/compBio/bams/SRR14426881.sort.sam
-
-
-
-:<<end-comment
-
-samp=long_read_Chlorella_read
-
-# Map to reference genome (assembled reads)
-bwa mem -t 10 -K 100000000 -Y ${ref_path} /project/berglandlab/chlorella_sequencing/raw_longread_from_Reed/m84128_250121_222443_s2.hifi_reads.bc2104.fq.gz |
-samtools view -uh -q 20 -F 0x100 | \
-samtools sort --threads 10 -o ${outbam}/${samp}.sort.bam
-
-samtools index ${outbam}/${samp}.sort.bam
-
-# samtools view -h /scratch/ejy4bu/compBio/bams/chlorella_Reed.sort.bam > /scratch/ejy4bu/compBio/bams/chlorella_Reed.sort.sam
-
-# /project/berglandlab/chlorella_sequencing/HMW/HMWDNAElvis3/m84128_250121_222443_s2.hifi_reads.bc2104.fastq | \
-#-F 0x100 is to map secondary reads (repetitive regions)
-
-end-comment

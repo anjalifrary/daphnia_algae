@@ -29,24 +29,36 @@ samp_name=$(basename "$sample_dir")
 # Change to the working directory
 cd "$sample_dir" || exit 1
 
-# Check if fastq.gz files exist
-if ls *.fastq.gz 1> /dev/null 2>&1; then
-    echo "Processing $FOLDER_NAME"
+# Check if fastq files exist
+
+#https://www.baeldung.com/linux/compgen-command-usage
+if compgen -f -G "*.fastq" > /dev/null 2>&1; then
+    echo "Processing $samp_name"
     # Run Trimmomatic
     trimmomatic PE -threads 10 \
-        ${FOLDER_NAME}_1.fastq.gz \
-        ${FOLDER_NAME}_2.fastq.gz \
-        ${FOLDER_NAME}_1.P.trimm.fastq.gz \
-        ${FOLDER_NAME}_1.U.trimm.fastq.gz \
-        ${FOLDER_NAME}_2.P.trimm.fastq.gz \
-        ${FOLDER_NAME}_2.U.trimm.fastq.gz \
+        ${samp_name}_1.fastq \
+        ${samp_name}_2.fastq \
+        ${samp_name}_1.P.trimm.fastq \
+        ${samp_name}_1.U.trimm.fastq \
+        ${samp_name}_2.P.trimm.fastq \
+        ${samp_name}_2.U.trimm.fastq \
         ILLUMINACLIP:/home/rjp5nc/miniconda3/bin/trimmomatic/TrimmomaticAdaptors/CombinedPE-PE.fa:2:30:10:8:true
     # Run PEAR to merge overlapping reads
     /home/rjp5nc/miniconda3/bin/pear \
-        -f ${FOLDER_NAME}_1.P.trimm.fastq.gz \
-        -r ${FOLDER_NAME}_2.P.trimm.fastq.gz \
-        -o ${FOLDER_NAME} \
+        -f ${samp_name}_1.P.trimm.fastq \
+        -r ${samp_name}_2.P.trimm.fastq \
+        -o ${samp_name} \
         -j 10
 else
-    echo "Warning: No fastq.gz files in $FOLDER_NAME"
+    echo "Warning: No fastq files in $samp_name"
 fi
+
+:<<deletes
+
+forward=${samp_dir}/*_1.fastq
+reverse=${samp_dir}/*_2.fastq
+
+if ![ -f $forward || -f $reverse ]; then
+    echo "Skipping ${samp} (missing fastq files)"
+fi 
+deletes
