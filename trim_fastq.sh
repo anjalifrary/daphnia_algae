@@ -52,14 +52,16 @@ cd "$sample_dir" || exit 1
 if compgen -f -G "*.fastq" > /dev/null 2>&1; then
     echo "Processing $samp_name"
     # Run Trimmomatic
-    trimmomatic PE -threads 10 \
+    
+    # /home/ejy4bu/miniconda3/bin/trimmomatic PE -threads 10 \
+    java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.39.jar PE -threads 10 \
         ${samp_name}_1.fastq \
         ${samp_name}_2.fastq \
         ${samp_name}_1.P.trimm.fastq \
         ${samp_name}_1.U.trimm.fastq \
         ${samp_name}_2.P.trimm.fastq \
         ${samp_name}_2.U.trimm.fastq \
-        ILLUMINACLIP:/home/ejy4bu/miniconda3/bin/trimmomatic/TrimmomaticAdaptors/CombinedPE-PE.fa:2:30:10:8:true
+        ILLUMINACLIP:$EBROOTTRIMMOMATIC/adapters/TruSeq3-PE.fa:2:30:10:8:true
     # Run PEAR to merge overlapping reads
     /home/ejy4bu/miniconda3/bin/pear \
         -f ${samp_name}_1.P.trimm.fastq \
