@@ -27,8 +27,6 @@ kraken2-build --threads 10 --download-library nt --db $DBNAME
 
 kraken2-build --build --threads 10 --db $DBNAME
 
-
-
 #robert's method:
 kraken2-build --build --threads 10 --download-library nt --db nt
 
@@ -49,14 +47,38 @@ DBNAME="/scratch/ejy4bu/compBio/kraken"
 kraken2-build --threads 10 --download-library nt --db $DBNAME
 tar 
 kraken2-build --standard --threads 10 --db $DBNAME
-
-REPORTS="/scratch/ejy4bu/compBio/kraken/reports
-
-kraken2 --db $DBNAME \
-    --threads 10 --report $REPORTS\  \
-    --classified-out 
-    --output
-    --use-names
-    $sample
-
 comment
+
+:<<sample_def
+#short read:
+SAMPLE1="/scratch/ejy4bu/compBio/fastq/SRR14426881_1.fastq"
+SAMPLE2="/scratch/ejy4bu/compBio/fastq/SRR14426881_2.fastq"
+
+#long read:
+SAMPLE="/
+
+#reference:
+SAMPLE="/project/berglandlab/chlorella_sequencing//
+
+#report folder
+REPORTS="/scratch/ejy4bu/compBio/kraken/reports
+sample_def
+
+:<<paired
+kraken2 --db $DBNAME --threads 10 --fastq-input $SAMPLE\
+    --output ${REPORTS}\$(basename "${SAMPLE}")_output.txt \
+    --report ${REPORTS}\$(basename "${SAMPLE}")_report.txt \
+    --classified-out ${REPORTS}\$(basename "${SAMPLE}")_classified.txt \
+    --use-names \
+    --paired
+    $sample
+paired
+
+:<<unpaired
+kraken2 --db $DBNAME --threads 10 --fastq-input $SAMPLE\
+    --output ${REPORTS}\$(basename "${SAMPLE}")_output.txt
+    --report ${REPORTS}\$(basename "${SAMPLE}")_report.txt\  \
+    --classified-out ${REPORTS}\$(basename "${SAMPLE}")# $(basename "${SAMPLE}")_1_classified.txt $(basename "${SAMPLE}")_2_classified.txt \
+    --use-names \
+    $SAMPLE
+unpaired
