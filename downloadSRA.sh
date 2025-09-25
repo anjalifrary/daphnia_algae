@@ -8,7 +8,7 @@
 #SBATCH -o /scratch/ejy4bu/compBio/logs/prefetch.%A_%a.out # Standard output %A_%a contains job info 
 #SBATCH -e /scratch/ejy4bu/compBio/logs/prefetch.%A_%a.err # Standard error
 #SBATCH -p standard
-#SBATCH --account berglandlab_standard
+#SBATCH --account berglandlab
 
 #sacct -j 3283279 // to see the updated job status
 

@@ -8,7 +8,7 @@
 #SBATCH -o /scratch/ejy4bu/erroroutputs/down.%A_%a.out # Standard output
 #SBATCH -e /scratch/ejy4bu/erroroutputs/down.%A_%a.err # Standard error
 #SBATCH -p standard
-#SBATCH --account berglandlab_standard
+#SBATCH --account berglandlab
 #SBATCH --array=1-21%10   # Adjust the range based on the number of folders
 
 # Load necessary modules
@@ -39,7 +39,7 @@ infq="/scratch/ejy4bu/compBio/fastq"
 sample_folders=($(ls -d ${infq}/*/))  # Array of folder paths
 # Select the folder based on the job array index
 sample_dir="${sample_folders[$SLURM_ARRAY_TASK_ID - 1]}"
-#sample_dir="/scratch/ejy4bu/compBio/fastq/SRR14476638"
+#sample_dir="/scratch/ejy4bu/compBio/fastq/SRR14426882"
 # Extract folder name
 samp_name=$(basename "$sample_dir")
 
@@ -49,7 +49,8 @@ cd "$sample_dir" || exit 1
 
 # Check if fastq files exist
 #https://www.baeldung.com/linux/compgen-command-usage
-if compgen -f -G "*.fastq" > /dev/null 2>&1; then
+#if compgen -f -G "*.fastq" > /dev/null 2>&1; then
+if ls *.fastq 1> /dev/null 2>&1; then
     echo "Processing $samp_name"
     # Run Trimmomatic
     
@@ -68,6 +69,7 @@ if compgen -f -G "*.fastq" > /dev/null 2>&1; then
         -r ${samp_name}_2.P.trimm.fastq \
         -o ${samp_name} \
         -j 10
+    echo "Done working on $samp_name"
 else
     echo "Warning: No fastq files in $samp_name"
 fi
