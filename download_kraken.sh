@@ -11,4 +11,9 @@
 #SBATCH --mail-type=END               # Send email at job completion
 #SBATCH --mail-user=ejy4bu@virginia.edu    # Email address for notifications
 
-cp -r /scratch/ejy4bu/compBio/kraken /project/berglandlab/chlorella_sequencing/krakendbtmp
+# cp -r /scratch/ejy4bu/compBio/kraken /project/berglandlab/chlorella_sequencing/krakendbtmp
+
+PROJECT_DB="/project/berglandlab/chlorella_sequencing/krakendbtmp"
+MYSCRATCH="/scratch/ejy4bu/compBio/kraken"
+mkdir -p $MYSCRATCH
+rsync -avh --progress $PROJECT_DB/ $MYSCRATCH/
