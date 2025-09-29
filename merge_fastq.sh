@@ -17,7 +17,7 @@ infq="/scratch/ejy4bu/compBio/fastq"
 
 # Set the parent directory containing all the folders
 # PARENT_DIR="/scratch/ejy4bu/UK2022_2024/allshortreads/01.RawData/newseq/"  # Change this to your actual path
-sample_folders="/scratch/ejy4bu/compBio/fastq"
+#sample_folders="/scratch/ejy4bu/compBio/fastq"
 cd "$sample_folders" || exit
 
 # Loop through all subdirectories

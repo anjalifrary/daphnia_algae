@@ -30,11 +30,9 @@ download_pear
 
 #mv /scratch/ejy4bu/UK2022_2024/allshortreads/01.RawData/SR* /scratch/rjp5nc/UK2022_2024/allshortreads/01.RawData/SRR/
 
-infq="/scratch/ejy4bu/compBio/fastq"
-
+:<<sample
 #PARENT_DIR="/scratch/ejy4bu/UK2022_2024/allshortreads/01.RawData/SRR"
-
-
+infq="/scratch/ejy4bu/compBio/fastq"
 # Get list of all folders
 sample_folders=($(ls -d ${infq}/*/))  # Array of folder paths
 # Select the folder based on the job array index
@@ -42,8 +40,11 @@ sample_dir="${sample_folders[$SLURM_ARRAY_TASK_ID - 1]}"
 #sample_dir="/scratch/ejy4bu/compBio/fastq/SRR14426882"
 # Extract folder name
 samp_name=$(basename "$sample_dir")
+sample
 
-# Change to the working directory
+#for pipeline, get sample_dir from array
+sample_dir="$1"
+samp_name=$(basename "$sample_dir")
 cd "$sample_dir" || exit 1
 
 

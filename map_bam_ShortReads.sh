@@ -29,6 +29,7 @@ module load bwa
 module load samtools
 #module load picard
 
+:<<SRR
 # Define working directories
 infq="/scratch/ejy4bu/compBio/fastq"
 outbam="/scratch/ejy4bu/compBio/bams"
@@ -37,6 +38,7 @@ outbam="/scratch/ejy4bu/compBio/bams"
 # Ensure output directories exist
 mkdir -p "${infq}" "${outbam}" 
 #"${outbam}"
+SRR
 
 # Extract fields (assuming CSV format: sample_id,reference_path)
 ref_path=/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa
