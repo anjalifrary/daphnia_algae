@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
 #SBATCH -J run_kraken # A single job name for the array
-#SBATCH --ntasks-per-node=10 # ten core
+#SBATCH --ntasks-per-node=4 # ten core
 #SBATCH -N 1 # on one node
 #SBATCH -t 0-10:00 # 10 hours
-#SBATCH --mem 100G
+#SBATCH --mem 300G
 #SBATCH -o /scratch/ejy4bu/erroroutputs/down.%A_%a.out # Standard output
 #SBATCH -e /scratch/ejy4bu/erroroutputs/down.%A_%a.err # Standard error
 #SBATCH -p standard
@@ -75,7 +75,7 @@ mkdir -p "${REPORTS}"
 
 :<<paired
 kraken2 --db $DBNAME \
-    --threads 10 \
+    --threads 4 \
     --output ${REPORTS}/${SAMPLE}_output.txt \
     --report ${REPORTS}/${SAMPLE}_report.txt \
     --classified-out ${REPORTS}/${SAMPLE}_#_classified.fq \
@@ -86,7 +86,7 @@ paired
 
 #:<<unpaired
 kraken2 --db $DBNAME \
-    --threads 10 \
+    --threads 4 \
     --output ${REPORTS}/$(basename "${SAMPLE}")_output.txt \
     --report ${REPORTS}/$(basename "${SAMPLE}")_report.txt  \
     --classified-out ${REPORTS}/$(basename "${SAMPLE}")_classified.fq \
