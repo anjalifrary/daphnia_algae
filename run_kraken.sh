@@ -51,7 +51,7 @@ tar
 kraken2-build --standard --threads 10 --db $DBNAME
 comment
 
-
+:<<sample_def
 #short read:
 SAMPLE1="/scratch/ejy4bu/compBio/fastq/SRR14426881_1.fastq"
 SAMPLE2="/scratch/ejy4bu/compBio/fastq/SRR14426881_2.fastq"
@@ -59,18 +59,19 @@ SAMPLE=$(basename "${SAMPLE1}" _1.fastq)
 
 echo "Running samples ${SAMPLE}"
 
-:<<sample_def
+
 #long read:
 SAMPLE="/project/berglandlab/chlorella_sequencing/raw_longread_from_Reed/m84128_250121_222443_s2.hifi_reads.bc2104.fq.gz"
-
+sample_def
 #reference:
 SAMPLE="/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa"
-sample_def
+
 
 #report folder
 REPORTS="/scratch/ejy4bu/compBio/kraken/reports"
 mkdir -p "${REPORTS}" 
 
+:<<paired
 kraken2 --db $DBNAME \
     --threads 10 \
     --paired "${SAMPLE1}" "${SAMPLE2}" \
@@ -78,9 +79,9 @@ kraken2 --db $DBNAME \
     --report ${REPORTS}/${SAMPLE}_report.txt \
     --classified-out ${REPORTS}/${SAMPLE}_#_classified.fq \
     --use-names
+paired
 
-
-:<<unpaired
+#:<<unpaired
 kraken2 --db $DBNAME \
     --threads 10 \
     --fastq-input $SAMPLE \
@@ -88,4 +89,4 @@ kraken2 --db $DBNAME \
     --report ${REPORTS}/$(basename "${SAMPLE}")_report.txt  \
     --classified-out ${REPORTS}/$(basename "${SAMPLE}")_classified.fq \
     --use-names
-unpaired
+#unpaired
