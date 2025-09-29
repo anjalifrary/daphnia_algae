@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #
 #SBATCH -J run_kraken # A single job name for the array
-#SBATCH --ntasks-per-node=4 # one core
+#SBATCH --ntasks-per-node=10 # one core
 #SBATCH -N 1 # on one node
-#SBATCH -t 2-00:00 # 10 hours
+#SBATCH -t 0-10:00 # 10 hours
 #SBATCH --mem 100G
 #SBATCH -o /scratch/ejy4bu/erroroutputs/down.%A_%a.out # Standard output
 #SBATCH -e /scratch/ejy4bu/erroroutputs/down.%A_%a.err # Standard error
@@ -14,6 +14,8 @@
 module load kraken2
 
 DBNAME="/scratch/ejy4bu/compBio/kraken/nt"
+
+kraken2-build --db $DBNAME --build --threads 10
 
 # kraken2-build --download-library nt --threads 10 --db $DBNAME
 
@@ -75,7 +77,9 @@ kraken2 --db $DBNAME \
     --output ${REPORTS}/${SAMPLE}_output.txt \
     --report ${REPORTS}/${SAMPLE}_report.txt \
     --classified-out ${REPORTS}/${SAMPLE}_#_classified.fq \
-    --use-names
+    --use-names \
+    --memory-mapping
+
 
 :<<unpaired
 kraken2 --db $DBNAME \
