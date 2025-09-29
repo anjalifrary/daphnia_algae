@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
 #SBATCH -J run_kraken # A single job name for the array
-#SBATCH --ntasks-per-node=10 # one core
+#SBATCH --ntasks-per-node=10 # ten core
 #SBATCH -N 1 # on one node
 #SBATCH -t 0-10:00 # 10 hours
-#SBATCH --mem 500G
+#SBATCH --mem 100G
 #SBATCH -o /scratch/ejy4bu/erroroutputs/down.%A_%a.out # Standard output
 #SBATCH -e /scratch/ejy4bu/erroroutputs/down.%A_%a.err # Standard error
 #SBATCH -p standard
@@ -15,7 +15,9 @@ module load kraken2
 
 DBNAME="/scratch/ejy4bu/compBio/kraken/nt"
 
-kraken2-build --db $DBNAME --build --threads 10
+export KRAKEN2_DATA_PATH="/scratch/ejy4bu/compBio/kraken/nt"
+
+#kraken2-build --db $DBNAME --build --threads 10
 
 # kraken2-build --download-library nt --threads 10 --db $DBNAME
 
