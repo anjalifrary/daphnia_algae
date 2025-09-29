@@ -12,8 +12,6 @@
 
 DATA_DIRS=(
 "/project/berglandlab/Robert/shortread_data/data/01.RawData/RobertUK_F1"
-)
-:<<theRest
 "/project/berglandlab/Robert/shortread_data/data/01.RawData/RobertUK_F2"
 "/project/berglandlab/Robert/shortread_data/data/01.RawData/RobertUK_F3"
 "/project/berglandlab/Robert/shortread_data/data/01.RawData/RobertUK_F4"
@@ -38,7 +36,6 @@ DATA_DIRS=(
 "/project/berglandlab/Robert/shortread_data/data/01.RawData/RobertUK_G11"
 "/project/berglandlab/Robert/shortread_data/data/01.RawData/RobertUK_G12"
 )
-theRest
 
 mkdir -p "/scratch/ejy4bu/compBio/Robert_samples"
 #my_dir="/scratch/ejy4bu/compBio/Robert_samples"
