@@ -47,7 +47,9 @@ for samp in "${!DATA_DIRS[@]}"; do
     samp_dir=${DATA_DIRS[$samp]}
     name=$(basename "$samp_dir")
     mkdir -p "/scratch/ejy4bu/compBio/Robert_samples/$samp"
-    cp -n "$samp_dir"/*.fastq* "/scratch/ejy4bu/compBio/Robert_samples/${name}"
+    files=("$samp_dir"/*.fq.gz)
+
+    cp -n "${files[@]}/" "/scratch/ejy4bu/compBio/Robert_samples/${name}"
 done
 
 
