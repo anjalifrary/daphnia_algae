@@ -2,7 +2,7 @@
 #
 #SBATCH -J run_kraken # A single job name for the array
 #SBATCH --ntasks-per-node=10 # one core
-#SBATCH -N 1 # on one node
+#SBATCH -N 4 # on 4 node
 #SBATCH -t 0-10:00 # 10 hours
 #SBATCH --mem 500G
 #SBATCH -o /scratch/ejy4bu/erroroutputs/down.%A_%a.out # Standard output
