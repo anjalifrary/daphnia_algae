@@ -59,18 +59,13 @@ done
 :<<later
 for SAMPLE_DIR in "${DATA_DIRS[@]}"; do
     SAMPLE=$(basename "$SAMPLE_DIR")
-    
     #trim
     TRIM_JOB=$(sbatch --parsable --dependency=afterok:$MERGE_JOB trim_fastq.sh "$SAMPLE" )
-
     #merge
     MERGE_JOB=$(sbatch --parsable merge_fastq.sh "$SAMPLE_DIR" "$SAMPLE")
-
     #map
     sbatch --dependency=afterok:$TRIM_JOB map_bam_ShortReads.sh "$SAMPLE"
 done
-
-
 sbatch merge_fastq.sh
 sbatch trim_fastq.sh
 sbatch map_bam_ShortReads.sh
