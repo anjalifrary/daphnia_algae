@@ -55,6 +55,8 @@ SAMPLE1="/scratch/ejy4bu/compBio/fastq/SRR14426881_1.fastq"
 SAMPLE2="/scratch/ejy4bu/compBio/fastq/SRR14426881_2.fastq"
 SAMPLE=$(basename "${SAMPLE1}" _1.fastq)
 
+echo "Running samples ${SAMPLE}"
+
 :<<sample_def
 #long read:
 SAMPLE="/project/berglandlab/chlorella_sequencing/raw_longread_from_Reed/m84128_250121_222443_s2.hifi_reads.bc2104.fq.gz"
