@@ -44,11 +44,14 @@ mkdir -p "/scratch/ejy4bu/compBio/Robert_samples"
 #my_dir="/scratch/ejy4bu/compBio/Robert_samples"
 
 for samp in "${!DATA_DIRS[@]}"; do
-    samp_dir=${DATA_DIRS[@]}"
-    name=$(basename "$samp")
+    samp_dir=${DATA_DIRS[$samp]}
+    name=$(basename "$samp_dir")
     mkdir -p "/scratch/ejy4bu/compBio/Robert_samples/$samp"
     cp -n "$samp_dir"/*.fastq* "/scratch/ejy4bu/compBio/Robert_samples/${name}"
+done
 
+
+:<<later
 for SAMPLE_DIR in "${DATA_DIRS[@]}"; do
     SAMPLE=$(basename "$SAMPLE_DIR")
     
@@ -66,3 +69,4 @@ done
 sbatch merge_fastq.sh
 sbatch trim_fastq.sh
 sbatch map_bam_ShortReads.sh
+later
