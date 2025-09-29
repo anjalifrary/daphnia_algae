@@ -53,19 +53,23 @@ done
 copy_files
 
 MY_DATA="/scratch/ejy4bu/compBio/Robert_samples"
+cd "$MY_DATA"
 
-for SAMPLE_DIR in "MY_DATA"/*; do
+for SAMPLE_DIR in "$MY_DATA"/*; do
     SAMPLE=$(basename "$SAMPLE_DIR")
     echo "Submitting jobs for sample: $SAMPLE"
+    cd "$SAMPLE" || continue
+    gunzip *.fq.gz
+    echo "Unzipping fq.gz files: $SAMPLE"
     #trim
     TRIM_JOB=$(sbatch --parsable trim_fastq.sh "$SAMPLE_DIR" "$SAMPLE")
     #merge
     MERGE_JOB=$(sbatch --parsable --dependency=afterok:$TRIM_JOB merge_fastq.sh "$SAMPLE_DIR" "$SAMPLE")
     #map
-    sbatch --dependency=afterok:$MERGE_JOB map_bam_ShortReads.sh "$SAMPLE_DIR" "$SAMPLE"
+    MAP_JOB=$(sbatch --dependency=afterok:$MERGE_JOB map_bam_ShortReads.sh "$SAMPLE_DIR" "$SAMPLE")
 done
 
-#SAMPLE="/project/berglandlab/Robert/shortread_data/data/01.RawData/RobertUK_F1"
+#SAMPLE="/scratch/ejy4bu/compBio/Robert_samples/RobertUK_F1"
 #TRIM_JOB=$(sbatch --parsable trim_fastq.sh "$SAMPLE_DIR" "$SAMPLE")
 
 
