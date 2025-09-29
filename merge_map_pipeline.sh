@@ -46,14 +46,14 @@ mkdir -p "/scratch/ejy4bu/compBio/Robert_samples"
 for samp in "${!DATA_DIRS[@]}"; do
     samp_dir=${DATA_DIRS[$samp]}
     name=$(basename "$samp_dir")
-    mkdir -p "/scratch/ejy4bu/compBio/Robert_samples/$samp"
+    mkdir -p "/scratch/ejy4bu/compBio/Robert_samples/$name"
     files=("$samp_dir"/*.fq.gz)
     if [ ${#files[@]} -eq 0 ]; then
         echo "No .fq.gz files in $samp_dir, skipping"
         continue
     fi
 
-    cp -n "${files[@]}/" "/scratch/ejy4bu/compBio/Robert_samples/${name}"
+    cp -n "${files[@]}" "/scratch/ejy4bu/compBio/Robert_samples/${name}"
     echo "Copied ${#files[@]} files"
 
 done
