@@ -13,7 +13,7 @@
 
 module load kraken2
 
-DBNAME="/scratch/ejy4bu/compBio/kraken"
+DBNAME="/scratch/ejy4bu/compBio/kraken/nt"
 
 # kraken2-build --download-library nt --threads 10 --db $DBNAME
 
@@ -67,11 +67,10 @@ sample_def
 
 #report folder
 REPORTS="/scratch/ejy4bu/compBio/kraken/reports"
-
+mkdir -p "${REPORTS}" 
 
 kraken2 --db $DBNAME \
     --threads 10 \
-    --fastq-input \
     --paired "${SAMPLE1}" "${SAMPLE2}" \
     --output ${REPORTS}/${SAMPLE}_output.txt \
     --report ${REPORTS}/${SAMPLE}_report.txt \
