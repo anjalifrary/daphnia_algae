@@ -17,3 +17,5 @@ PROJECT_DB="/project/berglandlab/chlorella_sequencing/krakendbtmp"
 MYSCRATCH="/scratch/ejy4bu/compBio/kraken"
 mkdir -p $MYSCRATCH
 rsync -avh --progress $PROJECT_DB/ $MYSCRATCH/
+
+rm -rf /project/berglandlab/chlorella_sequencing/krakendbtm
