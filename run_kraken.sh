@@ -76,19 +76,20 @@ mkdir -p "${REPORTS}"
 :<<paired
 kraken2 --db $DBNAME \
     --threads 10 \
-    --paired "${SAMPLE1}" "${SAMPLE2}" \
     --output ${REPORTS}/${SAMPLE}_output.txt \
     --report ${REPORTS}/${SAMPLE}_report.txt \
     --classified-out ${REPORTS}/${SAMPLE}_#_classified.fq \
-    --use-names
+    --use-names \
+    --paired "${SAMPLE1}" "${SAMPLE2}"
+
 paired
 
 #:<<unpaired
 kraken2 --db $DBNAME \
     --threads 10 \
-    --fastq-input $SAMPLE \
     --output ${REPORTS}/$(basename "${SAMPLE}")_output.txt \
     --report ${REPORTS}/$(basename "${SAMPLE}")_report.txt  \
     --classified-out ${REPORTS}/$(basename "${SAMPLE}")_classified.fq \
-    --use-names
+    --use-names \
+    $SAMPLE
 #unpaired
