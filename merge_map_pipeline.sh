@@ -10,6 +10,7 @@
 #SBATCH -p standard       # Partition
 #SBATCH --account=berglandlab
 
+:<<copy_files
 DATA_DIRS=(
 "/project/berglandlab/Robert/shortread_data/data/01.RawData/RobertUK_F1"
 "/project/berglandlab/Robert/shortread_data/data/01.RawData/RobertUK_F2"
@@ -36,10 +37,7 @@ DATA_DIRS=(
 "/project/berglandlab/Robert/shortread_data/data/01.RawData/RobertUK_G11"
 "/project/berglandlab/Robert/shortread_data/data/01.RawData/RobertUK_G12"
 )
-
 mkdir -p "/scratch/ejy4bu/compBio/Robert_samples"
-#my_dir="/scratch/ejy4bu/compBio/Robert_samples"
-
 for samp in "${!DATA_DIRS[@]}"; do
     samp_dir=${DATA_DIRS[$samp]}
     name=$(basename "$samp_dir")
@@ -49,24 +47,25 @@ for samp in "${!DATA_DIRS[@]}"; do
         echo "No .fq.gz files in $samp_dir, skipping"
         continue
     fi
-
     cp -n "${files[@]}" "/scratch/ejy4bu/compBio/Robert_samples/${name}"
     echo "Copied ${#files[@]} files"
-
 done
+copy_files
 
+MY_DATA="/scratch/ejy4bu/compBio/Robert_samples"
 
-:<<later
-for SAMPLE_DIR in "${DATA_DIRS[@]}"; do
+for SAMPLE_DIR in "MY_DATA"/*; do
     SAMPLE=$(basename "$SAMPLE_DIR")
+    echo "Submitting jobs for sample: $SAMPLE"
     #trim
-    TRIM_JOB=$(sbatch --parsable --dependency=afterok:$MERGE_JOB trim_fastq.sh "$SAMPLE" )
+    TRIM_JOB=$(sbatch --parsable trim_fastq.sh "$SAMPLE_DIR" "$SAMPLE")
     #merge
-    MERGE_JOB=$(sbatch --parsable merge_fastq.sh "$SAMPLE_DIR" "$SAMPLE")
+    MERGE_JOB=$(sbatch --parsable --dependency=afterok:$TRIM_JOB merge_fastq.sh "$SAMPLE_DIR" "$SAMPLE")
     #map
-    sbatch --dependency=afterok:$TRIM_JOB map_bam_ShortReads.sh "$SAMPLE"
+    sbatch --dependency=afterok:$MERGE_JOB map_bam_ShortReads.sh "$SAMPLE_DIR" "$SAMPLE"
 done
-sbatch merge_fastq.sh
-sbatch trim_fastq.sh
-sbatch map_bam_ShortReads.sh
-later
+
+#SAMPLE="/project/berglandlab/Robert/shortread_data/data/01.RawData/RobertUK_F1"
+#TRIM_JOB=$(sbatch --parsable trim_fastq.sh "$SAMPLE_DIR" "$SAMPLE")
+
+

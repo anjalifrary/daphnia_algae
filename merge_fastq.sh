@@ -12,14 +12,20 @@
 
 # Load necessary modules
 
-infq="/scratch/ejy4bu/compBio/fastq"
-
-
 # Set the parent directory containing all the folders
 # PARENT_DIR="/scratch/ejy4bu/UK2022_2024/allshortreads/01.RawData/newseq/"  # Change this to your actual path
+
+#get sample from array 
+sample_dir="$1"
+samp_name=$(basename "$sample_dir")
+cd "$sample_dir" || exit 1
+
+
+
+:<<SRR_samples
+infq="/scratch/ejy4bu/compBio/fastq"
 #sample_folders="/scratch/ejy4bu/compBio/fastq"
 cd "$sample_folders" || exit
-
 # Loop through all subdirectories
 for folder in ${infq}/*; do
     samp=$(basename "${folder%/}")
@@ -47,3 +53,4 @@ for folder in ${infq}/*; do
     cd ..  # Move back to parent directory
 done
 echo "Done merging"
+SRR_samples
