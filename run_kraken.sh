@@ -62,8 +62,8 @@ SAMPLE1="${samp_path}/${sample}_1.P.trimm.fastq"
 SAMPLE2="${samp_path}/${sample}_2.P.trimm.fastq"
 
 # take 10k random
-seqtk sample -s 100 "$SAMPLE1" 1000 > ${samp_path}/${sample}_1.P.trimm.fastq
-seqtk sample -s 100 "$SAMPLE2" 1000 > ${samp_path}/${sample}_2.P.trimm.fastq
+seqtk sample -s 100 "$SAMPLE1" 1000 > ${samp_path}/${sample}_1.P.trimm.sub.fastq
+seqtk sample -s 100 "$SAMPLE2" 1000 > ${samp_path}/${sample}_2.P.trimm.sub.fastq
 
 echo "Running samples ${sample}"
 
@@ -86,7 +86,7 @@ kraken2 --db $DBNAME \
     --report ${REPORTS}/${sample}_report.txt \
     --classified-out ${REPORTS}/${sample}_#_classified.fq \
     --use-names \
-    --paired "${samp_path}/${sample}/${sample}_1_sub.fastq" "${samp_path}/${sample}/${sample}_2_sub.fastq"
+    --paired "${samp_path}/${sample}_1.P.trimm.sub.fastq" "${samp_path}/${sample}_2.P.trimm.sub.fastq"
 
 #paired
 
