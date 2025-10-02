@@ -46,6 +46,7 @@ sample_dir="$1"
 samp_name=$(basename "$sample_dir")
 cd "$sample_dir" || exit 1
 
+#samp_name="/scratch/ejy4bu/compBio/Robert_samples/RobertUK_G12/RobertUK_G12_CKDL250003065-1A_22M5YKLT4_L4"
 
 # Check if fastq files exist
 #https://www.baeldung.com/linux/compgen-command-usage
@@ -56,8 +57,8 @@ if ls *.fastq 1> /dev/null 2>&1; then
     
     # /home/ejy4bu/miniconda3/bin/trimmomatic PE -threads 10 \
     java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.39.jar PE -threads 10 \
-        ${samp_name}_1.fastq \
-        ${samp_name}_2.fastq \
+        ${samp_name}_1.fq.gz \
+        ${samp_name}_2.fq.gz \
         ${samp_name}_1.P.trimm.fastq \
         ${samp_name}_1.U.trimm.fastq \
         ${samp_name}_2.P.trimm.fastq \

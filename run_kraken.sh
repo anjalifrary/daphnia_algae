@@ -58,12 +58,12 @@ comment
 samp_path="/scratch/ejy4bu/compBio/Robert_samples/RobertUK_G12"
 sample="RobertUK_G12_CKDL250003065-1A_22M5YKLT4_L4"
 
-SAMPLE1="${samp_path}/${sample}_1.fq.gz"
-SAMPLE2="${samp_path}/${sample}_2.fq.gz"
+SAMPLE1="${samp_path}/${sample}_1.P.trimm.fastq"
+SAMPLE2="${samp_path}/${sample}_2.P.trimm.fastq"
 
 # take 10k random
-#seqtk sample -s 100 "$SAMPLE1" 1000 > ${samp_path}/${sample}_1_sub.fastq
-#seqtk sample -s 100 "$SAMPLE2" 1000 > ${samp_path}/${sample}_2_sub.fastq
+#seqtk sample -s 100 "$SAMPLE1" 1000 > ${samp_path}/${sample}_1.P.trimm.fastq
+#seqtk sample -s 100 "$SAMPLE2" 1000 > ${samp_path}/${sample}_2.P.trimm.fastq
 
 echo "Running samples ${sample}"
 
