@@ -58,7 +58,7 @@ cd "$MY_DATA"
 for SAMPLE_DIR in "$MY_DATA"/*; do
     SAMPLE=$(basename "$SAMPLE_DIR")
     echo "Submitting jobs for sample: $SAMPLE"
-    cd "$SAMPLE" || continue
+    cd "$SAMPLE_DIR" || continue
     gunzip *.fq.gz
     echo "Unzipping fq.gz files: $SAMPLE"
     #trim

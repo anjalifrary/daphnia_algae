@@ -57,7 +57,11 @@ comment
 #short read:
 SAMPLE1="/scratch/ejy4bu/compBio/fastq/SRR14426881_1.fastq"
 SAMPLE2="/scratch/ejy4bu/compBio/fastq/SRR14426881_2.fastq"
-SAMPLE=$(basename "${SAMPLE1}" _1.fastq)
+# take 10k random
+seqtk sample -s 100 "$SAMPLE1" > SAMPLE1_sub.fastq
+seqtk sample -s 100 "$SAMPLE2" > SAMPLE2_sub.fastq
+
+SAMPLE=$(basename "${SAMPLE1}"_1.fastq)
 
 echo "Running samples ${SAMPLE}"
 
@@ -80,7 +84,7 @@ kraken2 --db $DBNAME \
     --report ${REPORTS}/${SAMPLE}_report.txt \
     --classified-out ${REPORTS}/${SAMPLE}_#_classified.fq \
     --use-names \
-    --paired "${SAMPLE1}" "${SAMPLE2}"
+    --paired "${SAMPLE1_sub}" "${SAMPLE2_sub}"
 
 #paired
 
