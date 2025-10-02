@@ -62,8 +62,8 @@ SAMPLE1="${samp_path}/${sample}_1.fq.gz"
 SAMPLE2="${samp_path}/${sample}_2.fq.gz"
 
 # take 10k random
-seqtk sample -s 100 "$SAMPLE1" 1000 > ${samp_path}/${sample}/${sample}_1_sub.fastq
-seqtk sample -s 100 "$SAMPLE2" 1000 > ${samp_path}/${sample}/${sample}_2_sub.fastq
+#seqtk sample -s 100 "$SAMPLE1" 1000 > ${samp_path}/${sample}_1_sub.fastq
+#seqtk sample -s 100 "$SAMPLE2" 1000 > ${samp_path}/${sample}_2_sub.fastq
 
 echo "Running samples ${sample}"
 
