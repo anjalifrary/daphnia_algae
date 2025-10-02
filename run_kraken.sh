@@ -55,15 +55,17 @@ comment
 
 
 #short read:
-SAMPLE1="/scratch/ejy4bu/compBio/fastq/SRR14426881_1.fastq"
-SAMPLE2="/scratch/ejy4bu/compBio/fastq/SRR14426881_2.fastq"
+samp_path="/scratch/ejy4bu/compBio/fastq"
+sample="SRR14426881"
+
+SAMPLE1="${samp_path}/${sample}/${sample}_1.fastq"
+SAMPLE2="${samp_path}/${sample}/${sample}_2.fastq"
+
 # take 10k random
-seqtk sample -s 100 "$SAMPLE1" 1000 > SAMPLE1_sub.fastq
-seqtk sample -s 100 "$SAMPLE2" 1000 > SAMPLE2_sub.fastq
+seqtk sample -s 100 "$SAMPLE1" 1000 > ${samp_path}/${sample}/${sample}_1_sub.fastq
+seqtk sample -s 100 "$SAMPLE2" 1000 > ${samp_path}/${sample}/${sample}_2_sub.fastq
 
-SAMPLE=$(basename "${SAMPLE1}"_1.fastq)
-
-echo "Running samples ${SAMPLE}"
+echo "Running samples ${sample}"
 
 :<<sample_def
 #long read:
@@ -80,11 +82,11 @@ mkdir -p "${REPORTS}"
 #:<<paired
 kraken2 --db $DBNAME \
     --threads 4 \
-    --output ${REPORTS}/${SAMPLE}_output.txt \
-    --report ${REPORTS}/${SAMPLE}_report.txt \
-    --classified-out ${REPORTS}/${SAMPLE}_#_classified.fq \
+    --output ${REPORTS}/${sample}_output.txt \
+    --report ${REPORTS}/${sample}_report.txt \
+    --classified-out ${REPORTS}/${sample}_#_classified.fq \
     --use-names \
-    --paired "${SAMPLE1_sub}" "${SAMPLE2_sub}"
+    --paired "${samp_path}/${sample}/${sample}_1_sub.fastq" "${samp_path}/${sample}/${sample}_2_sub.fastq"
 
 #paired
 
