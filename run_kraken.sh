@@ -55,11 +55,11 @@ comment
 
 
 #short read:
-samp_path="/scratch/ejy4bu/compBio/fastq"
-sample="SRR14426881"
+samp_path="/scratch/ejy4bu/compBio/Robert_samples/RobertUK_G12"
+sample="RobertUK_G12_CKDL250003065-1A_22M5YKLT4_L4"
 
-SAMPLE1="${samp_path}/${sample}/${sample}_1.fastq"
-SAMPLE2="${samp_path}/${sample}/${sample}_2.fastq"
+SAMPLE1="${samp_path}/${sample}_1.fq.gz"
+SAMPLE2="${samp_path}/${sample}_2.fq.gz"
 
 # take 10k random
 seqtk sample -s 100 "$SAMPLE1" 1000 > ${samp_path}/${sample}/${sample}_1_sub.fastq
