@@ -62,8 +62,8 @@ SAMPLE1="${samp_path}/${sample}_1.P.trimm.fastq"
 SAMPLE2="${samp_path}/${sample}_2.P.trimm.fastq"
 
 # take 10k random
-#seqtk sample -s 100 "$SAMPLE1" 1000 > ${samp_path}/${sample}_1.P.trimm.fastq
-#seqtk sample -s 100 "$SAMPLE2" 1000 > ${samp_path}/${sample}_2.P.trimm.fastq
+seqtk sample -s 100 "$SAMPLE1" 1000 > ${samp_path}/${sample}_1.P.trimm.fastq
+seqtk sample -s 100 "$SAMPLE2" 1000 > ${samp_path}/${sample}_2.P.trimm.fastq
 
 echo "Running samples ${sample}"
 
