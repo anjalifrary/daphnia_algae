@@ -58,8 +58,8 @@ comment
 SAMPLE1="/scratch/ejy4bu/compBio/fastq/SRR14426881_1.fastq"
 SAMPLE2="/scratch/ejy4bu/compBio/fastq/SRR14426881_2.fastq"
 # take 10k random
-seqtk sample -s 1000 "$SAMPLE1" > SAMPLE1_sub.fastq
-seqtk sample -s 1000 "$SAMPLE2" > SAMPLE2_sub.fastq
+seqtk sample -s 100 "$SAMPLE1" 1000 > SAMPLE1_sub.fastq
+seqtk sample -s 100 "$SAMPLE2" 1000 > SAMPLE2_sub.fastq
 
 SAMPLE=$(basename "${SAMPLE1}"_1.fastq)
 
