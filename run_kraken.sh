@@ -27,33 +27,6 @@ export KRAKEN2_DATA_PATH="/scratch/ejy4bu/compBio/kraken/nt"
 #custom database
 # kraken2-build --download-taxonomy --db $DBNAME
 
-:<<comment
-
-kraken2-build --build --threads 10 --db $DBNAME
-
-#robert's method:
-kraken2-build --build --threads 10 --download-library nt --db nt
-
-
-kraken2-build --build --threads 10 -db --download-library nt 
-
-kraken2-build --standard --threads 10 --db nt 
-kraken2 --db $DBNAME seqs.fa
-
-kraken2 --db $DBNAME seqs.fa
-
-# do once
-
-# download nt library
-# unzip it
-# build 
-DBNAME="/scratch/ejy4bu/compBio/kraken"
-kraken2-build --threads 10 --download-library nt --db $DBNAME
-tar 
-kraken2-build --standard --threads 10 --db $DBNAME
-comment
-
-
 #short read:
 samp_path="/scratch/ejy4bu/compBio/Robert_samples/RobertUK_G12"
 sample="RobertUK_G12_CKDL250003065-1A_22M5YKLT4_L4"
@@ -76,7 +49,7 @@ SAMPLE="/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905
 sample_def
 
 #report folder
-REPORTS="/scratch/ejy4bu/compBio/kraken/reports"
+REPORTS="/scratch/ejy4bu/compBio/kraken/reports/${sample}"
 mkdir -p "${REPORTS}" 
 
 #:<<paired
