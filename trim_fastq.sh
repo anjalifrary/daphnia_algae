@@ -10,6 +10,8 @@
 #SBATCH -p standard
 #SBATCH --account berglandlab
 
+#ijob -A berglandlab -c10 -p standard --mem=40G
+
 # Load necessary modules
 module load gcc htslib
 # module load sratoolkit/3.1.1
@@ -51,7 +53,7 @@ cd "$sample_dir" || exit 1
 # Check if fastq files exist
 #https://www.baeldung.com/linux/compgen-command-usage
 #if compgen -f -G "*.fastq" > /dev/null 2>&1; then
-if ls *.fastq 1> /dev/null 2>&1; then
+if ls *.fq.gz 1> /dev/null 2>&1; then
     echo "Processing $samp_name"
     # Run Trimmomatic
     

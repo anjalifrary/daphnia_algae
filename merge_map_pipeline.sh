@@ -10,15 +10,20 @@
 #SBATCH -p standard       # Partition
 #SBATCH --account=berglandlab
 
+#ijob -A berglandlab -c10 -p standard --mem=100G
+
+
 MY_DATA="/scratch/ejy4bu/compBio/Robert_samples"
 cd "$MY_DATA"
+
+#SAMPLE_DIR="/scratch/ejy4bu/compBio/Robert_samples/RobertUK_F1"
 
 for SAMPLE_DIR in "$MY_DATA"/*; do
     SAMPLE=$(basename "$SAMPLE_DIR")
     echo "Submitting jobs for sample: $SAMPLE"
     cd "$SAMPLE_DIR" || continue
-    gunzip *.fq.gz
-    echo "Unzipping fq.gz files: $SAMPLE"
+    #gunzip *.fq.gz
+    #echo "Unzipping fq.gz files: $SAMPLE"
     #trim
     TRIM_JOB=$(sbatch --parsable trim_fastq.sh "$SAMPLE_DIR" "$SAMPLE")
     #merge
