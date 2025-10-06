@@ -26,9 +26,11 @@ module load samtools
 
 # Extract fields (assuming CSV format: sample_id,reference_path)
 ref_path=/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa
-infq="$1"
+#infq="$1"
 outbam="/scratch/ejy4bu/compBio/Robert_samples_bams"
 mkdir -p "${outbam}" 
+
+infq="/scratch/ejy4bu/compBio/Robert_samples"
 
 # array of sample directories for parallelization
 #iterate through directories that contain the forward and reverse short read fastq files
@@ -36,17 +38,18 @@ mkdir -p "${outbam}"
 
 sample_folders=($(ls -d ${infq}/*/)) #Array to folder paths
 samp_dir="${sample_folders[$SLURM_ARRAY_TASK_ID-1]}"
+#samp_dir="/scratch/ejy4bu/compBio/Robert_samples/RobertUKF1"
 samp=$(basename "${samp_dir}")
 
 #check for forward merged/trimmed fq.gz
-if ls *trimmedmerged1.fq.gz 1> /dev/null 2>&1; then
-    forward="$samp_dir/${samp}*trimmedmerged1.fq.gz"
+if ls ${samp_dir}/*_trimmedmerged1.fq.gz 1> /dev/null 2>&1; then
+    forward=$(ls ${samp_dir}/*_trimmedmerged1.fq.gz)
 else
     echo "Warning: No fastq in $samp"
 fi
 #check for reverse merged/trimmed fq.gz
-if ls *trimmedmerged2.fq.gz 1> /dev/null 2>&1; then
-    reverse="$samp_dir/${samp}*trimmedmerged2.fq.gz"
+if ls ${samp_dir}/*trimmedmerged2.fq.gz 1> /dev/null 2>&1; then
+    reverse=$(ls ${samp_dir}/*_trimmedmerged2.fq.gz)
 else
     echo "Warning: No fastq in $samp"
 fi
