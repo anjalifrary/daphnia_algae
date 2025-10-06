@@ -27,10 +27,12 @@ for SAMPLE_DIR in "$MY_DATA"/*; do
     #trim
     TRIM_JOB=$(sbatch --parsable trim_fastq.sh "$SAMPLE_DIR")
     #merge
-    MERGE_JOB=$(sbatch --parsable --dependency=afterok:$TRIM_JOB merge_fastq.sh "$SAMPLE_DIR" "$SAMPLE")
-    #map
-    MAP_JOB=$(sbatch --dependency=afterok:$MERGE_JOB map_bam_ShortReads.sh "$SAMPLE_DIR" "$SAMPLE")
+    MERGE_JOB=$(sbatch --parsable --dependency=afterok:$TRIM_JOB merge_fastq.sh "$SAMPLE_DIR")
 done
+
+#map
+MAP_JOB=$(sbatch --dependency=afterok:$MERGE_JOB map_bam_ShortReads.sh "$MY_DATA")
+
 
 #SAMPLE="/scratch/ejy4bu/compBio/Robert_samples/RobertUK_F1"
 #TRIM_JOB=$(sbatch --parsable trim_fastq.sh "$SAMPLE_DIR" "$SAMPLE")

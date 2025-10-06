@@ -10,7 +10,6 @@
 #SBATCH -p standard       # Partition
 #SBATCH --account=berglandlab
 
-
 #sbatch file.sh
 #Submitted batch job 3436256
 #sacct -j 3436256
@@ -19,30 +18,17 @@
 
 #ijob -A berglandlab -c10 -p standard --mem=40G
 
-
-
 # Load necessary modules
 module load gcc htslib
 module load sratoolkit/3.1.1
-#module load trimmomatic
 module load bwa
 module load samtools
-#module load picard
-
-:<<SRR
-# Define working directories
-infq="/scratch/ejy4bu/compBio/fastq"
-outbam="/scratch/ejy4bu/compBio/bams"
-#outbam="/scratch/ejy4bu/compBio/mapped_bam"
-
-# Ensure output directories exist
-mkdir -p "${infq}" "${outbam}" 
-#"${outbam}"
-SRR
 
 # Extract fields (assuming CSV format: sample_id,reference_path)
 ref_path=/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa
-
+infq="$1"
+outbam="/scratch/ejy4bu/compBio/Robert_samples_bams"
+mkdir -p "${outbam}" 
 
 # array of sample directories for parallelization
 #iterate through directories that contain the forward and reverse short read fastq files
@@ -77,64 +63,3 @@ samtools view -uh -q 20 -F 0x100 | \
 samtools sort --threads 10 -o "${outbam}/${samp}.sort.bam"
 
 samtools index "${outbam}/${samp}.sort.bam"
-
-:<<iterative
-for samp_directory in ${infq}/*; 
-    do
-        samp=$(basename "${samp_directory}")
-
-        forward=(${samp_directory}/*_1.fastq)
-        reverse=(${samp_directory}/*_2.fastq)
-
-        if [[ ! -f $forward || ! -f $reverse ]]; then
-            echo "Skipping ${samp} (missing fastq files)"
-            continue
-        fi 
-
-        echo "Processing sample : ${samp}"
-
-        bwa mem -t 10 -K 100000000 -Y ${ref_path} ${forward} ${reverse} | \
-        samtools view -uh -q 20 -F 0x100 | \
-        samtools sort --threads 10 -o "${outbam}/${samp}.sort.bam"
-
-        samtools index "${outbam}/${samp}.sort.bam"
-done
-iterative
-
-
-:<<test
-#test sample /scratch/ejy4bu/compBio/fastq/SRR14426881
-# test="SRR14476638"
-samp_directory="/scratch/ejy4bu/compBio/fastq/SRR14476638"
-samp=$(basename "${samp_directory}")
-
-forward=(${samp_directory}/*_1.fastq)
-reverse=(${samp_directory}/*_2.fastq)
-
-if [[ ! -f $forward || ! -f $reverse ]]; then
-    echo "Skipping ${samp} (missing fastq files)"
-fi 
-
-echo "Processing sample : ${samp}"
-
-bwa mem -t 10 -K 100000000 -Y ${ref_path} ${forward} ${reverse} | \
-samtools view -uh -q 20 -F 0x100 | \
-samtools sort --threads 10 -o "${outbam}/${samp}.sort.bam"
-
-samtools index "${outbam}/${samp}.sort.bam"
-test
-
-:<<delete
-
-forward=${samp_dir}/*_1.fastq
-reverse=${samp_dir}/*_2.fastq
-
-:<<skip_if
-if [ ! -f $forward || ! -f $reverse ]; then
-    echo "Skipping ${samp} (missing fastq files)"
-fi 
-skip_if
-delete
-
-# to make bam viewable as a sam file
-# samtools view -h /scratch/ejy4bu/compBio/bams/SRR14426881.sort.bam > /scratch/ejy4bu/compBio/bams/SRR14426881.sort.sam
