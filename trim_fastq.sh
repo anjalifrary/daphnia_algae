@@ -46,7 +46,7 @@ sample
 #for pipeline, get sample_dir from array
 sample_dir="$1"
 samp_name=$(basename "$sample_dir")
-cd "$sample_dir" || exit 1
+#cd "$sample_dir" || exit 1
 
 #samp_name="/scratch/ejy4bu/compBio/Robert_samples/RobertUK_G12/RobertUK_G12_CKDL250003065-1A_22M5YKLT4_L4"
 
