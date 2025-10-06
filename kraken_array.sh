@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #SBATCH -J kraken_array # A single job name for the array
-#SBATCH --array=1-25
+#SBATCH --array=1-24
 #SBATCH --ntasks-per-node=4 # 4 core
 #SBATCH --cpus-per-task=10 # Number of CPU cores per task
 #SBATCH -N 1 # on one node
