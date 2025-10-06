@@ -29,7 +29,8 @@ export KRAKEN2_DATA_PATH="/scratch/ejy4bu/compBio/kraken/nt"
 # kraken2-build --download-taxonomy --db $DBNAME
 
 samp_path="/scratch/ejy4bu/compBio/Robert_samples_bams"
-sample="${samp_path}/RobertUK_F1.sort.bam"
+sample="$1"
+#sample="${samp_path}/RobertUK_F1.sort.bam"
 samp_name=$(basename ${sample%.sort.bam})
 
 SAMPLE="${samp_path}/RobertUK_F1_output.fastq"
