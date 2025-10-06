@@ -28,9 +28,6 @@ module load samtools
 # Extract fields (assuming CSV format: sample_id,reference_path)
 ref_path=/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa
 #infq="$1"
-outbam="/scratch/ejy4bu/compBio/Robert_samples_bams"
-mkdir -p "${outbam}" 
-
 infq="/scratch/ejy4bu/compBio/Robert_samples"
 
 # array of sample directories for parallelization
@@ -41,6 +38,14 @@ sample_folders=($(ls -d ${infq}/*/)) #Array to folder paths
 samp_dir="${sample_folders[$SLURM_ARRAY_TASK_ID-1]}"
 #samp_dir="/scratch/ejy4bu/compBio/Robert_samples/RobertUK_F1"
 samp=$(basename "${samp_dir}")
+
+outbam="/scratch/ejy4bu/compBio/Robert_samples_bams/${samp}"
+mkdir -p "${outbam}" 
+
+if ls ${outbam}/*.sort.bam 1> /dev/null 2>&1; then
+    echo "Already mapped ${samp}"
+    exit 1
+fi
 
 #check for forward merged/trimmed fq.gz
 if ls ${samp_dir}/*_trimmedmerged1.fq.gz 1> /dev/null 2>&1; then
