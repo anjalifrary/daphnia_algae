@@ -63,6 +63,8 @@ sample_def
 REPORTS="/scratch/ejy4bu/compBio/kraken/reports/${samp_name}"
 mkdir -p "${REPORTS}" 
 
+echo "Running kraken on ${samp_name}"
+
 :<<paired
 kraken2 --db $DBNAME \
     --threads 4 \
