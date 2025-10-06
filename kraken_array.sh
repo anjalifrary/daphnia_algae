@@ -16,11 +16,11 @@ module load kraken2
 
 BAM_DIR="/scratch/ejy4bu/compBio/Robert_samples_bams"
 KRAKEN_SCRIPT="/home/ejy4bu/daphnia_algae/run_kraken.sh"
+chmod +x "$KRAKEN_SCRIPT"
 
 mapfile -t BAM_FILES < <(find "$BAM_DIR" -mindepth 2 -maxdepth 2 -name "*.sort.bam" | sort)
 
 BAM="${BAM_FILES[$SLURM_ARRAY_TASK_ID-1]}"
-
 samp_name=$(basename ${BAM%.sort.bam})
 FASTQ="${BAM_DIR}/${samp_name}/${samp_name}_output.fastq"
 
