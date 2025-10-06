@@ -33,10 +33,14 @@ sample="$1"
 #sample="${samp_path}/RobertUK_F1.sort.bam"
 samp_name=$(basename ${sample%.sort.bam})
 
-SAMPLE="${samp_path}/RobertUK_F1_output.fastq"
+SAMPLE="${samp_path}/${samp_name}_output.fastq"
 
 #convert bam back to fastq
-samtools fastq -o ${SAMPLE} ${sample}
+#samtools fastq -o ${SAMPLE} ${sample}
+if [ ! -f "$SAMPLE" ]; then
+    echo "No fastq file found"
+    exit 1
+fi
 
 :<<sample_def
 #short read:

@@ -17,6 +17,16 @@ mapfile -t BAM_FILES < <(find "$BAM_DIR" -mindepth 2 -maxdepth 2 -name "*.sort.b
 
 BAM="${BAM_FILES[$SLURM_ARRAY_TASK_ID-1]}"
 
+samp_name=$(basename ${BAM%.sort.bam})
+FASTQ="${BAM_DIR}/${samp_name}/${samp_name}_output.fastq"
+
+if [ ! -f "$FASTQ" ]; then
+    echo "Converting bam $BAM to fastq $FASTQ"
+    samtools fastq -@ 10 -o ${FASTQ} ${BAM}
+else 
+    echo "Fastq already exists $FASTQ"
+fi
+
 echo "Array task $SLURM_ARRAY_TASK_ID processing BAM: $BAM"
 
 run_kraken.sh "$BAM"
