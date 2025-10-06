@@ -20,7 +20,7 @@ module load trimmomatic
 sample_dir="$1"
 samp_name=$(basename "$sample_dir")
 
-for forward in *_1.fq.gz; do
+for forward in "$sample_dir"/*_1.fq.gz; do
     reverse="${forward/_1.fq.gz/_2.fq.gz}"
     lane_name="${forward%_1.fq.gz}"
 

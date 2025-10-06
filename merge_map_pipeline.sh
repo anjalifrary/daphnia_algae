@@ -25,9 +25,7 @@ for SAMPLE_DIR in "$MY_DATA"/*; do
     #gunzip *.fq.gz
     #echo "Unzipping fq.gz files: $SAMPLE"
     #trim
-    for samp in "$SAMPLE_DIR"; do
-    TRIM_JOB=$(sbatch --parsable trim_fastq.sh "$SAMPLE_DIR" "$samp")
-    done
+    TRIM_JOB=$(sbatch --parsable trim_fastq.sh "$SAMPLE_DIR")
     #merge
     MERGE_JOB=$(sbatch --parsable --dependency=afterok:$TRIM_JOB merge_fastq.sh "$SAMPLE_DIR" "$SAMPLE")
     #map
