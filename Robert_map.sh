@@ -9,8 +9,6 @@
 #SBATCH -e /scratch/ejy4bu/erroroutputs/pipe.%A_%a.err  # Standard error
 #SBATCH -p standard       # Partition
 #SBATCH --account=berglandlab
-#SBATCH --begin=now+1hour
-
 
 #after running the trim and merge pipeline successfully: 
 
