@@ -9,7 +9,6 @@
 #SBATCH -e /scratch/ejy4bu/erroroutputs/trim.%A_%a.err # Standard error
 #SBATCH -p standard
 #SBATCH --account berglandlab
-#SBATCH --begin=now+1hour
 #ijob -A berglandlab -c10 -p standard --mem=40G
 
 # Load necessary modules
