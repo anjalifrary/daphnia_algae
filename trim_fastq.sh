@@ -24,6 +24,11 @@ for forward in "$sample_dir"/*_1.fq.gz; do
     reverse="${forward/_1.fq.gz/_2.fq.gz}"
     lane_name="${forward%_1.fq.gz}"
 
+    if ls "$sample_dir"/*_1.P.trimm.fastq 1> /dev/null 2>&1; then
+        echo "sample already trimmed: $samp_name"
+        continue
+    fi
+
     echo "Processing lane: ${lane_name}"
 
     java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.39.jar PE -threads 10 \
