@@ -12,6 +12,7 @@
 
 
 module load kraken2
+module load samtools
 
 DBNAME="/scratch/ejy4bu/compBio/kraken/nt"
 
@@ -27,6 +28,16 @@ export KRAKEN2_DATA_PATH="/scratch/ejy4bu/compBio/kraken/nt"
 #custom database
 # kraken2-build --download-taxonomy --db $DBNAME
 
+samp_path="/scratch/ejy4bu/compBio/Robert_samples_bams"
+sample="${samp_path}/RobertUK_F1.sort.bam"
+samp_name=$(basename ${sample%.sort.bam})
+
+SAMPLE="${samp_path}/RobertUK_F1_output.fastq"
+
+#convert bam back to fastq
+samtools fastq -o ${SAMPLE} ${sample}
+
+:<<sample_def
 #short read:
 samp_path="/scratch/ejy4bu/compBio/Robert_samples/RobertUK_G12"
 sample="RobertUK_G12_CKDL250003065-1A_22M5YKLT4_L4"
@@ -40,19 +51,19 @@ SAMPLE2="${samp_path}/${sample}_2.P.trimm.fastq"
 
 echo "Running samples ${sample}"
 
-:<<sample_def
+
 #long read:
-SAMPLE="/project/berglandlab/chlorella_sequencing/raw_longread_from_Reed/m84128_250121_222443_s2.hifi_reads.bc2104.fq.gz"
+sample="/project/berglandlab/chlorella_sequencing/raw_longread_from_Reed/m84128_250121_222443_s2.hifi_reads.bc2104.fq.gz"
 
 #reference:
-SAMPLE="/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa"
+sample="/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa"
 sample_def
 
 #report folder
-REPORTS="/scratch/ejy4bu/compBio/kraken/reports/${sample}"
+REPORTS="/scratch/ejy4bu/compBio/kraken/reports/${samp_name}"
 mkdir -p "${REPORTS}" 
 
-#:<<paired
+:<<paired
 kraken2 --db $DBNAME \
     --threads 4 \
     --output ${REPORTS}/${sample}_output.txt \
@@ -61,9 +72,9 @@ kraken2 --db $DBNAME \
     --use-names \
     --paired "${samp_path}/${sample}_1.P.trimm.sub.fastq" "${samp_path}/${sample}_2.P.trimm.sub.fastq"
 
-#paired
+paired
 
-:<<unpaired
+#:<<unpaired
 kraken2 --db $DBNAME \
     --threads 4 \
     --output ${REPORTS}/$(basename "${SAMPLE}")_output.txt \
@@ -71,4 +82,4 @@ kraken2 --db $DBNAME \
     --classified-out ${REPORTS}/$(basename "${SAMPLE}")_classified.fq \
     --use-names \
     $SAMPLE
-unpaired
+#unpaired

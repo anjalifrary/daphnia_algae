@@ -44,6 +44,3 @@ if [ ! -f $forward || ! -f $reverse ]; then
 fi 
 skip_if
 delete
-
-# to make bam viewable as a sam file
-# samtools view -h /scratch/ejy4bu/compBio/bams/SRR14426881.sort.bam > /scratch/ejy4bu/compBio/bams/SRR14426881.sort.sam

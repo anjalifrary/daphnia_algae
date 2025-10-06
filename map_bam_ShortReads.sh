@@ -62,3 +62,7 @@ samtools sort --threads 10 -o "$outbam/${samp}.sort.bam"
 
 samtools index "$outbam/${samp}.sort.bam"
 echo "finished mapping $samp"
+
+
+# to make bam viewable as a sam file
+# samtools view -h /scratch/ejy4bu/compBio/bams/SRR14426881.sort.bam > /scratch/ejy4bu/compBio/bams/SRR14426881.sort.sam
