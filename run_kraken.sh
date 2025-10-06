@@ -5,8 +5,8 @@
 #SBATCH -N 1 # on one node
 #SBATCH -t 0-10:00 # 10 hours
 #SBATCH --mem 300G
-#SBATCH -o /scratch/ejy4bu/erroroutputs/down.%A_%a.out # Standard output
-#SBATCH -e /scratch/ejy4bu/erroroutputs/down.%A_%a.err # Standard error
+#SBATCH -o /scratch/ejy4bu/erroroutputs/kraken.%A_%a.out # Standard output
+#SBATCH -e /scratch/ejy4bu/erroroutputs/kraken.%A_%a.err # Standard error
 #SBATCH -p standard
 #SBATCH --account berglandlab
 

@@ -19,14 +19,14 @@ MY_DATA="/scratch/ejy4bu/compBio/Robert_samples"
 #SAMPLE_DIR="/scratch/ejy4bu/compBio/Robert_samples/RobertUK_F1"
 
 for SAMPLE_DIR in "$MY_DATA"/*; do
-    SAMPLE=$(basename "$SAMPLE_DIR")
-    echo "Submitting jobs for sample: $SAMPLE"
+    folder=$(basename "$SAMPLE_DIR")
+    echo "Submitting jobs for sample: $folder"
     #cd "$SAMPLE_DIR" || continue
     #gunzip *.fq.gz
     #echo "Unzipping fq.gz files: $SAMPLE"
     #trim
     for samp in "$SAMPLE_DIR"; do
-    TRIM_JOB=$(sbatch --parsable trim_fastq.sh "$SAMPLE_DIR" "$SAMPLE")
+    TRIM_JOB=$(sbatch --parsable trim_fastq.sh "$SAMPLE_DIR" "$samp")
     done
     #merge
     MERGE_JOB=$(sbatch --parsable --dependency=afterok:$TRIM_JOB merge_fastq.sh "$SAMPLE_DIR" "$SAMPLE")
