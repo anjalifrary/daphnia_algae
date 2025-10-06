@@ -15,7 +15,7 @@
 # Set the parent directory containing all the folders
 # PARENT_DIR="/scratch/ejy4bu/UK2022_2024/allshortreads/01.RawData/newseq/"  # Change this to your actual path
 
-#get sample from array 
+#get sample from pipeline 
 sample_dir="$1"
 samp_name=$(basename"${sample_dir}")
 

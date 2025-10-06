@@ -37,8 +37,8 @@ infq="/scratch/ejy4bu/compBio/Robert_samples"
 #map to reference genome (assembled reads)
 
 sample_folders=($(ls -d ${infq}/*/)) #Array to folder paths
-#samp_dir="${sample_folders[$SLURM_ARRAY_TASK_ID-1]}"
-samp_dir="/scratch/ejy4bu/compBio/Robert_samples/RobertUK_F1"
+samp_dir="${sample_folders[$SLURM_ARRAY_TASK_ID-1]}"
+#samp_dir="/scratch/ejy4bu/compBio/Robert_samples/RobertUK_F1"
 samp=$(basename "${samp_dir}")
 
 #check for forward merged/trimmed fq.gz
