@@ -11,7 +11,11 @@
 #SBATCH -p standard
 #SBATCH --account berglandlab
 
+module load samtools
+module load kraken2
+
 BAM_DIR="/scratch/ejy4bu/compBio/Robert_samples_bams"
+KRAKEN_SCRIPT="/home/ejy4bu/daphnia_algae/run_kraken.sh"
 
 mapfile -t BAM_FILES < <(find "$BAM_DIR" -mindepth 2 -maxdepth 2 -name "*.sort.bam" | sort)
 
@@ -29,4 +33,4 @@ fi
 
 echo "Array task $SLURM_ARRAY_TASK_ID processing BAM: $BAM"
 
-run_kraken.sh "$BAM"
+${KRAKEN_SCRIPT} "$BAM"
