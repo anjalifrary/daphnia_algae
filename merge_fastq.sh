@@ -18,39 +18,23 @@
 #get sample from array 
 sample_dir="$1"
 samp_name=$(basename "$sample_dir")
-cd "$sample_dir" || exit 1
 
+if ls "$sample_dir"/*_1.P.trimm.fastq 1> /dev/null 2>&1; then
+    echo "Merging all forward reads in $samp_name..."
+    cat "$sample_dir"/*_1.P.trimm.fastq | gzip > "$sample_dir/${samp_name}_trimmedmerged1.fq.gz"
+    rm "$sample_dir"/*_1.P.trimm.fastq
+    rm "$sample_dir"/*_1.fastq
+else
+    echo "Warning: No fastq in $samp_name"
+fi
 
+if ls "$sample_dir"/*_2.P.trimm.fastq 1> /dev/null 2>&1; then
+    echo "Merging all reverse reads in $samp_name..."
+    cat "$sample_dir"/*_2.P.trimm.fastq | gzip > "$sample_dir/${samp_name}_trimmedmerged2.fq.gz"
+    rm "$sample_dir"/*_2.P.trimm.fastq
+    rm "$sample_dir"/*_2.fastq
+else
+    echo "Warning: No reverse reads found in $samp_name"
+fi
 
-:<<SRR_samples
-infq="/scratch/ejy4bu/compBio/fastq"
-#sample_folders="/scratch/ejy4bu/compBio/fastq"
-cd "$sample_folders" || exit
-# Loop through all subdirectories
-for folder in ${infq}/*; do
-    samp=$(basename "${folder%/}")
-    # samp="SRR14426882"
-    echo "Entering folder: $samp"
-    cd "$samp" || continue  # Enter folder
-    # Check for forward reads
-    if ls *_1.P.trimm.fastq 1> /dev/null 2>&1; then
-        echo "Merging all forward reads in $samp..."
-        cat *_1.P.trimm.fastq | gzip > "${samp}_trimmedmerged1.fq.gz"
-        rm *_1.P.trimm.fastq
-        rm *_1.fastq
-    else
-        echo "Warning: No fastq in $samp"
-    fi
-    # Check for reverse reads
-    if ls *_2.P.trimm.fastq 1> /dev/null 2>&1; then
-        echo "Merging all reverse reads in $samp..."
-        cat *_2.P.trimm.fastq | gzip > "${samp}_trimmedmerged2.fq.gz"
-        rm *_2.P.trimm.fastq
-        rm *_2.fastq
-    else
-        echo "Warning: No reverse reads found in $samp"
-    fi
-    cd ..  # Move back to parent directory
-done
-echo "Done merging"
-SRR_samples
+echo "done merging in $samp_name"
