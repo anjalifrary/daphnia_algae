@@ -14,11 +14,7 @@
 
 # Load necessary modules
 module load gcc htslib
-# module load sratoolkit/3.1.1
 module load trimmomatic
-# module load bwa
-# module load samtools
-#module load picard
 
 :<<download_pear
 download miniconda and then pear: run in SSH terminal: (it will take a long time)
@@ -26,10 +22,7 @@ download miniconda and then pear: run in SSH terminal: (it will take a long time
     bash Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/miniconda3
     source $HOME/miniconda3/bin/activate
     conda install -c bioconda pear
-
 download_pear
-
-#mv /scratch/ejy4bu/UK2022_2024/allshortreads/01.RawData/SR* /scratch/rjp5nc/UK2022_2024/allshortreads/01.RawData/SRR/
 
 :<<sample
 #PARENT_DIR="/scratch/ejy4bu/UK2022_2024/allshortreads/01.RawData/SRR"
@@ -46,10 +39,34 @@ sample
 #for pipeline, get sample_dir from array
 sample_dir="$1"
 samp_name=$(basename "$sample_dir")
-#cd "$sample_dir" || exit 1
 
-#samp_name="/scratch/ejy4bu/compBio/Robert_samples/RobertUK_G12/RobertUK_G12_CKDL250003065-1A_22M5YKLT4_L4"
+for forward in *_1.fq.gz; do
+    reverse="${forward/_1.fq.gz/_2.fq.gz}"
+    lane_name="${forward%_1.fq.gz}"
 
+    echo "Processing lane: ${lane_name}"
+
+    java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.39.jar PE -threads 10 \
+        ${lane_name}_1.fq.gz \
+        ${lane_name}_2.fq.gz \
+        ${lane_name}_1.P.trimm.fastq \
+        ${lane_name}_1.U.trimm.fastq \
+        ${lane_name}_2.P.trimm.fastq \
+        ${lane_name}_2.U.trimm.fastq \
+        ILLUMINACLIP:$EBROOTTRIMMOMATIC/adapters/TruSeq3-PE.fa:2:30:10:8:true
+
+    /home/ejy4bu/miniconda3/bin/pear \
+        -f ${lane_name}_1.P.trimm.fastq \
+        -r ${lane_name}_2.P.trimm.fastq \
+        -o ${lane_name} \
+        -j 10
+    echo "Done working on $lane_name"
+
+done
+echo "All lanes trimmed for $samp_name"
+
+
+:<<OneLane
 # Check if fastq files exist
 #https://www.baeldung.com/linux/compgen-command-usage
 #if compgen -f -G "*.fastq" > /dev/null 2>&1; then
@@ -76,6 +93,7 @@ if ls *.fq.gz 1> /dev/null 2>&1; then
 else
     echo "Warning: No fastq files in $samp_name"
 fi
+OneLane
 
 :<<deletes
 
