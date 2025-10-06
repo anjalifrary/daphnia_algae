@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 #SBATCH -J makebams    # Job name
+#SBATCH --array=1-25
 #SBATCH --ntasks=1        # Single task per job
 #SBATCH --cpus-per-task=10 # Number of CPU cores per task
 #SBATCH -N 1              # Run on one node
