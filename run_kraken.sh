@@ -35,6 +35,7 @@ samp_name=$(basename ${sample%.sort.bam})
 
 SAMPLE="${samp_path}/${samp_name}/${samp_name}_output.fastq"
 
+
 #convert bam back to fastq
 #samtools fastq -o ${SAMPLE} ${sample}
 if [ ! -f "$SAMPLE" ]; then
