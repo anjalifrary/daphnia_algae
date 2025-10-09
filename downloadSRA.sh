@@ -48,7 +48,7 @@ fi
 
 
 
-if ls /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}/*fastq.gz 1> /dev/null 2>&1; then
+if ls /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}/*fastq 1> /dev/null 2>&1; then
     echo "files do exist"
     exit
 else
@@ -80,3 +80,13 @@ if [ -f "/scratch/ejy4bu/compBio/sra/${sranum}.sra" ]; then
   rm /scratch/ejy4bu/compBio/sra/${sranum}.sra
 fi
 #cat /home/ejy4bu/daphnia_algae/data/runs.csv | nl | grep "SRR12463313"
+
+# if [ -f "/scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}/${sranum}_1.fastq" ]; then
+#   gzip /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}/${sranum}_1.fastq
+#   gzip /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}/${sranum}_2.fastq
+# fi
+
+# if [ -f "/scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}" ]; then
+#   gzip -c /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum} > /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}.fastq.gz
+#   rm /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}
+# fi
