@@ -23,7 +23,6 @@ if ls "$sample_dir"/*_1.P.trimm.fastq 1> /dev/null 2>&1; then
     echo "Merging all forward reads in $samp_name..."
     cat "$sample_dir"/*_1.P.trimm.fastq | gzip > "$sample_dir/${samp_name}_trimmedmerged1.fq.gz"
     rm "$sample_dir"/*_1.P.trimm.fastq
-    rm "$sample_dir"/*_1.fastq
 else
     echo "Warning: No fastq in $samp_name"
 fi
@@ -32,7 +31,6 @@ if ls "$sample_dir"/*_2.P.trimm.fastq 1> /dev/null 2>&1; then
     echo "Merging all reverse reads in $samp_name..."
     cat "$sample_dir"/*_2.P.trimm.fastq | gzip > "$sample_dir/${samp_name}_trimmedmerged2.fq.gz"
     rm "$sample_dir"/*_2.P.trimm.fastq
-    rm "$sample_dir"/*_2.fastq
 else
     echo "Warning: No reverse reads found in $samp_name"
 fi

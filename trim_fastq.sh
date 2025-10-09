@@ -19,9 +19,9 @@ module load trimmomatic
 sample_dir="$1"
 samp_name=$(basename "$sample_dir")
 
-for forward in "$sample_dir"/*_1.fq.gz; do
-    reverse="${forward/_1.fq.gz/_2.fq.gz}"
-    lane_name="${forward%_1.fq.gz}"
+for forward in "$sample_dir"/*_1.fastq; do
+    reverse="${forward/_1.fastq/_2.fastq}"
+    lane_name="${forward%_1.fastq}"
 
     if ls "$sample_dir"/*_1.P.trimm.fastq 1> /dev/null 2>&1; then
         echo "sample already trimmed: $samp_name"
@@ -31,8 +31,8 @@ for forward in "$sample_dir"/*_1.fq.gz; do
     echo "Processing lane: ${lane_name}"
 
     java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.39.jar PE -threads 10 \
-        ${lane_name}_1.fq.gz \
-        ${lane_name}_2.fq.gz \
+        ${lane_name}_1.fastq \
+        ${lane_name}_2.fastq \
         ${lane_name}_1.P.trimm.fastq \
         ${lane_name}_1.U.trimm.fastq \
         ${lane_name}_2.P.trimm.fastq \
