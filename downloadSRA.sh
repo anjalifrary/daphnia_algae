@@ -50,6 +50,7 @@ fi
 
 if ls /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}/*fastq.gz 1> /dev/null 2>&1; then
     echo "files do exist"
+    exit
 else
   echo "files do not exist"
 

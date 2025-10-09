@@ -23,9 +23,11 @@ chmod +x "$TRIM_SCRIPT"
 chmod +x "$MERGE_SCRIPT"
 chmod +x "$MAP_SCRIPT"
 
-mapfile -t FASTQ_FILES < <(find "$MY_DATA" -mindepth 2 -maxdepth 2 -name "*.fastq
+mapfile -t FASTQ_FILES < <(find "$MY_DATA" -mindepth 2 -maxdepth 2 -name "*.fastq" | sort)
 
-SAMPLES=("$MY_DATA"/*)
+
+
+#SAMPLES=("$MY_DATA"/*)
 
 SAMPLE_DIR="${SAMPLES[$SLURM_ARRAY_TASK_ID]}"
 samp_name=$(basename "$SAMPLE_DIR")
