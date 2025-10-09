@@ -25,7 +25,7 @@ module load gcc/11.4.0 sratoolkit/3.1.1
 
 CSV="/project/berglandlab/anjali/metadata/algae_paths_anjali.csv"
 
-sranum=$(tail -n +2 "$CSV" | sed "${SLURM_ARRAY_TASK_ID}q;d" | cut -f8 )
+sranum=$(tail -n +2 "$CSV" | sed "${SLURM_ARRAY_TASK_ID}q;d" | cut -f8 -d",")
 sampName=$sranum
 # proj=$( sed "${SLURM_ARRAY_TASK_ID}q;d" "$CSV" | cut -f2 -d',' )
 
