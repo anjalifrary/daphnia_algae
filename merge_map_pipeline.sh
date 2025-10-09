@@ -15,10 +15,10 @@
 
 
 MY_DATA="/scratch/ejy4bu/compBio/fastq/Old_Algae_fastq"
-SAMPLES=${MY_DATA}/*
+SAMPLES=("$MY_DATA"/*)
 
 SAMPLE_DIR="${SAMPLES[$SLURM_ARRAY_TASK_ID]}"
-samp_name=(basename "$SAMPLE_DIR")
+samp_name=$(basename "$SAMPLE_DIR")
 
 echo "Processing sample ${samp_name}. (Array task ID: $SLURM_ARRAY_TASK_ID)"
 
@@ -26,10 +26,10 @@ TRIM_JOB=$(sbatch --parsable trim_fastq.sh "$SAMPLE_DIR")
 
 MERGE_JOB=$(sbatch --parsable --dependency=afterok:$TRIM_JOB merge_fastq.sh "$SAMPLE_DIR")
 
-MAP_JOB=$(sbatch --parsable --dependency=afterok:$MERGE_JOB map_bam_ShortReads.sh "$SAMPLE_DIR")
+#MAP_JOB=$(sbatch --parsable --dependency=afterok:$MERGE_JOB map_bam_ShortReads.sh "$MY_DATA")
 
 
 echo "Submitted jobs for $samp_name:"
 echo "  TRIM_JOB = $TRIM_JOB"
 echo "  MERGE_JOB = $MERGE_JOB"
-echo "  MAP_JOB = $MAP_JOB"
+#echo "  MAP_JOB = $MAP_JOB"
