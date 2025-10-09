@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #SBATCH -J merge_pipeline_array    # Job name
-#SBATCH --array=1-2a
+#SBATCH --array=1-2
 #SBATCH --ntasks=4        # Single task per job
 #SBATCH --cpus-per-task=10 # Number of CPU cores per task
 #SBATCH -N 1              # Run on one node
@@ -36,5 +36,4 @@ echo "  MAP_JOB = $MAP_JOB"
 
 #SAMPLE="/scratch/ejy4bu/compBio/Robert_samples/RobertUK_F1"
 #TRIM_JOB=$(sbatch --parsable trim_fastq.sh "$SAMPLE_DIR" "$SAMPLE")
-
 
