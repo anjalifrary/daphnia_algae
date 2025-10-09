@@ -15,19 +15,15 @@
 
 
 MY_DATA="/scratch/ejy4bu/compBio/fastq/Old_Algae_fastq"
-TRIM_SCRIPT="/home/ejy4bu/daphnia_algae/trim_fastq.sh"
-MERGE_SCRIPT="/home/ejy4bu/daphnia_algae/merge_fastq.sh"
-MAP_SCRIPT="/home/ejy4bu/daphnia_algae/map_bam_ShortReads.sh"
+# TRIM_SCRIPT="/home/ejy4bu/daphnia_algae/trim_fastq.sh"
+# MERGE_SCRIPT="/home/ejy4bu/daphnia_algae/merge_fastq.sh"
+# MAP_SCRIPT="/home/ejy4bu/daphnia_algae/map_bam_ShortReads.sh"
 
-chmod +x "$TRIM_SCRIPT"
-chmod +x "$MERGE_SCRIPT"
-chmod +x "$MAP_SCRIPT"
+# chmod +x "$TRIM_SCRIPT"
+# chmod +x "$MERGE_SCRIPT"
+# chmod +x "$MAP_SCRIPT"
 
-mapfile -t FASTQ_FILES < <(find "$MY_DATA" -mindepth 2 -maxdepth 2 -name "*.fastq" | sort)
-
-
-
-#SAMPLES=("$MY_DATA"/*)
+SAMPLES=$(ls -d ${MY_DATA}/*/)
 
 SAMPLE_DIR="${SAMPLES[$SLURM_ARRAY_TASK_ID]}"
 samp_name=$(basename "$SAMPLE_DIR")
@@ -38,10 +34,10 @@ TRIM_JOB=$(sbatch --parsable trim_fastq.sh "$SAMPLE_DIR")
 
 MERGE_JOB=$(sbatch --parsable --dependency=afterok:$TRIM_JOB merge_fastq.sh "$SAMPLE_DIR")
 
-#MAP_JOB=$(sbatch --parsable --dependency=afterok:$MERGE_JOB map_bam_ShortReads.sh "$MY_DATA")
+MAP_JOB=$(sbatch --parsable --dependency=afterok:$MERGE_JOB map_bam_ShortReads.sh "$MY_DATA")
 
 
 echo "Submitted jobs for $samp_name:"
 echo "  TRIM_JOB = $TRIM_JOB"
 echo "  MERGE_JOB = $MERGE_JOB"
-#echo "  MAP_JOB = $MAP_JOB"
+echo "  MAP_JOB = $MAP_JOB"
