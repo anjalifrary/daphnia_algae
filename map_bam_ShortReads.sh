@@ -27,8 +27,8 @@ module load samtools
 
 # Extract fields (assuming CSV format: sample_id,reference_path)
 ref_path=/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa
-#infq="$1"
-infq="/scratch/ejy4bu/compBio/Robert_samples"
+infq="$1"
+#infq="/scratch/ejy4bu/compBio/Robert_samples"
 
 # array of sample directories for parallelization
 #iterate through directories that contain the forward and reverse short read fastq files
@@ -39,7 +39,7 @@ samp_dir="${sample_folders[$SLURM_ARRAY_TASK_ID-1]}"
 #samp_dir="/scratch/ejy4bu/compBio/Robert_samples/RobertUK_F1"
 samp=$(basename "${samp_dir}")
 
-outbam="/scratch/ejy4bu/compBio/Robert_samples_bams/${samp}"
+outbam="/scratch/ejy4bu/compBio/bams/Old_Algae_bams/${samp}"
 mkdir -p "${outbam}" 
 
 if ls ${outbam}/*.sort.bam 1> /dev/null 2>&1; then

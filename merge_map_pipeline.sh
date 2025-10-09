@@ -13,24 +13,17 @@
 #ijob -A berglandlab -c10 -p standard --mem=100G
 
 
-MY_DATA="/scratch/ejy4bu/compBio/Robert_samples"
-#cd "$MY_DATA"
-
-#SAMPLE_DIR="/scratch/ejy4bu/compBio/Robert_samples/RobertUK_F1"
+MY_DATA="/scratch/ejy4bu/compBio/fastq/Old_Algae_fastq"
 
 for SAMPLE_DIR in "$MY_DATA"/*; do
     folder=$(basename "$SAMPLE_DIR")
     echo "Submitting jobs for sample: $folder"
-    #cd "$SAMPLE_DIR" || continue
-    #gunzip *.fq.gz
-    #echo "Unzipping fq.gz files: $SAMPLE"
-    #trim
+
     TRIM_JOB=$(sbatch --parsable trim_fastq.sh "$SAMPLE_DIR")
-    #merge
+
     MERGE_JOB=$(sbatch --parsable --dependency=afterok:$TRIM_JOB merge_fastq.sh "$SAMPLE_DIR")
 done
 
-#map
 MAP_JOB=$(sbatch --dependency=afterok:$MERGE_JOB map_bam_ShortReads.sh "$MY_DATA")
 
 
