@@ -14,4 +14,4 @@
 
 MY_DATA="/scratch/ejy4bu/compBio/Robert_samples"
 
-MAP_JOB=$(sbatch --dependency=afterok:$MERGE_JOB map_bam_ShortReads.sh "$MY_DATA")
+MAP_JOB=$(sbatch --parsable map_bam_ShortReads.sh "$MY_DATA")
