@@ -21,7 +21,6 @@ wd=/scratch/ejy4bu/compBio
 
 module load gcc/11.4.0 sratoolkit/3.1.1 
 
-# cat /home/aob2x/CompEvoBio_modules/data/runs.csv | nl | grep "SRR1988514"
 # SLURM_ARRAY_TASK_ID=1
 
 sranum=$( sed "${SLURM_ARRAY_TASK_ID}q;d" /project/berglandlab/anjali/metadata/algae_paths_anjali.csv | cut -f8 -d',' )
@@ -41,7 +40,7 @@ if [ ! -d "/scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}" ]; then
   mkdir /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}
 fi
 
-if [ ! -d "/scratch/ejy4bu/compBio/sra/" ]; then
+if [ ! -d "/scratch/ejy4bu/compBio/sra" ]; then
   mkdir /scratch/ejy4bu/compBio/sra
 fi
 
