@@ -33,17 +33,21 @@ echo $sampName " / " $sranum
 
 ### sranum=SRR1184609; proj=PRJNA194129
 
-if [ ! -d "/scratch/ejy4bu/compBio/fastq" ]; then
-  mkdir /scratch/ejy4bu/compBio/fastq
+if [ ! -d "/scratch/ejy4bu/compBio/fastq/Old_Algae_fastq" ]; then
+  mkdir /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq
 fi
 
-if [ ! -d "/scratch/ejy4bu/compBio/fastq/${sranum}" ]; then
-  mkdir /scratch/ejy4bu/compBio/fastq/${sranum}
+if [ ! -d "/scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}" ]; then
+  mkdir /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}
+fi
+
+if [ ! -d "/scratch/ejy4bu/compBio/sra/" ]; then
+  mkdir /scratch/ejy4bu/compBio/sra
 fi
 
 
 
-if ls /scratch/ejy4bu/compBio/fastq/${sranum}/*fastq.gz 1> /dev/null 2>&1; then
+if ls /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}/*fastq.gz 1> /dev/null 2>&1; then
     echo "files do exist"
 else
   echo "files do not exist"
@@ -59,24 +63,24 @@ else
   fasterq-dump \
   --split-files \
   --split-3 \
-  --outfile /scratch/ejy4bu/compBio/fastq/${sranum}/${sranum} \
+  --outfile /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}/${sranum} \
   -e 10 \
   -p \
   --temp /scratch/ejy4bu/tmp \
   /scratch/ejy4bu/compBio/sra/${sranum}.sra
 
-  ls -lh /scratch/ejy4bu/compBio/fastq/${sranum}
+  ls -lh /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}
 
 fi
 
-if [ -f "/scratch/ejy4bu/compBio/fastq/${sranum}_1.fastq" ]; then
-  gzip /scratch/ejy4bu/compBio/fastq/${sranum}_1.fastq
-  gzip /scratch/ejy4bu/compBio/fastq/${sranum}_2.fastq
+if [ -f "/scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}_1.fastq" ]; then
+  gzip /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}_1.fastq
+  gzip /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}_2.fastq
 fi
 
-if [ -f "/scratch/ejy4bu/compBio/fastq/${sranum}" ]; then
-  gzip -c /scratch/ejy4bu/compBio/fastq/${sranum} > /scratch/ejy4bu/compBio/fastq/${sranum}.fastq.gz
-  rm /scratch/ejy4bu/compBio/fastq/${sranum}
+if [ -f "/scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}" ]; then
+  gzip -c /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum} > /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}.fastq.gz
+  rm /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}
 fi
 
 rm /scratch/ejy4bu/compBio/sra/${sranum}.sra

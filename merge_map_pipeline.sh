@@ -15,6 +15,16 @@
 
 
 MY_DATA="/scratch/ejy4bu/compBio/fastq/Old_Algae_fastq"
+TRIM_SCRIPT="/home/ejy4bu/daphnia_algae/trim_fastq.sh"
+MERGE_SCRIPT="/home/ejy4bu/daphnia_algae/merge_fastq.sh"
+MAP_SCRIPT="/home/ejy4bu/daphnia_algae/map_bam_ShortReads.sh"
+
+chmod +x "$TRIM_SCRIPT"
+chmod +x "$MERGE_SCRIPT"
+chmod +x "$MAP_SCRIPT"
+
+mapfile -t FASTQ_FILES < <(find "$MY_DATA" -mindepth 2 -maxdepth 2 -name "*.fastq
+
 SAMPLES=("$MY_DATA"/*)
 
 SAMPLE_DIR="${SAMPLES[$SLURM_ARRAY_TASK_ID]}"
