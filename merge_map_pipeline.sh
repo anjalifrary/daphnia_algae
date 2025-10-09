@@ -10,7 +10,6 @@
 #SBATCH -e /scratch/ejy4bu/erroroutputs/pipe.%A_%a.err  # Standard error
 #SBATCH -p standard       # Partition
 #SBATCH --account=berglandlab
-#SBATCH --begin=now+1hour
 
 #ijob -A berglandlab -c10 -p standard --mem=100G
 
