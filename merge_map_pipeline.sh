@@ -23,7 +23,9 @@ MY_DATA="/scratch/ejy4bu/compBio/fastq/Old_Algae_fastq"
 # chmod +x "$MERGE_SCRIPT"
 # chmod +x "$MAP_SCRIPT"
 
-SAMPLES=$(ls -d ${MY_DATA}/*/)
+SAMPLES=($(ls -d ${MY_DATA}/*/))
+
+echo "Samples = ${SAMPLES}"
 
 SAMPLE_DIR="${SAMPLES[$SLURM_ARRAY_TASK_ID]}"
 samp_name=$(basename "$SAMPLE_DIR")
