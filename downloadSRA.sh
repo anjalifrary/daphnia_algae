@@ -64,7 +64,7 @@ else
   fasterq-dump \
   --split-files \
   --split-3 \
-  --output /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}/${sranum} \
+  -o /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}/${sranum} \
   -e 10 \
   -p \
   --temp /scratch/ejy4bu/tmp \
