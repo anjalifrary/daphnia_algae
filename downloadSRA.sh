@@ -84,7 +84,7 @@ if [ -f "/scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}" ]; then
   rm /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}
 fi
 
-if [ -f "/scratch/ejy4bu/compBio/sra/${sranum}.sra"]; then 
+if [ -f "/scratch/ejy4bu/compBio/sra/${sranum}.sra" ]; then 
   rm /scratch/ejy4bu/compBio/sra/${sranum}.sra
 fi
 #cat /home/ejy4bu/daphnia_algae/data/runs.csv | nl | grep "SRR12463313"
