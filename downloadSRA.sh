@@ -23,9 +23,11 @@ module load gcc/11.4.0 sratoolkit/3.1.1
 
 # SLURM_ARRAY_TASK_ID=1
 
-sranum=$( sed "${SLURM_ARRAY_TASK_ID}q;d" /project/berglandlab/anjali/metadata/algae_paths_anjali.csv | cut -f8 -d',' )
-sampName=$( sed "${SLURM_ARRAY_TASK_ID}q;d" /project/berglandlab/anjali/metadata/algae_paths_anjali.csv | cut -f8 -d',' )
-# proj=$( sed "${SLURM_ARRAY_TASK_ID}q;d" /project/berglandlab/anjali/metadata/algae_paths_anjali.csv | cut -f2 -d',' )
+CSV="/project/berglandlab/anjali/metadata/algae_paths_anjali.csv"
+
+sranum=$(tail -n +2 "$CSV" | sed "${SLURM_ARRAY_TASK_ID}q;d" | cut -f8 )
+sampName=$sranum
+# proj=$( sed "${SLURM_ARRAY_TASK_ID}q;d" "$CSV" | cut -f2 -d',' )
 
 echo $sampName " / " $sranum 
 # " / " $proj
@@ -62,7 +64,7 @@ else
   fasterq-dump \
   --split-files \
   --split-3 \
-  --outfile /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}/${sranum} \
+  --O /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}/${sranum} \
   -e 10 \
   -p \
   --temp /scratch/ejy4bu/tmp \
@@ -72,9 +74,9 @@ else
 
 fi
 
-if [ -f "/scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}_1.fastq" ]; then
-  gzip /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}_1.fastq
-  gzip /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}_2.fastq
+if [ -f "/scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}/${sranum}_1.fastq" ]; then
+  gzip /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}/${sranum}_1.fastq
+  gzip /scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}/${sranum}_2.fastq
 fi
 
 if [ -f "/scratch/ejy4bu/compBio/fastq/Old_Algae_fastq/${sranum}" ]; then
