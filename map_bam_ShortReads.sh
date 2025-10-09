@@ -63,7 +63,7 @@ fi
 echo "Processing sample : ${samp}"
 
 bwa mem -t 10 -K 100000000 -Y "$ref_path" "$forward" "$reverse" | \
-samtools view -uh -q 20 -F 0x100 | \
+samtools view -uh -q 20 | \
 samtools sort --threads 10 -o "$outbam/${samp}.sort.bam"
 
 samtools index "$outbam/${samp}.sort.bam"
@@ -72,3 +72,12 @@ echo "finished mapping $samp"
 
 # to make bam viewable as a sam file
 # samtools view -h /scratch/ejy4bu/compBio/bams/SRR14426881.sort.bam > /scratch/ejy4bu/compBio/bams/SRR14426881.sort.sam
+# samtools idxstats
+    # check for reads in * 0 (last line)
+    # sum values for total reads
+    # sum reads in top 14
+#pos and neg controls for chlorella
+
+#samtools make a pileup file 
+#turn that into vcf file
+# keep counts of alt depth and ref depth 
