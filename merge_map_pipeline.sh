@@ -36,10 +36,10 @@ TRIM_JOB=$(sbatch --parsable trim_fastq.sh "$SAMPLE_DIR")
 
 MERGE_JOB=$(sbatch --parsable --dependency=afterok:$TRIM_JOB merge_fastq.sh "$SAMPLE_DIR")
 
-MAP_JOB=$(sbatch --parsable --dependency=afterok:$MERGE_JOB map_bam_ShortReads.sh "$MY_DATA")
+#MAP_JOB=$(sbatch --parsable --dependency=afterok:$MERGE_JOB map_bam_ShortReads.sh "$MY_DATA")
 
 
 echo "Submitted jobs for $samp_name:"
 echo "  TRIM_JOB = $TRIM_JOB"
 echo "  MERGE_JOB = $MERGE_JOB"
-echo "  MAP_JOB = $MAP_JOB"
+#echo "  MAP_JOB = $MAP_JOB"

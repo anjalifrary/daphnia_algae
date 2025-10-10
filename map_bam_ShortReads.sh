@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #SBATCH -J makebams    # Job name
-#SBATCH --array=1-25
+#SBATCH --array=1-320
 #SBATCH --ntasks=1        # Single task per job
 #SBATCH --cpus-per-task=4 # Number of CPU cores per task
 #SBATCH -N 1              # Run on one node
@@ -27,8 +27,8 @@ module load samtools
 
 # Extract fields (assuming CSV format: sample_id,reference_path)
 ref_path=/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa
-infq="$1"
-#infq="/scratch/ejy4bu/compBio/Robert_samples"
+#infq="$1"
+infq="/scratch/ejy4bu/compBio/fastq/Old_Algae_fastq"
 
 # array of sample directories for parallelization
 #iterate through directories that contain the forward and reverse short read fastq files
