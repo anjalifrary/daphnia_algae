@@ -17,7 +17,7 @@
 
 #get sample from pipeline 
 sample_dir="$1"
-samp_name=$(basename"${sample_dir}")
+samp_name=$(basename ${sample_dir})
 
 if ls "$sample_dir"/*_1.P.trimm.fastq 1> /dev/null 2>&1; then
     echo "Merging all forward reads in $samp_name..."
