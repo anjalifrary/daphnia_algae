@@ -14,7 +14,7 @@ module load picard
 for bam in /scratch/ejy4bu/compBio/bams/*/*/*.sort.bam; do
     sample=$(basename $bam .sort.bam)
     outdir=$(dirname $bam)
-    picard MarkDuplicates \
+    java -jar $EBROOTPICARD/picard.jar MarkDuplicates \
         I=$bam \
         O=${outdir}/${sample}.dedup.bam \
         M=${outdir}/${sample}.dedup.metrics \
