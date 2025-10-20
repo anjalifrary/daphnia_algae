@@ -37,8 +37,9 @@ samtools mpileup -@ 10 \
     $bam_list | \
 java -jar $EBROOTVARSCAN/VarScan.v2.4.4.jar mpileup2snp \
     /dev/stdin \
-    --min-coverage 4 \
+    --min-coverage 2 \
     --min-var-freq 0.001 \
     --output-vcf > $out_vcf/${chr}.vcf
 
 
+# i changed the min coverage from 4 to 2 because my vcfs were empty
