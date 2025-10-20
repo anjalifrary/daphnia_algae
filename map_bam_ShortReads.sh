@@ -10,6 +10,7 @@
 #SBATCH -e /scratch/ejy4bu/erroroutputs/map.%A_%a.err  # Standard error
 #SBATCH -p standard       # Partition
 #SBATCH --account=berglandlab
+#SBATCH --begin=14:00
 
 #sbatch file.sh
 #Submitted batch job 3436256
