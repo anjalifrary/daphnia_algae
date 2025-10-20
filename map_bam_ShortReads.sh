@@ -34,7 +34,8 @@ infq="/scratch/ejy4bu/compBio/fastq/Old_Algae_fastq"
 #iterate through directories that contain the forward and reverse short read fastq files
 #map to reference genome (assembled reads)
 
-sample_folders=($(ls -d ${infq}/*/)) #Array to folder paths
+sample_folders=($(ls -d ${infq}/*)) #Array to folder paths
+SLURM_ARRAY_TASK_ID=150
 samp_dir="${sample_folders[$SLURM_ARRAY_TASK_ID-1]}"
 #samp_dir="/scratch/ejy4bu/compBio/Robert_samples/RobertUK_F1"
 samp=$(basename "${samp_dir}")
