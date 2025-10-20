@@ -4,8 +4,10 @@
 #SBATCH --error=/scratch/ejy4bu/erroroutputs/markdups_%j.err
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=16G
+#SBATCH --mem=50G
 #SBATCH --time=04:00:00
+#SBATCH -p standard
+#SBATCH --account berglandlab
 
 module load picard
 
