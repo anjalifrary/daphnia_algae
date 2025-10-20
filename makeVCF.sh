@@ -17,7 +17,7 @@ module load samtools varscan bcftools
 # sbatch --array=1-14 ~/daphnia_algae/makeVCF.sh
 
 bam_root=/scratch/ejy4bu/compBio/bams
-ref_fasta=/project/berglandlab/daphnia_ref/totalHiCwithallbestgapclosed.fa
+ref_fasta=/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa
 out_vcf=/scratch/ejy4bu/compBio/vcfs
 
 mkdir -p $out_vcf
