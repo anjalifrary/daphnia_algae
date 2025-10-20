@@ -15,7 +15,7 @@ mkdir -p /scratch/ejy4bu/erroroutputs/makeVCF
 module load samtools varscan bcftools
 
 # sbatch --array=1-12 ~/daphnia_algae/makeVCF.sh
-# 40646429
+# 4714402
 
 bam_root=/scratch/ejy4bu/compBio/bams
 ref_fasta=/project/berglandlab/daphnia_ref/totalHiCwithallbestgapclosed.fa
