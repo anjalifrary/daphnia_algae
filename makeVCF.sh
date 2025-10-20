@@ -14,8 +14,7 @@ mkdir -p /scratch/ejy4bu/erroroutputs/makeVCF
 
 module load samtools varscan bcftools
 
-# sbatch --array=1-12 ~/daphnia_algae/makeVCF.sh
-# 4714402
+# sbatch --array=1-14 ~/daphnia_algae/makeVCF.sh
 
 bam_root=/scratch/ejy4bu/compBio/bams
 ref_fasta=/project/berglandlab/daphnia_ref/totalHiCwithallbestgapclosed.fa
@@ -38,6 +37,9 @@ samtools mpileup -@ 10 \
     $bam_list | \
 java -jar $EBROOTVARSCAN/VarScan.v2.4.4.jar mpileup2snp \
     /dev/stdin \
-    --min-coverage 4 \
+    --min-coverage 1 \
     --min-var-freq 0.001 \
     --output-vcf > $out_vcf/${chr}.vcf
+
+
+# I lowered the min-coverage to 1 (originally 4) because my vcf files were coming up empty...
