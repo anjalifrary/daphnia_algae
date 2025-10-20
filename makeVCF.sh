@@ -26,15 +26,17 @@ mkdir -p $out_vcf
 chr=$(sed -n ${SLURM_ARRAY_TASK_ID}p /scratch/ejy4bu/compBio/genomefiles/ChrScaffoldList)
 echo $chr
 
-# Store BAM file list in a variable to maintain order
-bam_list=$(ls $bam_root/*/*/*.dedup.bam | sort)
-echo "Using ${#bam_list[@]} BAMs"
+ls $bam_root/*/*/*.dedup.bam > bam_list.txt
+
+# # Store BAM file list in a variable to maintain order
+# bam_list=$(ls $bam_root/*/*/*.dedup.bam | sort)
+# echo "Using ${#bam_list[@]} BAMs"
 
 # Generate VCF with VarScan
-samtools mpileup -@ 10 \
+samtools mpileup \
     -r ${chr} \
     --fasta-ref $ref_fasta \
-    "${bam_list[@]}"| \
+    -b bam_list.txt| \
 java -jar $EBROOTVARSCAN/VarScan.v2.4.4.jar mpileup2snp \
     /dev/stdin \
     --min-coverage 4 \
