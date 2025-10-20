@@ -34,10 +34,10 @@ echo "Using ${#bam_list[@]} BAMs"
 samtools mpileup -@ 10 \
     -r ${chr} \
     --fasta-ref $ref_fasta \
-    $bam_list | \
+    "${bam_list[@]}"| \
 java -jar $EBROOTVARSCAN/VarScan.v2.4.4.jar mpileup2snp \
     /dev/stdin \
-    --min-coverage 2 \
+    --min-coverage 4 \
     --min-var-freq 0.001 \
     --output-vcf > $out_vcf/${chr}.vcf
 
