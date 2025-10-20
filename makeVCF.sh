@@ -23,6 +23,10 @@ out_vcf=/scratch/ejy4bu/compBio/vcfs
 mkdir -p $out_vcf
 
 # Get the chromosome for the current SLURM task
+
+
+#SLURM_ARRAY_TASK_ID=1
+
 chr=$(sed -n ${SLURM_ARRAY_TASK_ID}p /scratch/ejy4bu/compBio/genomefiles/ChrScaffoldList)
 echo $chr
 
