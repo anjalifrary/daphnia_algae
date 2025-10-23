@@ -19,51 +19,78 @@
 
 ### this
 ### specify the bam file
-  fl <- system("ls -d /scratch/ejy4bu/compBio/bams/*/*/*.dedup.bam", intern=T)
-  fl <- fl[1:10]
-  length(fl)
-  ###/scratch/ejy4bu/compBio/bams/Robert_samples_bams/RobertUK_G9/RobertUK_G9.dedup.bam"
+  bam_files <- system("ls -d /scratch/ejy4bu/compBio/bams/*/*/*.dedup.bam", intern=T)
+  bam_files <- bam_files[1:10] #test a subset
+  message("Found ", length(bam_files), " BAM files")
+
+  # /scratch/ejy4bu/compBio/bams/Robert_samples_bams/RobertUK_G9/RobertUK_G9.dedup.bam"
+
+
+### Set chlorella scaffolds
+    chr <- c("SIDB01000001.1","SIDB01000002.1","SIDB01000003.1","SIDB01000004.1",
+    "SIDB01000005.1","SIDB01000006.1","SIDB01000007.1","SIDB01000008.1","SIDB01000009.1",
+    "SIDB01000010.1","SIDB01000011.1","SIDB01000012.1","SIDB01000013.1","SIDB01000014.1")
 
 ### How many reads map to each chromosome?
-  rd <- foreach(bamFile=fl, .combine="rbind")%dopar%{
-    ## bamFile=fl[1]
-
-    ### tell me what file we are working on
+    reads <- foreach(bamFile=bam_files, .combine="rbind")%dopar%{
       message("Processing: ", bamFile)
 
     ### get the information about number of reads for each chromosome
+
+    # ensure file exists
       if(!file.exists(paste(bamFile, ".bai", sep=""))) indexBam(bamFile)
+
+      # get total read counts
       stats <- as.data.table(idxstatsBam(bamFile))
-
-    ### we need to subset to the main autosomal arms of pulex
       setkey(stats, seqnames)
-      chr <- c("SIDB01000001.1","SIDB01000002.1","SIDB01000003.1","SIDB01000004.1",
-      "SIDB01000005.1","SIDB01000006.1","SIDB01000007.1","SIDB01000008.1","SIDB01000009.1",
-      "SIDB01000010.1","SIDB01000011.1","SIDB01000012.1","SIDB01000013.1","SIDB01000014.1")
-      stats_small <- stats[J(chr)]
-      stats_small[,species:="pulex"]
-      #stats_small[!grepl("sim", seqnames),species:="mel"]
 
-    ### this command aggregates the data. For each unique value of species, we calculate the total number of mapped reads.
-      stats_small.ag <- stats_small[,list(mapped=sum(mapped), seqlength=sum(seqlength)), list(species)]
 
-    ### format output
-      out <- data.table(
-        propPulex= stats_small.ag[species=="pulex"]$mapped/sum( stats_small.ag$mapped)
-      )
+    ### subset to chlorella scaffolds
+      stats_pulex <- stats[J(chr)]
+      #stats_pulex[,species:="pulex"]
 
+    ### get proportion of reads that mapped to chlorella
+      prop_pulex <- sum(stats_pulex$mapped)/sum(stats$mapped)
+
+    ### get sample ID
+      sample_id <- sub(".dedup.bam", "", basename(bamFile))
+
+    ### print data table
+      data.table(sampleID = sample_id, propPulex=prop_pulex)
+  }
+
+  ### write results to csv
+  out_dir <- "/scratch/ejy4bu/compBio/bam_analysis"
+  dir.create(out_dir)
+
+  out_file <- file.path(out_dir, "bam_pulex_reads.csv")
+
+  fwrite(reads, out_file)
+  message("wrote results to: ", out_file)
+
+  ### summary of results
+  summary(reads$propPulex)
+
+  ggplot(reads, aes(x=sampleID, y = propPulex * 100)) + geom_point()
+
+
+  #rd[,realProp:=nSim/(nSim+nMel)]
+  #rd
+  #summary(rd$propPulex)
+  #fwrite(rd, "/scratch/ejy4bu/compBio/bams/bam_reads_propPulex.csv")
+
+
+### DISCARDS
+
+### estimated vs real
+  #ggplot(data=rd, aes(x=realProp, y=propSim)) + geom_point()
+
+  
       #out[,nPulex:=as.numeric(tstrsplit(bamFile, "\\.")[[8]])]
       #out[,nMel:=as.numeric(tstrsplit(bamFile, "\\.")[[10]])]
       #out[,samp:=last(tstrsplit(bamFile, "/"))]
 
-    ### return output
-      return(out)
-  }
-  #rd[,realProp:=nSim/(nSim+nMel)]
-  rd
-  summary(rd$propPulex)
-  fwrite(rd, "/scratch/ejy4bu/compBio/bams/bam_reads_propPulex.csv")
+            #stats_small[!grepl("sim", seqnames),species:="mel"]
 
-
-### estimated vs real
-  #ggplot(data=rd, aes(x=realProp, y=propSim)) + geom_point()
+        ### this command aggregates the data. For each unique value of species, we calculate the total number of mapped reads.
+      # stats_small.ag <- stats_small[,list(mapped=sum(mapped), seqlength=sum(seqlength)), list(species)]

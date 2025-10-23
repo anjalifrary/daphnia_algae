@@ -37,7 +37,7 @@ ls $bam_root/*/*/*.dedup.bam > $bam_list
 
 # # Store BAM file list in a variable to maintain order
 # bam_list=$(ls $bam_root/*/*/*.dedup.bam | sort)
-echo "Using ${#bam_list[@]} BAMs"
+# echo "Using ${#bam_list[@]} BAMs"
 
 # Generate VCF with VarScan
 samtools mpileup \
