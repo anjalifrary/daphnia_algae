@@ -16,12 +16,10 @@
 
 ### this
 ### specify the bam file
-  fl <- system("ls -d /standard/BerglandTeach/data/Contamination_test/mapping_output/*/*.srt.flt.bam", intern=T)
-
-### collect bam files
-bam_files <- list.files(
-  path = "/scratch/ejy4bu/compBio/bams"
-)
+  fl <- system("ls -d /scratch/ejy4bu/compBio/bams/*/*/*.dedup.bam", intern=T)
+  fl <- fl[1]
+  length(fl)
+  ###/scratch/ejy4bu/compBio/bams/Robert_samples_bams/RobertUK_G9/RobertUK_G9.dedup.bam"
 
 ### How many reads map to each chromosome?
   rd <- foreach(bamFile=fl, .combine="rbind")%dopar%{
@@ -51,9 +49,9 @@ bam_files <- list.files(
         propPulex= stats_small.ag[species=="pulex"]$mapped/sum( stats_small.ag$mapped)
       )
 
-      out[,nPulex:=as.numeric(tstrsplit(bamFile, "\\.")[[8]])]
+      #out[,nPulex:=as.numeric(tstrsplit(bamFile, "\\.")[[8]])]
       #out[,nMel:=as.numeric(tstrsplit(bamFile, "\\.")[[10]])]
-      out[,samp:=last(tstrsplit(bamFile, "/"))]
+      #out[,samp:=last(tstrsplit(bamFile, "/"))]
 
     ### return output
       return(out)
