@@ -28,8 +28,8 @@ mkdir -p $out_vcf
 
 #SLURM_ARRAY_TASK_ID=1
 
-#chr="SIDB01000002.1"
-chr=$(sed -n "${SLURM_ARRAY_TASK_ID}p" $chr_list)
+chr="SIDB01000002.1"
+#chr=$(sed -n "${SLURM_ARRAY_TASK_ID}p" $chr_list)
 echo $chr
 
 bam_list="/scratch/ejy4bu/compBio/vcfs/bam_list.txt"
@@ -37,7 +37,7 @@ ls $bam_root/*/*/*.dedup.bam > $bam_list
 
 # # Store BAM file list in a variable to maintain order
 # bam_list=$(ls $bam_root/*/*/*.dedup.bam | sort)
-# echo "Using ${#bam_list[@]} BAMs"
+echo "Using ${#bam_list[@]} BAMs"
 
 # Generate VCF with VarScan
 samtools mpileup \

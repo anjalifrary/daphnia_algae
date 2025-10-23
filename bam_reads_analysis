@@ -1,4 +1,5 @@
 ### install a new package; you only need to do this once.
+  .libPaths("/sfs/gpfs/tardis/home/ejy4bu/R/goolf/4.5/")
   if (!require("BiocManager", quietly = TRUE))
       install.packages("BiocManager")
 
