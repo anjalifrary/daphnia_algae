@@ -59,9 +59,11 @@
       data.table(sampleID = sample_id, propPulex=prop_pulex)
   }
 
+  reads[, sampleID := factor(sampleID, levels = reads[order(-propPulex)]$sampleID)]
+
   ### write results to csv
   out_dir <- "/scratch/ejy4bu/compBio/bam_analysis"
-  dir.create(out_dir)
+  dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
   out_file <- file.path(out_dir, "bam_pulex_reads.csv")
 
