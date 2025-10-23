@@ -75,9 +75,9 @@
   plot_file <- "/scratch/ejy4bu/compBio/bam_analysis/bam_pulex_plot.pdf"
   pdf(plot_file, width=12, height=6)
   print(
-  ggplot(reads, aes(x=sampleID, y = propPulex * 100)) + geom_point() _ ylab("%Chlorella") + xlab("Sample ID")
+  ggplot(reads, aes(x=sampleID, y = propPulex * 100)) + geom_point() + ylab("%Chlorella") + xlab("Sample ID")
   )
-  
+
   dev.off()
 
   message("plotted data at: ", "/scratch/ejy4bu/compBio/bam_analysis/bam_pulex_plot.pdf")
