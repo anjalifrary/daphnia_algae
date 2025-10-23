@@ -35,7 +35,7 @@
       if(!file.exists(paste(bamFile, ".bai", sep=""))) indexBam(bamFile)
       stats <- as.data.table(idxstatsBam(bamFile))
 
-    ### we need to subset to the main autosomal arms of melanogaster and simulans
+    ### we need to subset to the main autosomal arms of pulex
       setkey(stats, seqnames)
       chr <- c("SIDB01000001.1","SIDB01000002.1","SIDB01000003.1","SIDB01000004.1",
       "SIDB01000005.1","SIDB01000006.1","SIDB01000007.1","SIDB01000008.1","SIDB01000009.1",
@@ -62,7 +62,7 @@
   #rd[,realProp:=nSim/(nSim+nMel)]
   rd
   summary(rd$propPulex)
-  fwrite(rd, "bam_reads_propPulex.csv")
+  fwrite(rd, "/scratch/ejy4bu/compBio/bams/bam_reads_propPulex.csv")
 
 
 ### estimated vs real
