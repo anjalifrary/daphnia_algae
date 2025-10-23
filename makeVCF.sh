@@ -42,7 +42,7 @@ ls $bam_root/*/*/*.dedup.bam > $bam_list
 samtools mpileup \
     -r ${chr} \
     --fasta-ref $ref_fasta \
-    -b bam_list.txt| \
+    -b $bam_list| \
 java -jar $EBROOTVARSCAN/VarScan.v2.4.4.jar mpileup2snp \
     /dev/stdin \
     --min-coverage 4 \
