@@ -31,7 +31,8 @@ mkdir -p $out_vcf
 chr=$(sed -n "${SLURM_ARRAY_TASK_ID}p" $chr_list)
 echo $chr
 
-ls $bam_root/*/*/*.dedup.bam > bam_list.txt
+bam_list="/scratch/ejy4bu/compBio/vcfs/bam_list.txt"
+ls $bam_root/*/*/*.dedup.bam > $bam_list
 
 # # Store BAM file list in a variable to maintain order
 # bam_list=$(ls $bam_root/*/*/*.dedup.bam | sort)
