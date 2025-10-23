@@ -20,7 +20,7 @@
 ### this
 ### specify the bam file
   bam_files <- system("ls -d /scratch/ejy4bu/compBio/bams/*/*/*.dedup.bam", intern=T)
-  bam_files <- bam_files[1:10] #test a subset
+  # bam_files <- bam_files[1:10] #test a subset
   message("Found ", length(bam_files), " BAM files")
 
   # /scratch/ejy4bu/compBio/bams/Robert_samples_bams/RobertUK_G9/RobertUK_G9.dedup.bam"
