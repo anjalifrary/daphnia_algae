@@ -9,19 +9,26 @@
   library(data.table)
   library(foreach)
   library(doMC)
-  registerDoMC(2)
+  registerDoMC(10)
   library(Rsamtools)
+
+### changed cores from 2 to 10
 
 ### this
 ### specify the bam file
   fl <- system("ls -d /standard/BerglandTeach/data/Contamination_test/mapping_output/*/*.srt.flt.bam", intern=T)
+
+### collect bam files
+bam_files <- list.files(
+  path = "/scratch/ejy4bu/compBio/bams"
+)
 
 ### How many reads map to each chromosome?
   rd <- foreach(bamFile=fl, .combine="rbind")%dopar%{
     ## bamFile=fl[1]
 
     ### tell me what file we are working on
-      message(bamFile)
+      message("Processing: ", bamFile)
 
     ### get the information about number of reads for each chromosome
       if(!file.exists(paste(bamFile, ".bai", sep=""))) indexBam(bamFile)
@@ -29,24 +36,31 @@
 
     ### we need to subset to the main autosomal arms of melanogaster and simulans
       setkey(stats, seqnames)
-      stats_small <- stats[J(c("2L", "2R", "3L", "3R", "X", "sim_2L", "sim_2R", "sim_3L", "sim_3R", "sim_X"))]
-      stats_small[grepl("sim", seqnames),species:="sim"]
-      stats_small[!grepl("sim", seqnames),species:="mel"]
+      chr <- c("SIDB01000001.1","SIDB01000002.1","SIDB01000003.1","SIDB01000004.1",
+      "SIDB01000005.1","SIDB01000006.1","SIDB01000007.1","SIDB01000008.1","SIDB01000009.1",
+      "SIDB01000010.1","SIDB01000011.1","SIDB01000012.1","SIDB01000013.1","SIDB01000014.1")
+      stats_small <- stats[J(chr)]
+      stats_small[,species:="pulex"]
+      #stats_small[!grepl("sim", seqnames),species:="mel"]
 
     ### this command aggregates the data. For each unique value of species, we calculate the total number of mapped reads.
       stats_small.ag <- stats_small[,list(mapped=sum(mapped), seqlength=sum(seqlength)), list(species)]
 
     ### format output
-      out <- data.table(propSim= stats_small.ag[species=="sim"]$mapped/sum( stats_small.ag$mapped))
+      out <- data.table(
+        propPulex= stats_small.ag[species=="pulex"]$mapped/sum( stats_small.ag$mapped)
+      )
 
-      out[,nSim:=as.numeric(tstrsplit(bamFile, "\\.")[[8]])]
-      out[,nMel:=as.numeric(tstrsplit(bamFile, "\\.")[[10]])]
+      out[,nPulex:=as.numeric(tstrsplit(bamFile, "\\.")[[8]])]
+      #out[,nMel:=as.numeric(tstrsplit(bamFile, "\\.")[[10]])]
       out[,samp:=last(tstrsplit(bamFile, "/"))]
 
     ### return output
       return(out)
   }
-  rd[,realProp:=nSim/(nSim+nMel)]
+  #rd[,realProp:=nSim/(nSim+nMel)]
+  rd
+  summary(rd$propPulex)
 
 ### estimated vs real
-  ggplot(data=rd, aes(x=realProp, y=propSim)) + geom_point()
+  #ggplot(data=rd, aes(x=realProp, y=propSim)) + geom_point()

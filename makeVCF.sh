@@ -28,6 +28,7 @@ mkdir -p $out_vcf
 
 #SLURM_ARRAY_TASK_ID=1
 
+#chr="SIDB01000002.1"
 chr=$(sed -n "${SLURM_ARRAY_TASK_ID}p" $chr_list)
 echo $chr
 
