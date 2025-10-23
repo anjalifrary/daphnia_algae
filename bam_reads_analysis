@@ -62,6 +62,8 @@
   #rd[,realProp:=nSim/(nSim+nMel)]
   rd
   summary(rd$propPulex)
+  fwrite(rd, "bam_reads_propPulex.csv")
+
 
 ### estimated vs real
   #ggplot(data=rd, aes(x=realProp, y=propSim)) + geom_point()
