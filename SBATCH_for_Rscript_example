@@ -1,0 +1,16 @@
+#!/bin/bash
+#SBATCH -J bam_analysis_bySample
+#SBATCH -n 1
+#SBATCH -t 0-10:00 # 10 hours
+#SBATCH --mem 100G
+#SBATCH -o /scratch/ejy4bu/ErrOuts/analyzeBams/bam_reads.%j.out # Standard output
+#SBATCH -e /scratch/ejy4bu/ErrOuts/analyzeBams/bam_reads%j.err # Standard error
+#SBATCH -p standard
+#SBATCH --account berglandlab
+
+module purge
+module load goolf R
+
+Rscript bam_reads_analysis.R
+
+#sbatch file.sh
