@@ -19,6 +19,7 @@ module load samtools varscan bcftools
 bam_root=/scratch/ejy4bu/compBio/bams
 ref_fasta=/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa
 out_vcf=/scratch/ejy4bu/compBio/vcfs
+chr_list=/scratch/ejy4bu/compBio/genomefiles/ChrScaffoldList
 
 mkdir -p $out_vcf
 
@@ -27,7 +28,7 @@ mkdir -p $out_vcf
 
 #SLURM_ARRAY_TASK_ID=1
 
-chr=$(sed -n ${SLURM_ARRAY_TASK_ID}p /scratch/ejy4bu/compBio/genomefiles/ChrScaffoldList)
+chr=$(sed -n "${SLURM_ARRAY_TASK_ID}p" $chr_list)
 echo $chr
 
 ls $bam_root/*/*/*.dedup.bam > bam_list.txt
