@@ -1,11 +1,11 @@
 ### install a new package; you only need to do this once.
-  .libPaths("/sfs/gpfs/tardis/home/ejy4bu/R/goolf/4.5/")
-  cat("R library paths:", .libPaths(), "\n")
+  #.libPaths("/sfs/gpfs/tardis/home/ejy4bu/R/goolf/4.5/")
+  #cat("R library paths:", .libPaths(), "\n")
   
   if (!require("BiocManager", quietly = TRUE))
       install.packages("BiocManager")
 
-  #BiocManager::install("Rsamtools")
+  BiocManager::install("Rsamtools")
 
 ### libraries
   library(ggplot2)
