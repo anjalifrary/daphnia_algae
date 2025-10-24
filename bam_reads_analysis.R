@@ -120,7 +120,7 @@
       ggtitle("Chlorella proportion by algae source") +
       ylab("%Chlorella") + 
       xlab("Sample ID") +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1, size=6)) +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1, size=8)) +
       scale_color_manual(values = c("REED_Sephadex" = "red", "REED_NotSephadex" = "cyan", "UTEX" = "blue"))
   )
   dev.off()
