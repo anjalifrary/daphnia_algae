@@ -14,7 +14,7 @@
 #ijob -A berglandlab -c10 -p standard --mem=100G
 
 
-MY_DATA="/scratch/ejy4bu/compBio/fastq/Old_Algae_fastq"
+MY_DATA="/scratch/ejy4bu/compBio/fastq/Sephadex_UK_samples"
 # TRIM_SCRIPT="/home/ejy4bu/daphnia_algae/trim_fastq.sh"
 # MERGE_SCRIPT="/home/ejy4bu/daphnia_algae/merge_fastq.sh"
 # MAP_SCRIPT="/home/ejy4bu/daphnia_algae/map_bam_ShortReads.sh"
