@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #SBATCH -J merge_pipeline_array    # Job name
-#SBATCH --array=0-320
+#SBATCH --array=0-25
 #SBATCH --ntasks=1        # Single task per job
 #SBATCH --cpus-per-task=10 # Number of CPU cores per task
 #SBATCH -N 1              # Run on one node
