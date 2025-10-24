@@ -69,8 +69,7 @@
   dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
 
-  ### create metadata csv table
-  out_metadata <- file.path(out_dir, "metadata.csv")
+  
 
   meta <- data.table(
     sampleID = reads$sampleID,
@@ -93,7 +92,8 @@
   meta[, algae_source := factor(algae_source, levels = c("REED", "UTEX"))]
   meta[, algae_group := factor(algae_group, levels = c("REED_NotSephadex", "REED_Sephadex", "UTEX"))]
 
-
+  ### create metadata csv table
+  out_metadata <- file.path(out_dir, "metadata.csv")
   fwrite(meta, out_metadata)
   message("Metadata written to: ", out_metadata)
 
@@ -111,7 +111,7 @@
 
   ### plot data
   plot_faceted <- "/scratch/ejy4bu/compBio/bam_analysis/bam_pulex_faceted_plot.pdf"
-  pdf(plot_faceted, width=12, height=6)
+  pdf(plot_faceted, width=40, height=10)
   print(
   ggplot(meta,
       aes(x=sampleID, y = propPulex, color = algae_group)) + 
@@ -120,7 +120,7 @@
       ggtitle("Chlorella proportion by algae source") +
       ylab("%Chlorella") + 
       xlab("Sample ID") +
-      #theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1, size=6)) +
       scale_color_manual(values = c("REED_Sephadex" = "red", "REED_NotSephadex" = "cyan", "UTEX" = "blue"))
   )
   dev.off()
