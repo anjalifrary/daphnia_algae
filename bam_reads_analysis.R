@@ -114,7 +114,7 @@
   ggplot(meta,
       aes(x=sampleID, y = propPulex, color = algae_group)) + 
       geom_point() + 
-      facet_wrap(~algae_source) +
+      #facet_wrap(~algae_source) +
       ggtitle("Chlorella proportion by algae source") +
       ylab("%Chlorella") + 
       xlab("Sample ID") +
@@ -131,7 +131,7 @@
     aes(x = algae_group, y = propPulex, fill = algae_group)) +
     geom_boxplot(alpha = 0.7, outlier.color = "black") +
     #geom_jitter(width = 0.2, alpha = 0.6, size = 2) +
-    facet_wrap(~ algae_source, scales = "free_x") +
+    #facet_wrap(~ algae_source, scales = "free_x") +
     ylab("% Chlorella") +
     xlab("Algae Source") +
     ggtitle("Distribution of % Chlorella by Algae Source") +
