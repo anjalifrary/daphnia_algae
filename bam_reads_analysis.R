@@ -59,16 +59,36 @@
       data.table(sampleID = sample_id, propPulex=prop_pulex)
   }
 
-  reads[, sampleID := factor(sampleID, levels = reads[order(-propPulex)]$sampleID)]
-
-  ### write results to csv
   out_dir <- "/scratch/ejy4bu/compBio/bam_analysis"
   dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
+
+  ### create metadata csv table
+  out_metadata <- file.path(out_dir, "metadata.csv")
+
+  meta <- data.table(
+    sampleID = reads$sampleID,
+    bam_path = bam_files,
+    algae_source = ifelse(grepl("Old_Algae_bams", bam_files, ignore.case = TRUE), "UTEX",
+                  ifelse(grepl("Robert_samples_bams", bam_files, ignore.case = TRUE), "REED",
+                  ifelse(grepl("Sephadex", bam_files, ignore.case = TRUE), "REED", NA))),
+    sephadex = ifelse(grepl("Old_Algae_bams", bam_files, ignore.case = TRUE), "N",
+                  ifelse(grepl("Robert_samples_bams", bam_files, ignore.case = TRUE), "N",
+                  ifelse(grepl("Sephadex", bam_files, ignore.case = TRUE), "Y", NA))),
+    percent_chlorella = reads$propPulex *100
+  )
+
+  fwrite(meta, out_metadata)
+  message("Metadata written to: ", out_metadata)
+
+  reads[, sampleID := factor(sampleID, levels = reads[order(-propPulex)]$sampleID)]
+
+  ### write results to csv
   out_file <- file.path(out_dir, "bam_pulex_reads.csv")
 
   fwrite(reads, out_file)
   message("wrote results to: ", out_file)
+
 
   ### summary of results
   summary(reads$propPulex)
@@ -83,6 +103,8 @@
   dev.off()
 
   message("plotted data at: ", "/scratch/ejy4bu/compBio/bam_analysis/bam_pulex_plot.pdf")
+
+
 
 
   #rd[,realProp:=nSim/(nSim+nMel)]
