@@ -1,5 +1,6 @@
 #ijob -A berglandlab -c2 -p standard --mem=40G
-#module load gcc/11.4.0  openmpi/4.1.4 icu R/4.3.1
+#export R_LIBS_USER="/sfs/gpfs/tardis/home/ejy4bu/R/goolf/4.5/"
+#module load gcc/11.4.0  openmpi/4.1.4 icu R/4.5.0
 #module load R/4.5.0
 #R
 
@@ -102,7 +103,11 @@
   plot_file <- "/scratch/ejy4bu/compBio/bam_analysis/bam_pulex_plot.pdf"
   pdf(plot_file, width=12, height=6)
   print(
-  ggplot(reads, aes(x=sampleID, y = propPulex * 100)) + geom_point() + ylab("%Chlorella") + xlab("Sample ID")
+  ggplot(reads, aes(x=sampleID, y = propPulex * 100)) + 
+      geom_point() + 
+      ylab("%Chlorella") + 
+      xlab("Sample ID") +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
   )
 
   dev.off()
