@@ -17,6 +17,7 @@ module load trimmomatic
 
 #for pipeline, get sample_dir from array
 sample_dir="$1"
+#sample_dir="/scratch/ejy4bu/compBio/fastq/Sephadex_UK_samples/RobertUK_A1"
 samp_name=$(basename "$sample_dir")
 
 for forward in "$sample_dir"/*_1.fq.gz; do
@@ -30,7 +31,7 @@ for forward in "$sample_dir"/*_1.fq.gz; do
 
     echo "Processing lane: ${lane_name}"
 
-    java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.39.jar PE -threads 10 \
+    java -jar $EBROOTTRIMMOMATIC/trimmomatic-*.jar PE -threads 10 \
         ${lane_name}_1.fq.gz \
         ${lane_name}_2.fq.gz \
         ${lane_name}_1.P.trimm.fastq \
