@@ -81,14 +81,16 @@
     sephadex = ifelse(grepl("Old_Algae_bams", bam_files, ignore.case = TRUE), "N",
                   ifelse(grepl("Robert_samples_bams", bam_files, ignore.case = TRUE), "N",
                   ifelse(grepl("Sephadex", bam_files, ignore.case = TRUE), "Y", NA))),
-    algae_group = ifelse(algae_source=="REED" & sephadex=="N", "REED_NotSephadex",
-                  ifelse(algae_source=="REED" & sephadex=="Y", "REED_Sephadex",
-                  ifelse(algae_source=="UTEX", "UTEX"))),
     propPulex = reads$propPulex *100
   )
 
 #convert algae_source to factor for plotting by color
-  #meta[, algae_source := factor(algae_source, levels = c("REED", "UTEX"))]
+  meta[, algae_group := ifelse(algae_source=="REED" & sephadex=="N", "REED_NotSephadex",
+                        ifelse(algae_source=="REED" & sephadex=="Y", "REED_Sephadex",
+                        ifelse(algae_source=="UTEX", "UTEX", 
+                        NA)))]
+
+  meta[, algae_source := factor(algae_source, levels = c("REED", "UTEX"))]
   meta[, algae_group := factor(algae_group, levels = c("REED_NotSephadex", "REED_Sephadex", "UTEX"))]
 
 
