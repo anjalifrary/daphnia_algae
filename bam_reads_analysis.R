@@ -81,6 +81,9 @@
     sephadex = ifelse(grepl("Old_Algae_bams", bam_files, ignore.case = TRUE), "N",
                   ifelse(grepl("Robert_samples_bams", bam_files, ignore.case = TRUE), "N",
                   ifelse(grepl("Sephadex", bam_files, ignore.case = TRUE), "Y", NA))),
+    algae_group = ifelse(algae_source=="REED" & sephadex=="N", "REED_NotSephadex",
+                  ifelse(algae_source=="REED" & sephadex=="Y", "REED_Sephadex",
+                  ifelse(algae_source=="UTEX", "UTEX"))
     propPulex = reads$propPulex *100
   )
 
@@ -107,14 +110,14 @@
   pdf(plot_faceted, width=12, height=6)
   print(
   ggplot(meta,
-      aes(x=sampleID, y = propPulex, color = algae_source)) + 
+      aes(x=sampleID, y = propPulex, color = algae_group)) + 
       geom_point() + 
       facet_wrap(~algae_source) +
       ggtitle("Chlorella proportion by algae source") +
       ylab("%Chlorella") + 
       xlab("Sample ID") +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-      scale_color_manual(values = c("REED" = "red", "UTEX" = "blue"))
+      #theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+      scale_color_manual(values = c("REED_Sephadex" = "red", "REED_NotSephadex" = "cyan", "UTEX" = "blue"))
   )
   dev.off()
 
@@ -123,7 +126,7 @@
   pdf(plot_box, width=12, height=6)
   print(
     ggplot(meta,
-    aes(x = algae_source, y = propPulex, fill = algae_source)) +
+    aes(x = algae_group, y = propPulex, fill = algae_group)) +
     geom_boxplot(alpha = 0.7, outlier.color = "black") +
     #geom_jitter(width = 0.2, alpha = 0.6, size = 2) +
     facet_wrap(~ algae_source, scales = "free_x") +
@@ -132,7 +135,7 @@
     ggtitle("Distribution of % Chlorella by Algae Source") +
     theme_bw()+
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-    scale_fill_manual(values = c("REED" = "red", "UTEX" = "blue"))
+    scale_fill_manual(values = c("REED_Sephadex" = "red", "REED_NotSephadex" = "cyan", "UTEX" = "blue"))
   )
   dev.off()
 
