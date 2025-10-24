@@ -89,6 +89,8 @@
 
 #convert algae_source to factor for plotting by color
   meta[, algae_source := factor(algae_source, levels = c("REED", "UTEX"))]
+  meta[, algae_group := factor(algae_source, levels = c("REED_NotSephadex", "REED_Sephadex", "UTEX"))]
+
 
   fwrite(meta, out_metadata)
   message("Metadata written to: ", out_metadata)
