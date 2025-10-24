@@ -8,7 +8,7 @@
 #SBATCH --time=04:00:00
 #SBATCH -p standard
 #SBATCH --account berglandlab
-#SBATCH --array=1-320%20
+#SBATCH --array=1-400%20
 
 module load picard
 

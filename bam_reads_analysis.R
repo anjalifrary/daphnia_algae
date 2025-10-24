@@ -1,5 +1,6 @@
 #ijob -A berglandlab -c2 -p standard --mem=40G
 #module load gcc/11.4.0  openmpi/4.1.4 icu R/4.3.1
+#module load R/4.5.0
 #R
 
 ### install a new package; you only need to do this once.
