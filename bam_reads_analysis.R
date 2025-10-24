@@ -83,7 +83,7 @@
                   ifelse(grepl("Sephadex", bam_files, ignore.case = TRUE), "Y", NA))),
     algae_group = ifelse(algae_source=="REED" & sephadex=="N", "REED_NotSephadex",
                   ifelse(algae_source=="REED" & sephadex=="Y", "REED_Sephadex",
-                  ifelse(algae_source=="UTEX", "UTEX"))
+                  ifelse(algae_source=="UTEX", "UTEX")))
     propPulex = reads$propPulex *100
   )
 
