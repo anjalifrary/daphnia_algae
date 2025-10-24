@@ -81,7 +81,7 @@
     sephadex = ifelse(grepl("Old_Algae_bams", bam_files, ignore.case = TRUE), "N",
                   ifelse(grepl("Robert_samples_bams", bam_files, ignore.case = TRUE), "N",
                   ifelse(grepl("Sephadex", bam_files, ignore.case = TRUE), "Y", NA))),
-    percent_chlorella = reads$propPulex *100
+    propPulex = reads$propPulex *100
   )
 
   fwrite(meta, out_metadata)
