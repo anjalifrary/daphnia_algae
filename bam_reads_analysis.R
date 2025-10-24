@@ -104,7 +104,7 @@
   pdf(plot_faceted, width=12, height=6)
   print(
   ggplot(meta,
-      aes(x=sampleID, y = propPulex * 100, color = algae_source) + 
+      aes(x=sampleID, y = propPulex * 100, color = algae_source)) + 
       geom_point() + 
       facet_wrap(~algae_source) +
       ggtitle("Chlorella proportion by algae source") +
@@ -112,7 +112,7 @@
       xlab("Sample ID") +
       theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
       scale_color_manual(values = c("REED" = "red", "UTEX" = "blue"))
-  ))
+  )
   dev.off()
 
   ### box plot
@@ -120,7 +120,7 @@
   pdf(plot_box, width=12, height=6)
   print(
     ggplot(meta,
-    aes(x = algae_source, y = percent_chlorella, fill = algae_source) +
+    aes(x = algae_source, y = percent_chlorella, fill = algae_source)) +
     geom_boxplot(alpha = 0.7, outlier.color = "black") +
     #geom_jitter(width = 0.2, alpha = 0.6, size = 2) +
     facet_wrap(~ algae_source, scales = "free_x") +
@@ -130,7 +130,6 @@
     theme_bw()+
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
     scale_color_manual(values = c("REED" = "red", "UTEX" = "blue"))
-    )
   )
 
 
