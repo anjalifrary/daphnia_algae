@@ -84,6 +84,9 @@
     propPulex = reads$propPulex *100
   )
 
+#convert algae_source to factor for plotting by color
+  meta[, algae_source := factor(algae_source, levels = c("REED", "UTEX"))]
+
   fwrite(meta, out_metadata)
   message("Metadata written to: ", out_metadata)
 
@@ -129,7 +132,7 @@
     ggtitle("Distribution of % Chlorella by Algae Source") +
     theme_bw()+
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-    scale_color_manual(values = c("REED" = "red", "UTEX" = "blue"))
+    scale_fill_manual(values = c("REED" = "red", "UTEX" = "blue"))
   )
 
 
