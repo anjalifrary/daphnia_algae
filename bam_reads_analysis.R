@@ -90,7 +90,7 @@
   fwrite(meta, out_metadata)
   message("Metadata written to: ", out_metadata)
 
-  reads[, sampleID := factor(sampleID, levels = reads[order(-propPulex)]$sampleID)]
+  meta[, sampleID := factor(sampleID, levels = meta[order(-propPulex)]$sampleID)]
 
   ### write results to csv
   out_file <- file.path(out_dir, "bam_pulex_reads.csv")
