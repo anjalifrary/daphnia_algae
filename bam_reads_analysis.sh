@@ -1,21 +1,38 @@
-OUTFILE=/scratch/ejy4bu/compBio/bam_analysis/bam_mapping_summary.txt
+#!/bin/bash
+
+BAM_DIR="/scratch/ejy4bu/compBio/bams"
+
+CHLORELLA_LIST="/scratch/ejy4bu/compBio/genomefiles/ChrScaffoldList"
+
+OUTFILE="/scratch/ejy4bu/compBio/bam_analysis/bam_mapping_summary.txt"
 mkdir -p $OUTFILE
 
-for bam in /scratch/ejy4bu/compBio/bams/*/*/*.dedup.bam; do
+
+# Write header to output
+echo -e "Sample\tTotalReads\tMappedReads\tChlorellaReads\tPctChlorella" > "$OUTPUT"
+
+# Loop over all deduplicated BAMs
+for bam in "$BAM_DIR"/*/*/*.dedup.bam; do
     sample=$(basename "$bam" .dedup.bam)
     
-    # Total reads
+    # Total reads (mapped + unmapped)
     total=$(samtools idxstats "$bam" | awk '{sum+=$3+$4} END {print sum}')
     
     # Total mapped reads
     mapped=$(samtools idxstats "$bam" | awk '{sum+=$3} END {print sum}')
     
-    # Mapped reads on Chlorella scaffolds
-    chlorella=$(samtools idxstats "$bam" | grep -F -f chr_list.txt | awk '{sum+=$3} END {print sum}')
+    # Reads mapped to Chlorella scaffolds
+    chlorella=$(samtools idxstats "$bam" | grep -F -f "$CHLORELLA_LIST" | awk '{sum+=$3} END {print sum}')
     
-    # % mapped to Chlorella
-    pct=$(awk -v c="$chlorella" -v m="$mapped" 'BEGIN {if(m>0) print (c/m)*100; else print 0}')
+    # Percentage of mapped reads assigned to Chlorella
+    if [ "$mapped" -gt 0 ]; then
+        pct=$(awk -v c="$chlorella" -v m="$mapped" 'BEGIN {printf "%.2f", (c/m)*100}')
+    else
+        pct=0
+    fi
     
-    # Print results
-    echo -e "${sample}\t${total}\t${mapped}\t${chlorella}\t${pct}"
-done > $OUTFILE
+    # Append results to output file
+    echo -e "${sample}\t${total}\t${mapped}\t${chlorella}\t${pct}" >> "$OUTFILE"
+done
+
+echo "Summary written to $OUTFILE"
