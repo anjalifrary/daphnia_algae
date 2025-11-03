@@ -24,7 +24,7 @@ chr <- c("SIDB01000001.1","SIDB01000002.1","SIDB01000003.1","SIDB01000004.1",
     "SIDB01000010.1","SIDB01000011.1","SIDB01000012.1","SIDB01000013.1","SIDB01000014.1")
 
 # get chromosome lengths from scaffold file
-chrom_lengths <- fread("/scratch/ejy4bu/compBio/genome_files/scaffold_lengths.txt",
+chrom_lengths <- fread("/scratch/ejy4bu/compBio/genomefiles/scaffold_lengths.txt",
                        col.names = c("chr_names", "chr_lengths"))
 setkey(chrom_lengths, chr_names)
 
