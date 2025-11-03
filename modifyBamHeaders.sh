@@ -27,7 +27,7 @@ for f in $(find "$bam_root" -type f -name "*.dedup.bam"); do
 
     if [ $? -eq 0 ]; then
         mv "$tmp" "$f"
-        samtools index -f "$f"
+        samtools index "$f"
     else
         echo "❌ Failed on $f"
         rm -f "$tmp"
