@@ -29,7 +29,12 @@ for f in $(find "$bam_root" -type f -name "*.dedup.bam"); do
         mv "$tmp" "$f"
         samtools index "$f"
     else
-        echo "❌ Failed on $f"
+        echo "Failed on $f"
         rm -f "$tmp"
     fi
 done
+
+# # extract chromosome lengths
+# genome_lengths="/scratch/ejy4bu/compBio/genome_files/scaffold_lengths.txt"
+# samtools faidx /project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa
+# cut -f1,2 /project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa.fai > "$genome_lengths"
