@@ -39,6 +39,10 @@ ls $bam_root/*/*/*.dedup.bam > $bam_list
 # bam_list=$(ls $bam_root/*/*/*.dedup.bam | sort)
 # echo "Using ${#bam_list[@]} BAMs"
 
+# make sure sample names are specified
+    # flag in bam file stores sample name, make sure it is passed to vcf
+    # see how mpileup or varscan work
+
 # Generate VCF with VarScan
 samtools mpileup \
     -r ${chr} \

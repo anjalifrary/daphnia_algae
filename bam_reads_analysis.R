@@ -57,6 +57,7 @@
 
     ### get proportion of reads that mapped to chlorella
       prop_pulex <- sum(stats_pulex$mapped)/sum(stats$mapped)
+      # calculate total reads, mapped reads should be equal 
 
     ### get sample ID
       sample_id <- sub(".dedup.bam", "", basename(bamFile))
@@ -141,8 +142,7 @@
   )
   dev.off()
 
-
-
+  # calculate expected coverage 
 
   #rd[,realProp:=nSim/(nSim+nMel)]
   #rd
