@@ -38,3 +38,8 @@ done
 # genome_lengths="/scratch/ejy4bu/compBio/genome_files/scaffold_lengths.txt"
 # samtools faidx /project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa
 # cut -f1,2 /project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa.fai > "$genome_lengths"
+
+for bam in /scratch/ejy4bu/compBio/bams/*/*/*.dedup.bam; do     
+    echo "Indexing $bam";     
+    samtools index -@ 4 "$bam"; 
+done
