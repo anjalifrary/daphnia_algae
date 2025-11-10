@@ -68,16 +68,17 @@ fwrite(coverage, out_file)
 message("Coverage table written to: ", out_file)
 
 # generate coverage plot 
-coverage[, chr_names := factor(chr_names, levels=chr)] # order scaffold names
+coverage_avg <- coverage[, .(coverage=mean(coverage)), by = chr_names]
+coverage_avg[, chr_names := factor(chr_names, levels=chr)] # order scaffold names
 
-coverage_plot <- file.path(out_dir, "bam_coverage_plot.pdf")
-  pdf(coverage_plot, width=40, height=10)
+coverage_avg <- file.path(out_dir, "avg_coverage_per_chromosome.pdf")
+  pdf(coverage_avg, width=40, height=10)
   print(
   ggplot(coverage, aes(x=chr_names, y = coverage)) + 
       geom_bar(stat="identity") +
-      ylab("Coverage") + 
+      ylab("Average Coverage") + 
       xlab("Scaffold") +
       theme(axis.text.x = element_text(angle = 45, hjust = 1, size=12))
 )
   dev.off()
-message("Coverage plot written to: ", coverage_plot)
+message("Coverage plot written to: ", coverage_avg)
