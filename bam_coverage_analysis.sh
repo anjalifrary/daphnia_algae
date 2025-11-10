@@ -28,18 +28,20 @@ out_dir="/scratch/ejy4bu/compBio/bam_analysis/coverage"
 mkdir -p "$out_dir"
 
 #bam="/scratch/ejy4bu/compBio/bams/Robert_samples_bams/RobertUK_F1/RobertUK_F1.dedup.bam"
+#bam="/scratch/ejy4bu/compBio/bams/Old_Algae_bams/SRR14370481/SRR14370481.dedup.bam"
 
 for bam in "$bam_dir"/*/*/*.dedup.bam; do
+    group=$(basename "${bam%/*/*}")
     sample=$(basename "$bam" .dedup.bam)
-    mkdir -p "$out_dir/${sample}"
-    out_file="$out_dir/${sample}/${sample}_500bp.tsv"
+    mkdir -p "$out_dir/${group}/${sample}"
+    out_file="$out_dir/${group}/${sample}/${sample}_500bp.tsv"
 
     echo -e "chrom\tstart\tend\tmean_depth" > "$out_file"
     echo "Processing $sample..."
 
     bedtools coverage -a "$windows_500" -b "$bam" -mean >> "$out_file"
 
-    tr '\t' ',' < "$out_file" > "$out_dir/${sample}/${sample}_500bp.csv"
+    tr '\t' ',' < "$out_file" > "$out_dir/${group}/${sample}/${sample}_500bp.csv"
 done
 
 
