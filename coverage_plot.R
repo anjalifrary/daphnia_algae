@@ -68,6 +68,7 @@ fwrite(coverage, out_file)
 message("Coverage table written to: ", out_file)
 
 # generate coverage plot 
+coverage[, coverage := as.numeric(coverage)]
 coverage_avg <- coverage[, .(coverage=mean(coverage)), by = chr_names]
 coverage_avg[, chr_names := factor(chr_names, levels=chr)] # order scaffold names
 
