@@ -11,35 +11,48 @@
 
 mkdir -p /scratch/ejy4bu/erroroutputs/bam_analysis
 
-module load samtools
+#module load samtools
 module load bedtools
 
-### 1. get coverage counts
-
 #https://www.htslib.org/doc/samtools-depth.html
-
-# samtools depth -flags in_bam.bam 
-
 # https://www.htslib.org/doc/samtools-coverage.html
 
-chr_list="/scratch/ejy4bu/compBio/genomefiles/ChrScaffoldList.txt"
-bam="/scratch/ejy4bu/compBio/bams/Robert_samples_bams/RobertUK_F1/RobertUK_F1.dedup.bam"
-out_file="/scratch/ejy4bu/compBio/bam_analysis/chr1_depth.tsv"
+# make windows once:
+# head -n 14 /scratch/ejy4bu/compBio/genomefiles/scaffold_lengths.txt > /scratch/ejy4bu/compBio/genomefiles/chr1-14_names_and_lengths.txt
+# chr_list="/scratch/ejy4bu/compBio/genomefiles/chr1-14_names_and_lengths.txt"
+# bedtools makewindows -g "$chr_list" -w 500 > /scratch/ejy4bu/compBio/genomefiles/windows_500bp.bed
+windows_500="/scratch/ejy4bu/compBio/genomefiles/windows_500bp.bed"
 
-echo -e "chrom\pos\depth" > "$out_file"
-samtools depth -r SIDB01000001.1 $bam >> $out_file
+bam_dir="/scratch/ejy4bu/compBio/bams"
+out_dir="/scratch/ejy4bu/compBio/bam_analysis/coverage"
+mkdir -p "$out_dir"
+
+#bam="/scratch/ejy4bu/compBio/bams/Robert_samples_bams/RobertUK_F1/RobertUK_F1.dedup.bam"
+
+for bam in "$bam_dir"/*/*/*.dedup.bam; do
+    sample=$(basename "$bam" .dedup.bam)
+    mkdir -p "$out_dir/${sample}"
+    out_file="$out_dir/${sample}/${sample}_500bp.tsv"
+
+    echo -e "chrom\tstart\tend\tmean_depth" > "$out_file"
+    echo "Processing $sample..."
+
+    bedtools coverage -a "$windows_500" -b "$bam" -mean >> "$out_file"
+
+    tr '\t' ',' < "$out_file" > "$out_dir/${sample}/${sample}_500bp.csv"
+done
 
 
+### generates read for each base pair
 
-while read -r chr; do
-    echo "Processing $chr..."
-    samtools depth -r "$chr" "$bam" >> "$out_file"
-done < $chr_list
+# echo -e "chrom\pos\depth" > "$out_file"
 
-tr '\t' ',' < /scratch/ejy4bu/compBio/bam_analysis/chr1_depth.tsv > /scratch/ejy4bu/compBio/bam_analysis/chr1_depth.csv
-rm -f $outfile
+# while read -r chr; do
+#     echo "Processing $chr..."
+#     samtools depth -r "$chr" "$bam" >> "$out_file"
+# done < $chr_list
+
+# tr '\t' ',' < /scratch/ejy4bu/compBio/bam_analysis/chr1_depth.tsv > /scratch/ejy4bu/compBio/bam_analysis/chr1_depth.csv
+# rm -f $outfile
 
 
-### 2. normalize coverage, using R
-
-### 3. 
