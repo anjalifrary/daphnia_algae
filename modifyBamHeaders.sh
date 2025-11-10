@@ -43,3 +43,6 @@ for bam in /scratch/ejy4bu/compBio/bams/*/*/*.dedup.bam; do
     echo "Indexing $bam";     
     samtools index -@ 4 "$bam"; 
 done
+
+for file in /scratch/ejy4bu/compBio/vcfs/*.vcf; do
+    cp file /project/berglandlab/chlorella_sequencing/

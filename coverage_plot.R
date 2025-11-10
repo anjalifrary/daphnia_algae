@@ -77,6 +77,7 @@ coverage_plot <- file.path(out_dir, "bam_coverage_plot.pdf")
       geom_bar(stat="identity") +
       ylab("Coverage") + 
       xlab("Scaffold") +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1, size=8))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1, size=12))
 )
   dev.off()
+message("Coverage plot written to: ", coverage_plot)
