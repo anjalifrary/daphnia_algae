@@ -73,7 +73,7 @@ coverage_avg <- coverage[, .(coverage=mean(coverage)), by = chr_names]
 coverage_avg[, chr_names := factor(chr_names, levels=chr)] # order scaffold names
 
 coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome.pdf")
-  pdf(coverage_plot, width=40, height=10)
+  pdf(coverage_plot, width=20, height=10)
   print(
   ggplot(coverage_avg, aes(x=chr_names, y = coverage)) + 
       geom_bar(stat="identity") +
