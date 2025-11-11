@@ -82,4 +82,23 @@ coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome.pdf")
       theme(axis.text.x = element_text(angle = 45, hjust = 1, size=12))
 )
   dev.off()
-message("Coverage plot written to: ", coverage_plot)
+message("Chromosomal coverage plot written to: ", coverage_plot)
+
+
+### coverage plot for genome wide depth
+genome_avg <- coverage[, .(avg_coverage = mean(coverage)), by = sampleID]
+genome_plot <- file.path(out_dir, "avg_coverage_across_genome.pdf")
+pdf(genome_plot, width=20, height=10)
+print(
+  ggplot(genome_avg, aes(x=sampleID, y=coverage)) + 
+  geom_bar(stat="identity") + 
+  ylab("Mean Coverage") + 
+  xlab("Sample Name") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10))
+)
+dev.off()
+message("Genome wide coverage plot written to: ", genome_plot)
+
+
+### coverage plot for each sample's mean depth
+chr_sample_avg
