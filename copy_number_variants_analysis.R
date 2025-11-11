@@ -10,7 +10,7 @@ library(foreach)
 library(doMC)
 registerDoMC(10)
 
-out_dir <- "/scratch/ejy4bu/compBio/bam_analysis/coverage_data"
+out_dir <- "/scratch/ejy4bu/compBio/bam_analysis/coverage_plots"
 metadata_file <- "/scratch/ejy4bu/compBio/bam_analysis/metadata.csv"
 
 meta <- fread(metadata_file)
@@ -28,8 +28,6 @@ coverage <- merge(coverage, meta[, .(sampleID, algae_group, algae_source, propPu
 setorder(coverage, algae_group, sampleID)
 coverage[, sampleID := factor(sampleID, levels = unique(sampleID))]
 coverage[, norm_depth := mean_depth / mean(mean_depth), by = sampleID]
-
-
 
 ### plot genome wide
 
@@ -55,16 +53,20 @@ for(chr in chr_list){
   chr_data <- coverage[chrom == chr]
   
   # Create numeric x-axis along the chromosome (window index)
-    setorder(chr_data, start)
-    chr_data[, window_idx := 1:.N, by = sampleID]
-  
-  p <- ggplot(chr_data, aes(x = window_idx, y = norm_depth, color = algae_group, group = sampleID)) +
+  setorder(chr_data, start)
+  chr_data[, window_mid := (start + end)/2]    
+
+  chr_plot <- file.path(out_dir, paste0("Coverage_", chr_plot, ".pdf"))
+  pdf(chr_plot, width=20, height=10)
+  print(ggplot(chr_data, aes(x = window_mid, y = norm_depth, color = algae_group, group = sampleID)) +
     geom_line() +
+    geom_smooth(se=FALSE, span=0.1)+
     theme_bw() +
-    labs(x = "Window", y = "Mean Depth", title = paste0("Coverage across ", chr)) +
+    labs(x = "Genome position", 
+            y = "Normalized Coverage",
+            title = paste0("Normalized Coverage across ", chr)) +
     scale_color_manual(values = c("REED_Sephadex"="brown3",
                                   "REED_NotSephadex"="cyan3",
                                   "UTEX"="dodgerblue3"))
-  
-  ggsave(file.path(out_dir, paste0("coverage_", chr, ".pdf")), p, width = 20, height = 10)
+  )
 }
