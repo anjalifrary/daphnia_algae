@@ -21,6 +21,7 @@ module load bedtools
 head -n 14 /scratch/ejy4bu/compBio/genomefiles/scaffold_lengths.txt > /scratch/ejy4bu/compBio/genomefiles/chr1-14_names_and_lengths.txt
 chr_list="/scratch/ejy4bu/compBio/genomefiles/chr1-14_names_and_lengths.txt"
 bedtools makewindows -g "$chr_list" -w 5000 > /scratch/ejy4bu/compBio/genomefiles/windows_5000bp.bed
+bedtools makewindows -g "$chr_list" -w 10000 > /scratch/ejy4bu/compBio/genomefiles/windows_10000bp.bed
 windows="/scratch/ejy4bu/compBio/genomefiles/windows_5000bp.bed"
 
 bam_dir="/scratch/ejy4bu/compBio/bams"
@@ -34,14 +35,14 @@ for bam in "$bam_dir"/*/*/*.dedup.bam; do
     group=$(basename "${bam%/*/*}")
     sample=$(basename "$bam" .dedup.bam)
     mkdir -p "$out_dir/${group}/${sample}"
-    out_file="$out_dir/${group}/${sample}/${sample}_500bp.tsv"
+    out_file="$out_dir/${group}/${sample}/${sample}_5000bp.tsv"
 
     echo -e "chrom\tstart\tend\tmean_depth" > "$out_file"
     echo "Processing $sample..."
 
     bedtools coverage -a "$windows" -b "$bam" -mean >> "$out_file"
 
-    tr '\t' ',' < "$out_file" > "$out_dir/${group}/${sample}/${sample}_500bp.csv"
+    tr '\t' ',' < "$out_file" > "$out_dir/${group}/${sample}/${sample}_5000bp.csv"
 done
 
 
