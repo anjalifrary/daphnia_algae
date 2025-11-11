@@ -26,6 +26,10 @@ coverage <- rbindlist(lapply(coverage_files, function(f) {
   return(dt)
 }), use.names = TRUE, fill = TRUE)
 
+csv_ids <- unique(sapply(coverage_files, function(f) sub("_10000bp\\.csv$", "", basename(f))))
+meta_ids <- unique(meta$sampleID)
+setdiff(csv_ids, meta_ids)
+
 coverage <- merge(coverage, meta[, .(sampleID, algae_group, algae_source, propPulex)], by = "sampleID", all.x = TRUE)
 
 setorder(coverage, algae_group, sampleID)
