@@ -11,6 +11,8 @@ library(doMC)
 registerDoMC(10)
 
 out_dir <- "/scratch/ejy4bu/compBio/bam_analysis/coverage_plots/copy_number_variants"
+dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
+
 in_dir <- "/scratch/ejy4bu/compBio/bam_analysis/coverage_data"
 metadata_file <- "/scratch/ejy4bu/compBio/bam_analysis/metadata.csv"
 
