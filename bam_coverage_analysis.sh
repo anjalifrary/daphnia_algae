@@ -18,11 +18,11 @@ module load bedtools
 # https://www.htslib.org/doc/samtools-coverage.html
 
 # make windows once:
-head -n 14 /scratch/ejy4bu/compBio/genomefiles/scaffold_lengths.txt > /scratch/ejy4bu/compBio/genomefiles/chr1-14_names_and_lengths.txt
-chr_list="/scratch/ejy4bu/compBio/genomefiles/chr1-14_names_and_lengths.txt"
-bedtools makewindows -g "$chr_list" -w 5000 > /scratch/ejy4bu/compBio/genomefiles/windows_5000bp.bed
+# head -n 14 /scratch/ejy4bu/compBio/genomefiles/scaffold_lengths.txt > /scratch/ejy4bu/compBio/genomefiles/chr1-14_names_and_lengths.txt
+# chr_list="/scratch/ejy4bu/compBio/genomefiles/chr1-14_names_and_lengths.txt"
+# bedtools makewindows -g "$chr_list" -w 5000 > /scratch/ejy4bu/compBio/genomefiles/windows_5000bp.bed
 bedtools makewindows -g "$chr_list" -w 10000 > /scratch/ejy4bu/compBio/genomefiles/windows_10000bp.bed
-windows="/scratch/ejy4bu/compBio/genomefiles/windows_5000bp.bed"
+windows="/scratch/ejy4bu/compBio/genomefiles/windows_10000bp.bed"
 
 bam_dir="/scratch/ejy4bu/compBio/bams"
 out_dir="/scratch/ejy4bu/compBio/bam_analysis/coverage_data"
@@ -35,18 +35,22 @@ for bam in "$bam_dir"/*/*/*.dedup.bam; do
     group=$(basename "${bam%/*/*}")
     sample=$(basename "$bam" .dedup.bam)
     mkdir -p "$out_dir/${group}/${sample}"
-    out_file="$out_dir/${group}/${sample}/${sample}_5000bp.tsv"
+    out_file="$out_dir/${group}/${sample}/${sample}_10000bp.tsv"
 
     echo -e "chrom\tstart\tend\tmean_depth" > "$out_file"
     echo "Processing $sample..."
 
     bedtools coverage -a "$windows" -b "$bam" -mean >> "$out_file"
 
-    tr '\t' ',' < "$out_file" > "$out_dir/${group}/${sample}/${sample}_5000bp.csv"
+    tr '\t' ',' < "$out_file" > "$out_dir/${group}/${sample}/${sample}_10000bp.csv"
 done
 
+# Run copy_number_variants_analysis.R to visualize 
 
-### generates read for each base pair
+
+
+
+### generates reads for each base pair
 
 # echo -e "chrom\pos\depth" > "$out_file"
 
