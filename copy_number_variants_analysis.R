@@ -56,11 +56,11 @@ for(chr in chr_list){
   setorder(chr_data, start)
   chr_data[, window_mid := (start + end)/2]    
 
-  chr_plot <- file.path(out_dir, paste0("Coverage_", chr_plot, ".pdf"))
+  chr_plot <- file.path(out_dir, paste0("Coverage_", chr, ".pdf"))
   pdf(chr_plot, width=20, height=10)
   print(ggplot(chr_data, aes(x = window_mid, y = norm_depth, color = algae_group, group = sampleID)) +
     geom_line() +
-    geom_smooth(se=FALSE, span=0.1)+
+    #geom_smooth(se=FALSE, span=0.1)+
     theme_bw() +
     labs(x = "Genome position", 
             y = "Normalized Coverage",
@@ -69,4 +69,6 @@ for(chr in chr_list){
                                   "REED_NotSephadex"="cyan3",
                                   "UTEX"="dodgerblue3"))
   )
+  dev.off()
+  message("Chromosomal coverage plot written to: ", chr_plot)
 }
