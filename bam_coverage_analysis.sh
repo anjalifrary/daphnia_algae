@@ -24,7 +24,7 @@ bedtools makewindows -g "$chr_list" -w 5000 > /scratch/ejy4bu/compBio/genomefile
 windows="/scratch/ejy4bu/compBio/genomefiles/windows_5000bp.bed"
 
 bam_dir="/scratch/ejy4bu/compBio/bams"
-out_dir="/scratch/ejy4bu/compBio/bam_analysis/coverage"
+out_dir="/scratch/ejy4bu/compBio/bam_analysis/coverage_data"
 mkdir -p "$out_dir"
 
 #bam="/scratch/ejy4bu/compBio/bams/Robert_samples_bams/RobertUK_F1/RobertUK_F1.dedup.bam"
