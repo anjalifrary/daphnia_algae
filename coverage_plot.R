@@ -83,7 +83,7 @@ coverage <- merge(coverage, meta[, .(sampleID, algae_group)], by = "sampleID", a
 coverage[, coverage := as.numeric(coverage)]
 
 
-out_dir <- "/scratch/ejy4bu/compBio/bam_analysis/coverage_plots"
+out_dir <- "/scratch/ejy4bu/compBio/bam_analysis/coverage_plots/mean_depth"
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
 # save data table
