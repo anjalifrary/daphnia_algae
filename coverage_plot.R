@@ -117,8 +117,10 @@ message("Chromosomal coverage plot written to: ", coverage_plot)
 ### generate coverage plot for genome wide depth by sample
 
 
-genome_avg <- coverage[, .(avg_coverage = mean(coverage)), by = sampleID]
+genome_avg <- coverage[, .(avg_coverage = mean(coverage)), by = .(sampleID, algae_group)]
 genome_avg <- merge(genome_avg, meta[, .(sampleID, algae_group)], by = "sampleID", all.x = TRUE)
+
+setorder(genome_avg, algae_group, sampleID)
 
 genome_plot <- file.path(out_dir, "avg_coverage_across_genome.pdf")
 pdf(genome_plot, width=20, height=10)
@@ -129,7 +131,7 @@ print(
   ylab("Mean Coverage") + 
   xlab("Sample Name") + 
   theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 6)) +
-  scale_fill_manual(values = c("REED_Sephadex" = "red", "REED_NotSephadex" = "cyan", "UTEX" = "blue"))
+  scale_fill_manual(values = c("REED_Sephadex" = "brown3", "REED_NotSephadex" = "cyan3", "UTEX" = "dodgerblue3"))
 
 )
 dev.off()
