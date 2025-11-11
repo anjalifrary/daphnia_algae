@@ -18,15 +18,15 @@ metadata_file <- "/scratch/ejy4bu/compBio/bam_analysis/metadata.csv"
 
 meta <- fread(metadata_file)
 
-coverage_files <- list.files(in_dir, pattern = "_10000bp.csv", recursive = TRUE, full.names = TRUE)
+coverage_files <- list.files(in_dir, pattern = "_5000bp.csv", recursive = TRUE, full.names = TRUE)
 
 coverage <- rbindlist(lapply(coverage_files, function(f) {
   dt <- fread(f)
-  dt[, sampleID := sub("_10000bp\\.csv$", "", basename(f))]
+  dt[, sampleID := sub("_5000bp\\.csv$", "", basename(f))]
   return(dt)
 }), use.names = TRUE, fill = TRUE)
 
-csv_ids <- unique(sapply(coverage_files, function(f) sub("_10000bp\\.csv$", "", basename(f))))
+csv_ids <- unique(sapply(coverage_files, function(f) sub("_5000bp\\.csv$", "", basename(f))))
 meta_ids <- unique(meta$sampleID)
 setdiff(csv_ids, meta_ids)
 
