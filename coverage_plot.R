@@ -59,6 +59,30 @@ coverage <- foreach(bamFile = bam_files, .combine="rbind") %dopar% {
   stats_pulex[, .(sampleID, chr_names, mapped, chr_lengths, coverage)]
 }
 
+meta <- data.table(
+  sampleID = sub(".dedup.bam", "", basename(bam_files)),
+  bam_path = bam_files,
+  algae_source = ifelse(grepl("Old_Algae_bams", bam_files, ignore.case = TRUE), "UTEX",
+                 ifelse(grepl("Robert_samples_bams", bam_files, ignore.case = TRUE), "REED",
+                 ifelse(grepl("Sephadex", bam_files, ignore.case = TRUE), "REED", NA))),
+  sephadex = ifelse(grepl("Old_Algae_bams", bam_files, ignore.case = TRUE), "N",
+             ifelse(grepl("Robert_samples_bams", bam_files, ignore.case = TRUE), "N",
+             ifelse(grepl("Sephadex", bam_files, ignore.case = TRUE), "Y", NA)))
+)
+
+#convert algae_source to factor for plotting by color
+
+meta[, algae_group := ifelse(algae_source=="REED" & sephadex=="N", "REED_NotSephadex",
+                      ifelse(algae_source=="REED" & sephadex=="Y", "REED_Sephadex",
+                      ifelse(algae_source=="UTEX", "UTEX", NA)))]
+
+meta[, algae_source := factor(algae_source, levels = c("REED", "UTEX"))]
+meta[, algae_group := factor(algae_group, levels = c("REED_NotSephadex", "REED_Sephadex", "UTEX"))]
+
+coverage <- merge(coverage, meta[, .(sampleID, algae_group)], by = "sampleID", all.x = TRUE)
+coverage[, coverage := as.numeric(coverage)]
+
+
 out_dir <- "/scratch/ejy4bu/compBio/bam_analysis"
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
@@ -67,10 +91,14 @@ out_file <- file.path(out_dir, "bam_coverage_table.csv")
 fwrite(coverage, out_file)
 message("Coverage table written to: ", out_file)
 
-# generate coverage plot 
-# coverage[, coverage := as.numeric(coverage)]
+
+
+### generate coverage plot by chromosomes
+
+
 coverage_avg <- coverage[, .(coverage=mean(coverage)), by = chr_names]
 coverage_avg[, chr_names := factor(chr_names, levels=chr)] # order scaffold names
+
 
 coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome.pdf")
   pdf(coverage_plot, width=20, height=10)
@@ -85,21 +113,30 @@ coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome.pdf")
 message("Chromosomal coverage plot written to: ", coverage_plot)
 
 
-### coverage plot for genome wide depth
+
+### generate coverage plot for genome wide depth by sample
+
+
 genome_avg <- coverage[, .(avg_coverage = mean(coverage)), by = sampleID]
+genome_avg <- merge(genome_avg, meta[, .(sampleID, algae_group)], by = "sampleID", all.x = TRUE)
 
 genome_plot <- file.path(out_dir, "avg_coverage_across_genome.pdf")
 pdf(genome_plot, width=20, height=10)
 print(
-  ggplot(genome_avg, aes(x=sampleID, y=avg_coverage)) + 
+  ggplot(genome_avg, aes(x=sampleID, y=avg_coverage, fill = algae_group)) + 
+  ggtitle("Mean depth across genome by sample") +
   geom_bar(stat="identity") + 
   ylab("Mean Coverage") + 
   xlab("Sample Name") + 
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10))
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 6)) +
+  scale_fill_manual(values = c("REED_Sephadex" = "red", "REED_NotSephadex" = "cyan", "UTEX" = "blue"))
+
 )
 dev.off()
 message("Genome wide coverage plot written to: ", genome_plot)
 
 
-### coverage plot for each sample's mean depth
-chr_sample_avg
+
+### generate coverage plot for each sample's mean depth
+
+
