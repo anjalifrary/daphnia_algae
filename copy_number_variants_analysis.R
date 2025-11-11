@@ -32,19 +32,19 @@ coverage[, norm_depth := mean_depth / mean(mean_depth), by = sampleID]
 
 ### plot genome wide
 
-genome_avg <- coverage[, .(avg_depth = mean(norm_depth)), by = .(sampleID, algae_group)]
+# genome_avg <- coverage[, .(avg_depth = mean(norm_depth)), by = .(sampleID, algae_group)]
 
-# Dot plot
-p1 <- ggplot(genome_avg, aes(x = sampleID, y = avg_depth, color = algae_group)) +
-  geom_point(size = 2) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 6)) +
-  labs(x = "Sample", y = "Average Depth", title = "Genome-wide mean depth by sample") +
-  scale_color_manual(values = c("REED_Sephadex"="brown3",
-                                "REED_NotSephadex"="cyan3",
-                                "UTEX"="dodgerblue3"))
+# # Dot plot
+# p1 <- ggplot(genome_avg, aes(x = sampleID, y = avg_depth, color = algae_group)) +
+#   geom_point(size = 2) +
+#   theme_bw() +
+#   theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 6)) +
+#   labs(x = "Sample", y = "Average Depth", title = "Genome-wide mean depth by sample") +
+#   scale_color_manual(values = c("REED_Sephadex"="brown3",
+#                                 "REED_NotSephadex"="cyan3",
+#                                 "UTEX"="dodgerblue3"))
 
-ggsave(file.path(out_dir, "genome_wide_coverage.pdf"), p1, width = 20, height = 10)
+# ggsave(file.path(out_dir, "genome_wide_coverage.pdf"), p1, width = 20, height = 10)
 
 
 ### per chromosome plots
@@ -55,7 +55,8 @@ for(chr in chr_list){
   
   # Create numeric x-axis along the chromosome (window index)
   setorder(chr_data, start)
-  chr_data[, window_mid := (start + end)/2]    
+  chr_data[, window_mid := (start + end)/2]  
+  chr_data[norm_depth > 20, norm_depth := 20]  
 
   chr_plot <- file.path(out_dir, paste0("Coverage_", chr, ".pdf"))
   pdf(chr_plot, width=20, height=10)
