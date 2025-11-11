@@ -10,7 +10,7 @@ library(foreach)
 library(doMC)
 registerDoMC(10)
 
-out_dir <- "/scratch/ejy4bu/compBio/bam_analysis/coverage_plots/copy_number_variants_5kb-window"
+out_dir <- "/scratch/ejy4bu/compBio/bam_analysis/coverage_plots/copy_number_variants_10kb-window"
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
 in_dir <- "/scratch/ejy4bu/compBio/bam_analysis/coverage_data"
@@ -18,11 +18,11 @@ metadata_file <- "/scratch/ejy4bu/compBio/bam_analysis/metadata.csv"
 
 meta <- fread(metadata_file)
 
-coverage_files <- list.files(in_dir, pattern = "_5000bp.csv", recursive = TRUE, full.names = TRUE)
+coverage_files <- list.files(in_dir, pattern = "_10000bp.csv", recursive = TRUE, full.names = TRUE)
 
 coverage <- rbindlist(lapply(coverage_files, function(f) {
   dt <- fread(f)
-  dt[, sampleID := sub("_5000bp\\.csv$", "", basename(f))]
+  dt[, sampleID := sub("_10000bp\\.csv$", "", basename(f))]
   return(dt)
 }), use.names = TRUE, fill = TRUE)
 
