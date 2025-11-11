@@ -120,8 +120,9 @@ message("Chromosomal coverage plot written to: ", coverage_plot)
 genome_avg <- coverage[, .(avg_coverage = mean(coverage)), by = .(algae_group, sampleID)]
 setorder(genome_avg, algae_group, sampleID)
 
-genome_avg <- merge(genome_avg, meta[, .(sampleID, algae_group)], by = "sampleID", all.x = TRUE)
+#genome_avg <- merge(genome_avg, meta[, .(sampleID, algae_group)], by = "sampleID", all.x = TRUE)
 
+genome_avg[, sampleID := factor(sampleID, levels = genome_avg[order(algae_group, sampleID)]$sampleID)]
 
 genome_plot <- file.path(out_dir, "avg_coverage_across_genome.pdf")
 pdf(genome_plot, width=20, height=10)
