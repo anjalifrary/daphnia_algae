@@ -69,11 +69,12 @@ for(chr in chr_list){
     ), by = .(window_mid, algae_group)]
 
   #chr_data[norm_depth > 5, norm_depth := 5]  
+  chr_group_data[mean_norm_depth > 20, norm_depth := 20]
 
-  dir.create(file.path(out_dir, "group_averaged"), showWarnings=FALSE,recursive=TRUE)
+  dir.create(file.path(out_dir, "averaged_threshold20"), showWarnings=FALSE,recursive=TRUE)
 
   #chr_plot <- file.path(out_dir, "threshold5", paste0("Coverage_", chr, "_threshold5.pdf"))
-  chr_plot <- file.path(out_dir, "group_averaged", paste0("Coverage_", chr, "_group-averaged.pdf"))
+  chr_plot <- file.path(out_dir, "group_averaged_threshold20", paste0("Coverage_", chr, "_group-averaged_threshold20.pdf"))
   pdf(chr_plot, width=20, height=10)
   print(ggplot(chr_group_data, aes(x = window_mid, y = mean_norm_depth, color = algae_group, group = algae_group)) +
     geom_line() +
