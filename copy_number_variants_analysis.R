@@ -62,7 +62,7 @@ for(chr in chr_list){
   # Create numeric x-axis along the chromosome (window index)
   setorder(chr_data, start)
   chr_data[, window_mid := (start + end)/2]  
-  #chr_data[norm_depth > 20, norm_depth := 20]  
+  chr_data[norm_depth > 20, norm_depth := 20]  
 
   chr_plot <- file.path(out_dir, paste0("Coverage_", chr, ".pdf"))
   pdf(chr_plot, width=20, height=10)
