@@ -62,19 +62,26 @@ for(chr in chr_list){
   # Create numeric x-axis along the chromosome (window index)
   setorder(chr_data, start)
   chr_data[, window_mid := (start + end)/2]  
-  chr_data[norm_depth > 5, norm_depth := 5]  
 
-  dir.create(file.path(out_dir, "threshold5"), showWarnings=FALSE,recursive=TRUE)
+  ### calculate group mean coverage
+  chr_group_data <- chr_data[, .(
+    mean_norm_depth = mean(norm_depth, na.rm=TRUE)
+    ), by = .(window_mid, algae_group)]
 
-  chr_plot <- file.path(out_dir, "threshold5", paste0("Coverage_", chr, "_threshold5.pdf"))
+  #chr_data[norm_depth > 5, norm_depth := 5]  
+
+  dir.create(file.path(out_dir, "group_averaged"), showWarnings=FALSE,recursive=TRUE)
+
+  #chr_plot <- file.path(out_dir, "threshold5", paste0("Coverage_", chr, "_threshold5.pdf"))
+  chr_plot <- file.path(out_dir, "group_averaged", paste0("Coverage_", chr, "_group-averaged.pdf"))
   pdf(chr_plot, width=20, height=10)
-  print(ggplot(chr_data, aes(x = window_mid, y = norm_depth, color = algae_group, group = sampleID)) +
+  print(ggplot(chr_group_data, aes(x = window_mid, y = mean_norm_depth, color = algae_group, group = sampleID)) +
     geom_line() +
     #geom_smooth(se=FALSE, span=0.1)+
     theme_bw() +
     labs(x = "Genome position", 
-            y = "Normalized Coverage",
-            title = paste0("Normalized Coverage across ", chr)) +
+            y = "Mean Normalized Coverage",
+            title = paste0("Group-avg Normalized Coverage across ", chr)) +
     scale_color_manual(values = c("REED_Sephadex"="brown3",
                                   "REED_NotSephadex"="cyan3",
                                   "UTEX"="dodgerblue3"))
