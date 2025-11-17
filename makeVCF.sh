@@ -19,7 +19,7 @@ module load samtools varscan bcftools
 bam_root=/scratch/ejy4bu/compBio/bams
 ref_fasta=/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa
 out_vcf=/scratch/ejy4bu/compBio/vcfs
-chr_list=/scratch/ejy4bu/compBio/genomefiles/ChrScaffoldList
+chr_list=/scratch/ejy4bu/compBio/genomefiles/ChrScaffoldList.txt
 
 mkdir -p $out_vcf
 
