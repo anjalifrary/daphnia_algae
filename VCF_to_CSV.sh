@@ -11,6 +11,8 @@
 #SBATCH -p standard       # Partition
 #SBATCH --account=berglandlab
 
+#https://gatk.broadinstitute.org/hc/en-us/articles/360036896892-VariantsToTable#--genotype-fields
+
 module load gatk
 
 vcf="/project/berglandlab/chlorella_sequencing/variant_calling/combined_chlorella_annotated.vcf"
@@ -24,3 +26,6 @@ gatk VariantsToTable \
 -GF GT 
 
 #-GF AD -GF DP -GF GQ
+
+
+tr '\t' ',' < "$outfile" > "/scratch/ejy4bu/compBio/vcfs/combined_chlorella_annotated.csv"
