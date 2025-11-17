@@ -20,8 +20,8 @@ module load bedtools
 # make windows once:
 # head -n 14 /scratch/ejy4bu/compBio/genomefiles/scaffold_lengths.txt > /scratch/ejy4bu/compBio/genomefiles/chr1-14_names_and_lengths.txt
 # chr_list="/scratch/ejy4bu/compBio/genomefiles/chr1-14_names_and_lengths.txt"
-# bedtools makewindows -g "$chr_list" -w 5000 > /scratch/ejy4bu/compBio/genomefiles/windows_5000bp.bed
-bedtools makewindows -g "$chr_list" -w 10000 > /scratch/ejy4bu/compBio/genomefiles/windows_10000bp.bed
+bedtools makewindows -g "$chr_list" -w 5000 > /scratch/ejy4bu/compBio/genomefiles/windows_5000bp.bed
+# bedtools makewindows -g "$chr_list" -w 10000 > /scratch/ejy4bu/compBio/genomefiles/windows_10000bp.bed
 windows="/scratch/ejy4bu/compBio/genomefiles/windows_10000bp.bed"
 
 bam_dir="/scratch/ejy4bu/compBio/bams"
