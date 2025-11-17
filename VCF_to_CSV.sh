@@ -13,7 +13,7 @@
 
 module load gatk
 
-vcf="/project/berglandlab/chlorella_sequencing/vcfs/combined_chlorella_annotated.vcf"
+vcf="/project/berglandlab/chlorella_sequencing/variant_calling/combined_chlorella_annotated.vcf"
 #outfile="/project/berglandlab/chlorella_sequencing/vcfs/combined_chlorella_annotated.tsv"
 outfile="/scratch/ejy4bu/compBio/vcfs/combined_chlorella_annotated.tsv"
 
