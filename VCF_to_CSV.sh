@@ -12,8 +12,9 @@
 
 module load gatk
 
-vcf="/project/berglandlab/chlorella_sequencing/combined_chlorella_annotated.vcf"
-outfile="/project/berglandlab/chlorella_sequencing/combined_chlorella_annotated.tsv"
+vcf="/project/berglandlab/chlorella_sequencing/vcfs/combined_chlorella_annotated.vcf"
+#outfile="/project/berglandlab/chlorella_sequencing/vcfs/combined_chlorella_annotated.tsv"
+outfile="/scratch/ejy4bu/compBio/vcfs/combined_chlorella_annotated.tsv"
 
 gatk VariantsToTable \
 -V $vcf \
