@@ -75,7 +75,7 @@ for(chr in chr_list){
   #chr_plot <- file.path(out_dir, "threshold5", paste0("Coverage_", chr, "_threshold5.pdf"))
   chr_plot <- file.path(out_dir, "group_averaged", paste0("Coverage_", chr, "_group-averaged.pdf"))
   pdf(chr_plot, width=20, height=10)
-  print(ggplot(chr_group_data, aes(x = window_mid, y = mean_norm_depth, color = algae_group, group = sampleID)) +
+  print(ggplot(chr_group_data, aes(x = window_mid, y = mean_norm_depth, color = algae_group, group = algae_group)) +
     geom_line() +
     #geom_smooth(se=FALSE, span=0.1)+
     theme_bw() +
