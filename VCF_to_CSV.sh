@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#
 #SBATCH -J convertVCF    # Job name
 #SBATCH --ntasks=1        # Single task per job
 #SBATCH --cpus-per-task=10 # Number of CPU cores per task
