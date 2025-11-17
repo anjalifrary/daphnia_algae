@@ -54,3 +54,6 @@ java -jar $EBROOTVARSCAN/VarScan.v2.4.4.jar mpileup2snp \
     --min-var-freq 0.001 \
     --output-vcf > $out_vcf/${chr}.vcf
 
+# for vcf in /project/berglandlab/chlorella_sequencing/vcfs/*.vcf; do
+#     cp $vcf /scratch/ejy4bu/compBio/vcfs;
+# done
