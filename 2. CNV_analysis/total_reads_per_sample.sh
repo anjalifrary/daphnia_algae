@@ -31,3 +31,15 @@ for bam in ${bam_dir}/*/*/*.dedup.bam; do
 done
 
 echo "Finished calculating reads for all samples"
+
+
+### getting text list of samples
+
+# infile="/scratch/ejy4bu/compBio/cnv/subset_samples.csv"
+# outfile="/scratch/ejy4bu/compBio/cnv/subset_sample_list.txt"
+
+## include all samples
+# tail -n +2 $infile | cut -d',' -f1 > $outfile
+
+## remove control group
+# tail -n +2 $infile | awk -F, '$3 != "REED_Sephedex" {print $1}' > $outfile
