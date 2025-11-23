@@ -11,6 +11,8 @@
 #SBATCH -p standard
 #SBATCH --account berglandlab
 
+module load samtools
+
 out_dir="/scratch/ejy4bu/compBio/cnv/megabams"
 mkdir -p $out_dir
 
