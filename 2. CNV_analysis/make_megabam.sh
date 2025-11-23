@@ -32,7 +32,5 @@ echo "Done merging $group"
 # megabam="/scratch/ejy4bu/compBio/cnv/megabams/REED_NotSephedex.megabam.bam"
 # samtools quickcheck -v $megabam
 # samtools view -H $megabam | head
-# samtools view -c $megabam
 # samtools idxstats $megabam
-# samtools view $megabam
 # samtools flagstat $megabam
