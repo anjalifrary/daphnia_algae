@@ -33,7 +33,7 @@ done
 echo "Finished calculating reads for all samples"
 
 
-### getting text list of samples
+### getting text list of sample subsets
 
 # infile="/scratch/ejy4bu/compBio/cnv/subset_samples.csv"
 # outfile="/scratch/ejy4bu/compBio/cnv/subset_sample_list.txt"
@@ -43,3 +43,26 @@ echo "Finished calculating reads for all samples"
 
 ## remove control group
 # tail -n +2 $infile | awk -F, '$3 != "REED_Sephedex" {print $1}' > $outfile
+
+### path names for each subset of samples
+
+:<<path_names
+bam_dir="/scratch/ejy4bu/compBio/cnv/bams"
+sample_list="/scratch/ejy4bu/compBio/cnv/data_tables/subset_samples.csv"
+targ_group="UTEX"
+bam_list="/scratch/ejy4bu/compBio/cnv/data_tables/${targ_group}_bamList.txt"
+
+> $bam_list
+
+tail -n +2 $sample_list | while IFS=',' read -r sample Date group total_reads sum_total_reads; do
+    sample=$(echo "$sample" | tr -d '[] \r')
+    group=$(echo "$group" | tr -d '[] \r')
+    if [[ "$group" == "$targ_group" ]]; then
+        echo ${bam_dir}/${group}/${sample}/${sample}.dedup.bam >> $bam_list
+    fi
+done
+path_names
+
+
+
+
