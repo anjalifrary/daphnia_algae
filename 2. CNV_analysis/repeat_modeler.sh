@@ -21,7 +21,6 @@ conda activate repeatmodeler_env
 
 # module load blast
 
-
 # proj="/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa"
 out_dir="/scratch/ejy4bu/compBio/cnv/reference"
 # mkdir -p $out_dir
@@ -32,10 +31,6 @@ cleaned="${out_dir}/GCA_023343905.1_cvul_genomic.cleaned.fasta"
 
 cd $out_dir
 
-# export RM_TMP_DIR=/sfs/weka/scratch/ejy4bu/repeatModeler_tmp
-# mkdir -p $RM_TMP_DIR
-# cd $RM_TMP_DIR
-
 # seqtk seq $ref > $cleaned
 ls -lh $cleaned
 
@@ -43,8 +38,5 @@ ls -lh $cleaned
 #make blast db from cleaned reference genome (type nucleic acid)
 makeblastdb -in $cleaned -out my_db -dbtype nucl -title my_db -parse_seqids
 BuildDatabase -name my_db $cleaned
-
-# mkdir -p /scratch/ejy4bu/compBio/cnv/reference/RM_run1
-# cd /scratch/ejy4bu/compBio/cnv/reference/RM_run1
 
 RepeatModeler -database my_db -pa 10
