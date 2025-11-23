@@ -42,4 +42,6 @@ cd $RM_TMP_DIR
 # makeblastdb -in $cleaned -out chlorellaDB -dbtype nucl -title chlorellaDB -parse_seqids
 # ls -lh chlorellaDB.*
 
+mkdir -p /scratch/ejy4bu/compBio/cnv/reference/RM_test && cd /scratch/ejy4bu/compBio/cnv/reference/RM_test
+
 RepeatModeler -database /scratch/ejy4bu/compBio/cnv/reference/chlorellaDB -pa 10
