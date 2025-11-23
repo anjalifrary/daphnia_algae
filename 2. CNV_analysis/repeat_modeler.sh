@@ -28,7 +28,7 @@ mkdir -p $out_dir
 ref="${out_dir}/GCA_023343905.1_cvul_genomic.fa"
 cleaned="${out_dir}/GCA_023343905.1_cvul_genomic.cleaned.fasta"
 
-# cd $out_dir
+cd $out_dir
 
 seqtk seq $ref > $cleaned
 
