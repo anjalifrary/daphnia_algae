@@ -21,7 +21,7 @@ out_dir="/scratch/ejy4bu/compBio/cnv/bams"
 mkdir -p $out_dir
 
 bams=($in_dir/*/*/*.sort.bam)
-bam=${bams[$SLURM_ARRAY_TASK_ID-1]}
+bam=${bams[$((SLURM_ARRAY_TASK_ID-1))]}
 samp=$(basename $bam .sort.bam)
 samp_folder=${out_dir}/$samp
 mkdir -p $samp_folder
