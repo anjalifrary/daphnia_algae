@@ -17,6 +17,8 @@
 source ~/miniconda3/etc/profile.d/conda.sh
 
 conda activate repeatmodeler_env
+conda install -c bioconda blast
+
 # module load blast
 
 
@@ -30,16 +32,16 @@ out_dir="/scratch/ejy4bu/compBio/cnv/reference"
 
 # cd $out_dir
 
-export RM_TMP_DIR=/sfs/weka/scratch/ejy4bu/repeatModeler_tmp
-mkdir -p $RM_TMP_DIR
-cd $RM_TMP_DIR
+# export RM_TMP_DIR=/sfs/weka/scratch/ejy4bu/repeatModeler_tmp
+# mkdir -p $RM_TMP_DIR
+# cd $RM_TMP_DIR
 
 # seqtk seq $ref > $cleaned
 # ls -lh $cleaned
 
 
 #make blast db from cleaned reference genome (type nucleic acid)
-# makeblastdb -in $cleaned -out chlorellaDB -dbtype nucl -title chlorellaDB -parse_seqids
+makeblastdb -in $cleaned -out chlorellaDB -dbtype nucl -title chlorellaDB -parse_seqids
 # ls -lh chlorellaDB.*
 
 mkdir -p /scratch/ejy4bu/compBio/cnv/reference/RM_run1 && cd /scratch/ejy4bu/compBio/cnv/reference/RM_run1
