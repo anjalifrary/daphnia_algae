@@ -28,14 +28,18 @@ out_dir="/scratch/ejy4bu/compBio/cnv/reference"
 # ref="${out_dir}/GCA_023343905.1_cvul_genomic.fa"
 # cleaned="${out_dir}/GCA_023343905.1_cvul_genomic.cleaned.fasta"
 
-cd $out_dir
+# cd $out_dir
+
+export RM_TMP_DIR=/sfs/weka/scratch/ejy4bu/repeatModeler_tmp
+mkdir -p $RM_TMP_DIR
+cd $RM_TMP_DIR
 
 # seqtk seq $ref > $cleaned
 # ls -lh $cleaned
 
 
 #make blast db from cleaned reference genome (type nucleic acid)
-makeblastdb -in $cleaned -out chlorellaDB -dbtype nucl -title chlorellaDB -parse_seqids
+# makeblastdb -in $cleaned -out chlorellaDB -dbtype nucl -title chlorellaDB -parse_seqids
 # ls -lh chlorellaDB.*
 
-RepeatModeler -database chlorellaDB -pa 10
+RepeatModeler -database /scratch/ejy4bu/compBio/cnv/reference/chlorellaDB -pa 10
