@@ -41,9 +41,10 @@ ls -lh $cleaned
 
 
 #make blast db from cleaned reference genome (type nucleic acid)
-makeblastdb -in "$cleaned" -dbtype nucl -out chlorellaDB -title chlorellaDB -parse_seqids
+makeblastdb -in $cleaned -out my_db -dbtype nucl -title my_db -parse_seqids
+BuildDatabase -name my_db $cleaned
 
-mkdir -p /scratch/ejy4bu/compBio/cnv/reference/RM_run1
-cd /scratch/ejy4bu/compBio/cnv/reference/RM_run1
+# mkdir -p /scratch/ejy4bu/compBio/cnv/reference/RM_run1
+# cd /scratch/ejy4bu/compBio/cnv/reference/RM_run1
 
-RepeatModeler -database /scratch/ejy4bu/compBio/cnv/reference/chlorellaDB -pa 10
+RepeatModeler -database my_db -pa 10
