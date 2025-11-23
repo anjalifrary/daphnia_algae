@@ -17,7 +17,7 @@
 source ~/miniconda3/etc/profile.d/conda.sh
 
 conda activate repeatmodeler_env
-module load blast
+# module load blast
 
 
 # proj="/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa"
@@ -42,6 +42,6 @@ cd $RM_TMP_DIR
 # makeblastdb -in $cleaned -out chlorellaDB -dbtype nucl -title chlorellaDB -parse_seqids
 # ls -lh chlorellaDB.*
 
-mkdir -p /scratch/ejy4bu/compBio/cnv/reference/RM_test && cd /scratch/ejy4bu/compBio/cnv/reference/RM_test
+mkdir -p /scratch/ejy4bu/compBio/cnv/reference/RM_run1 && cd /scratch/ejy4bu/compBio/cnv/reference/RM_run1
 
 RepeatModeler -database /scratch/ejy4bu/compBio/cnv/reference/chlorellaDB -pa 10
