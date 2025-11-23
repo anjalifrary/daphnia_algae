@@ -33,6 +33,4 @@ seqtk seq $ref > $cleaned
 #make blast db from cleaned reference genome (type nucleic acid)
 makeblastdb -in $cleaned -out chlorellaDB -dbtype nucl -title chlorellaDB -parse_seqids
 
-# BuildDatabase -name clorellaDB $ref
-
 RepeatModeler -database chlorellaDB -pa 10 -engine ncbi
