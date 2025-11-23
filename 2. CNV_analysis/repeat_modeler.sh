@@ -14,6 +14,8 @@
 # make conda environment with repeatmodeler in it
 
 #conda create -n repeatmodeler_env -c bioconda -c conda-forge repeatmodeler perl=5.22.0
+source ~/miniconda3/etc/profile.d/conda.sh
+
 conda activate repeatmodeler_new
 module load blast
 
