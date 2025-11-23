@@ -15,7 +15,7 @@ out_dir="/scratch/ejy4bu/compBio/cnv/megabams"
 mkdir -p $out_dir
 
 group="REED_NotSephedex"
-in_bams="/scratch/ejy4bu/compBio/cnv/data_tables/${group}_bamList.txt"
+in_bams="/scratch/ejy4bu/compBio/cnv/data_tables/bam_paths/${group}_bamList.txt"
 out_bam="${out_dir}/${group}.megabam.bam"
 
 samtools merge -f -@ 10 $out_bam -b $in_bams 
