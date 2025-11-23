@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 #SBATCH -J cleanBams 
-#SBATCH --array=1-380%15
+#SBATCH --array=1-2
 #SBATCH --cpus-per-task=10
 #SBATCH --ntasks=1
 #SBATCH -N 1 # on one node
@@ -28,17 +28,32 @@ mkdir -p $samp_folder
 
 ### remove secondary 0x100 and supplementary 0x800 alignments
 # new bam is copied to new folder in cnv 
-samtools view -bh -F 0x900 $file -o ${samp_folder}/${samp}.clean.bam
+clean_bam="${samp_folder}/${samp}.clean.bam"
+if [ ! -f "$clean_bam" ]; then
+    samtools view -bh -F 0x900 $bam -o $clean_bam
+else
+    echo "$clean_bam exists, skipping"
+fi
+
+# check number of reads in outfile
+echo "Original reads: $(samtools view -c "$bam")"
+echo "After cleaning: $(samtools view -c "$clean_bam")"
 
 ### dedup cleaned bams 
 echo "Deduplicating $samp"
 dedup_bam=${samp_folder}/${samp}.dedup.bam
+
+if [ -f "$dedup_bam" ]; then
+    echo "$dedup_bam already exists, skipping"
+    exit 0
+fi
+
 java -Xmx45G -jar $EBROOTPICARD/picard.jar MarkDuplicates \
-    I="$bam" \
-    O="$dedup_bam" \
-    M="${samp_folder}/${samp}.dedup.metrics" \
-    REMOVE_DUPLICATES=true \
-    CREATE_INDEX=true
+    -I ${samp_folder}/${samp}.clean.bam \
+    -O "$dedup_bam" \
+    -M "${samp_folder}/${samp}.dedup.metrics" \
+    -REMOVE_DUPLICATES true \
+    -CREATE_INDEX true
 
 
 
