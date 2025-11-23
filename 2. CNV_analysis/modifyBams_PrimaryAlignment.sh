@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 #
-#SBATCH -J cleanBams # A single job name for the array
-#SBATCH --ntasks-per-node=10 # one core
+#SBATCH -J cleanBams 
+#SBATCH --array=1-380%15
+#SBATCH --cpus-per-task=10
+#SBATCH --ntasks=1
 #SBATCH -N 1 # on one node
 #SBATCH -t 0-10:00 # 10 hours
 #SBATCH --mem 100G
