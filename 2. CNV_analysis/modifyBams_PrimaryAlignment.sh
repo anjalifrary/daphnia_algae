@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 #SBATCH -J cleanBams 
-#SBATCH --array=1-2
+#SBATCH --array=1-380%15
 #SBATCH --cpus-per-task=10
 #SBATCH --ntasks=1
 #SBATCH -N 1 # on one node
@@ -43,10 +43,10 @@ echo "After cleaning: $(samtools view -c "$clean_bam")"
 echo "Deduplicating $samp"
 dedup_bam=${samp_folder}/${samp}.dedup.bam
 
-if [ -f "$dedup_bam" ]; then
-    echo "$dedup_bam already exists, skipping"
-    exit 0
-fi
+# if [ -f "$dedup_bam" ]; then
+#     echo "$dedup_bam already exists, skipping"
+#     exit 0
+# fi
 
 java -Xmx45G -jar $EBROOTPICARD/picard.jar MarkDuplicates \
     -I ${samp_folder}/${samp}.clean.bam \
