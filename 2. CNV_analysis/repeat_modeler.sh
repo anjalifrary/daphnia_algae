@@ -20,22 +20,22 @@ conda activate repeatmodeler_env
 module load blast
 
 
-proj="/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa"
+# proj="/project/berglandlab/chlorella_sequencing/reference_genome/GCA_023343905.1_cvul_genomic.fa"
 out_dir="/scratch/ejy4bu/compBio/cnv/reference"
-mkdir -p $out_dir
+# mkdir -p $out_dir
 
-cp $proj $out_dir
-ref="${out_dir}/GCA_023343905.1_cvul_genomic.fa"
-cleaned="${out_dir}/GCA_023343905.1_cvul_genomic.cleaned.fasta"
+# cp $proj $out_dir
+# ref="${out_dir}/GCA_023343905.1_cvul_genomic.fa"
+# cleaned="${out_dir}/GCA_023343905.1_cvul_genomic.cleaned.fasta"
 
 cd $out_dir
 
-seqtk seq $ref > $cleaned
-ls -lh $cleaned
+# seqtk seq $ref > $cleaned
+# ls -lh $cleaned
 
 
 #make blast db from cleaned reference genome (type nucleic acid)
 makeblastdb -in $cleaned -out chlorellaDB -dbtype nucl -title chlorellaDB -parse_seqids
-ls -lh chlorellaDB.*
+# ls -lh chlorellaDB.*
 
-RepeatModeler -database chlorellaDB -pa 10 -engine ncbi
+RepeatModeler -database chlorellaDB -pa 10
