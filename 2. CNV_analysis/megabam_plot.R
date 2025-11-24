@@ -48,9 +48,12 @@ compute_cov <- function(bam, chr, win=5000) {
     stop(paste("Chromosome", chr, "not found in", bam))
   }
 
-  windows <- tileGenome(seqlengths = chr_len,
-                        tilewidth = win,
-                        cut.last.tile.in.chrom = TRUE)
+chr_len_named <- setNames(chr_len, chr)
+
+windows <- tileGenome(seqlengths = chr_len_named,
+                      tilewidth = win,
+                      cut.last.tile.in.chrom = TRUE)
+
 
   param <- ScanBamParam(
     which = windows,
