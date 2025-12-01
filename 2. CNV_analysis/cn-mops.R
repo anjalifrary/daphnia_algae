@@ -12,6 +12,10 @@
 library(cn.mops)
 library(Rsamtools)
 library(data.table)
+library(parallel)
+
+# ncores <- 10
+# cl <- makeCluster(ncores)
 
 ### Output directory
 out_dir <- "/scratch/ejy4bu/compBio/cnv/cnmops_output"
@@ -48,7 +52,10 @@ bamDataRanges <- getReadCountsFromBAM(
 message("Running cn.mops")
 
 # minWidth = minimal number of consecutive windows required for a CNV
-res <- cn.mops(bamDataRanges, minWidth=2)
+#res <- cn.mops(bamDataRanges, minWidth=2)
+res <- pcmops(bamDataRanges, minWidth = 2, cluster = cl)
+# stopCluster(cl)
+
 
 pdf(file.path(out_dir, "cnmops_rawOutput.pdf"), width=14,height=8)
 plot(res)
