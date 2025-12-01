@@ -57,6 +57,10 @@ cn_data <- as.data.frame(integerCopyNumber(cnv_result))
 message("Copy number matrix: ", nrow(cn_data), " windows")
 message("Columns: ", paste(colnames(cn_data), collapse=", "))
 
+# Convert CN factors to numeric (e.g., "CN2" -> 2)
+cn_data$REED_NotSephadex <- as.numeric(gsub("CN", "", cn_data$REED_NotSephadex))
+cn_data$UTEX <- as.numeric(gsub("CN", "", cn_data$UTEX))
+
 # Add position information
 plot_data <- data.table(
     chrom = as.character(seqnames(bamDataRanges)),
