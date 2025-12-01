@@ -52,8 +52,8 @@ bamDataRanges <- getReadCountsFromBAM(
 message("Running cn.mops")
 
 # minWidth = minimal number of consecutive windows required for a CNV
-#res <- cn.mops(bamDataRanges, minWidth=2)
-res <- pcmops(bamDataRanges, minWidth = 2, cluster = cl)
+res <- cn.mops(bamDataRanges, minWidth=2, parallel=4)
+#res <- pcmops(bamDataRanges, minWidth = 2)
 # stopCluster(cl)
 
 
