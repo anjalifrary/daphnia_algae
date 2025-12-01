@@ -43,63 +43,111 @@ message("Running cn.mops")
 res <- cn.mops(bamDataRanges, minWidth=2, parallel=4)
 cnv_result <- calcIntegerCopyNumbers(res)
 
-# Save CNV calls
-cnv_df <- as.data.frame(cnvr(cnv_result))
-fwrite(cnv_df, file.path(out_dir, "cnmops_CNVs.csv"), sep=",", quote=FALSE)
-message("CNV calls saved")
-
-# Plot normalized data
-plot(res, which=1)
-
-# Plot segmentation
-plot(cnv_result, which="segments")
-
-# Plot individual CNVRs
+# Check what we got
 cnvrs <- cnvr(cnv_result)
 message("Number of CNVRs detected: ", length(cnvrs))
 
-if(length(cnvrs) > 0) {
-    # Plot first few CNVRs
-    for(i in 1:min(5, length(cnvrs))) {
-        plot(cnv_result, which=i)
-        Sys.sleep(1)  # Pause between plots
-    }
+# Save CNV calls
+cnv_df <- as.data.frame(cnvr(cnv_result))
+fwrite(cnv_df, file.path(out_dir, "cnmops_CNVs.csv"), sep=",", quote=FALSE)
+message("CNV calls saved. dimensions = ", nrow(cnv_df), " rows")
+
+### Extract copy number data for plotting
+cn_data <- as.data.frame(integerCopyNumber(cnv_result))
+message("Copy number matrix: ", nrow(cn_data), " windows")
+message("Columns: ", paste(colnames(cn_data), collapse=", "))
+
+# Add position information
+plot_data <- data.table(
+    chrom = as.character(seqnames(bamDataRanges)),
+    pos = start(bamDataRanges),
+    cn_data
+)
+
+# Check the data
+message("Copy number range - REED: ", min(plot_data$REED_NotSephadex), " to ", max(plot_data$REED_NotSephadex))
+message("Copy number range - UTEX: ", min(plot_data$UTEX), " to ", max(plot_data$UTEX))
+
+### Plot first chromosome as example
+chr1_data <- plot_data[chrom == "SIDB01000001.1"]
+
+par(mfrow=c(2,1), mar=c(4,4,3,1))
+
+plot(chr1_data$pos, chr1_data$REED_NotSephadex, 
+     type="l", col="cyan3", lwd=2,
+     main="REED_NotSephadex - SIDB01000001.1",
+     xlab="Position (bp)", ylab="Copy Number")
+abline(h=2, col="darkgreen", lty=2, lwd=2)
+
+plot(chr1_data$pos, chr1_data$UTEX, 
+     type="l", col="dodgerblue3", lwd=2,
+     main="UTEX - SIDB01000001.1",
+     xlab="Position (bp)", ylab="Copy Number")
+abline(h=2, col="darkgreen", lty=2, lwd=2)
+
+# Summary statistics
+message("\nCNV Summary by sample:")
+for(samp in c("REED_NotSephadex", "UTEX")) {
+    gains <- sum(plot_data[[samp]] > 2)
+    losses <- sum(plot_data[[samp]] < 2)
+    normal <- sum(plot_data[[samp]] == 2)
+    message(samp, ": Gains=", gains, " Losses=", losses, " Normal=", normal)
 }
 
-# # Plot 1: Raw normalized data (before CN calling)
-# message("Creating normalized data plot...")
-# pdf(file.path(out_dir, "cnmops_normalized.pdf"), width=14, height=8)
+message("done")
+
+# # Plot normalized data
 # plot(res, which=1)
-# dev.off()
 
-# # Plot 2: Segmentation results
-# message("Creating segmentation plot...")
-# pdf(file.path(out_dir, "cnmops_segments.pdf"), width=14, height=8)
+# # Plot segmentation
 # plot(cnv_result, which="segments")
-# dev.off()
 
-# # Plot 3: Individual CNVRs (if any detected)
-# message("Plotting CNVRs...")
+# # Plot individual CNVRs
 # cnvrs <- cnvr(cnv_result)
+# message("Number of CNVRs detected: ", length(cnvrs))
+
 # if(length(cnvrs) > 0) {
-#     # Plot first 5 CNVRs
-#     n_plot <- min(5, length(cnvrs))
-#     for(i in 1:n_plot) {
-#         pdf(file.path(out_dir, paste0("cnmops_CNVR_", i, ".pdf")), width=14, height=8)
+#     # Plot first few CNVRs
+#     for(i in 1:min(5, length(cnvrs))) {
 #         plot(cnv_result, which=i)
-#         dev.off()
-#         message("Plotted CNVR ", i)
+#         Sys.sleep(1)  # Pause between plots
 #     }
-# } else {
-#     message("No CNVRs detected")
 # }
 
-# # Plot 4: Try plotting the cnvr object directly
-# message("Plotting CNVR overview...")
-# pdf(file.path(out_dir, "cnmops_cnvr_overview.pdf"), width=14, height=8)
-# if(length(cnvrs) > 0) {
-#     plot(cnvrs)
-# }
-# dev.off()
+# # # Plot 1: Raw normalized data (before CN calling)
+# # message("Creating normalized data plot...")
+# # pdf(file.path(out_dir, "cnmops_normalized.pdf"), width=14, height=8)
+# # plot(res, which=1)
+# # dev.off()
 
-message("end of analysis")
+# # # Plot 2: Segmentation results
+# # message("Creating segmentation plot...")
+# # pdf(file.path(out_dir, "cnmops_segments.pdf"), width=14, height=8)
+# # plot(cnv_result, which="segments")
+# # dev.off()
+
+# # # Plot 3: Individual CNVRs (if any detected)
+# # message("Plotting CNVRs...")
+# # cnvrs <- cnvr(cnv_result)
+# # if(length(cnvrs) > 0) {
+# #     # Plot first 5 CNVRs
+# #     n_plot <- min(5, length(cnvrs))
+# #     for(i in 1:n_plot) {
+# #         pdf(file.path(out_dir, paste0("cnmops_CNVR_", i, ".pdf")), width=14, height=8)
+# #         plot(cnv_result, which=i)
+# #         dev.off()
+# #         message("Plotted CNVR ", i)
+# #     }
+# # } else {
+# #     message("No CNVRs detected")
+# # }
+
+# # # Plot 4: Try plotting the cnvr object directly
+# # message("Plotting CNVR overview...")
+# # pdf(file.path(out_dir, "cnmops_cnvr_overview.pdf"), width=14, height=8)
+# # if(length(cnvrs) > 0) {
+# #     plot(cnvrs)
+# # }
+# # dev.off()
+
+# message("end of analysis")
