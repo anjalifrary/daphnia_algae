@@ -42,7 +42,7 @@ echo "Finished calculating reads for all samples"
 # tail -n +2 $infile | cut -d',' -f1 > $outfile
 
 ## remove control group
-# tail -n +2 $infile | awk -F, '$3 != "REED_Sephedex" {print $1}' > $outfile
+# tail -n +2 $infile | awk -F, '$3 != "REED_Sephadex" {print $1}' > $outfile
 
 ### path names for each subset of samples
 

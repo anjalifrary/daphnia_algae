@@ -29,7 +29,7 @@ samtools index $out_bam
 echo "Done merging $group"
 
 
-# megabam="/scratch/ejy4bu/compBio/cnv/megabams/REED_NotSephedex.megabam.bam"
+# megabam="/scratch/ejy4bu/compBio/cnv/megabams/REED_NotSephadex.megabam.bam"
 # samtools quickcheck -v $megabam
 # samtools view -H $megabam | head
 # samtools idxstats $megabam
