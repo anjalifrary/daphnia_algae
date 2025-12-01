@@ -82,15 +82,6 @@ tryCatch({
 })
 dev.off()
 
-# ### Plot REED vs UTEX
-# pdf(file.path(out_dir, "cnmops_REED_UTEX.pdf"), width = 14, height = 8)
-# #class(res)
-# plot(cnvr(cnv_result))
-# sample=c("REED_NotSephadex", "UTEX"), useDevice=FALSE)
-
-#plot(res, which=1, sample = c("REED_NotSephadex", "UTEX"))
-#dev.off()
-
 ### Plot each group individually
 # for (s in sample_names) {
 #     message("Creating plot for ", s , "...")
