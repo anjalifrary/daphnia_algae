@@ -60,7 +60,7 @@ fwrite(cnv_df, file.path(out_dir, "cnmops_CNVs.csv"), sep=",", quote=FALSE)
 message("CNV calls saved to ", paste0(out_dir, "cnmops_CNVs.csv"))
 
 ### data for plotting
-cn_matrix <- integerCopyNumber(cnv_result)
+cn_matrix <- as.matrix(integerCopyNumber(cnv_result))
 plot_data <- data.table(
     chrom = as.character(seqnames(bamDataRanges)),
     pos = start(bamDataRanges),
