@@ -14,6 +14,10 @@ library(Rsamtools)
 library(data.table)
 library(parallel)
 
+# plotting for headless environment
+options(bitmapType='cairo')  # Use cairo for bitmap graphics
+
+
 # ncores <- 10
 # cl <- makeCluster(ncores)
 
@@ -81,10 +85,15 @@ fwrite(cnv_df, file.path(out_dir, "cnmops_CNVs.csv"), sep=",", quote=FALSE)
 message("CNV calls saved to ", paste0(out_dir, "cnmops_CNVs.csv"))
 
 ### Plot all samples
+message("Creating plot for all samples...")
 pdf(file.path(out_dir, "cnmops_REED_UTEX.pdf"), width=14,height=8)
-plot(cnvr(cnv_result))
+tryCatch({
+    plot(cnvr(cnv_result))
+    message("All samples plotted")
+}, error=function(e) {
+    message("Failed to plot all samples ", e$message)
+})
 dev.off()
-message("All samples plotted")
 
 # ### Plot REED vs UTEX
 # pdf(file.path(out_dir, "cnmops_REED_UTEX.pdf"), width = 14, height = 8)
@@ -97,11 +106,14 @@ message("All samples plotted")
 
 ### Plot each group individually
 for (s in sample_names) {
+    message("Creating plot for ", s , "...")
     pdf(file.path(out_dir, paste0("cnmops_", s, ".pdf")), width=14, height=8)
-    plot(cnvr(cnv_result)[,s, drop=FALSE])
-
-    #plot(res, which=1, sample=s)   # use `res`, not cnv_result
+    tryCatch({
+        plot(cnvr(cnv_result)[,s, drop=FALSE])
+        message("Plot saved for ", s)
+    }, error = function(e){
+        message("Failed to plot for ", s, ": ", e$message)
+    })
     dev.off()
-    message("Plot saved for ", s)
 }
 message("All plots saved")
