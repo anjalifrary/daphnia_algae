@@ -75,7 +75,7 @@ if(length(sample_col) > 0) {
 message("Creating plot for all samples...")
 pdf(file.path(out_dir, "cnmops_REED_UTEX.pdf"), width=14,height=8)
 tryCatch({
-    plot(cnv_result)
+    plot(res, which=1)
     message("All samples plotted")
 }, error=function(e) {
     message("Failed to plot all samples ", e$message)
@@ -92,16 +92,16 @@ dev.off()
 #dev.off()
 
 ### Plot each group individually
-for (s in sample_names) {
-    message("Creating plot for ", s , "...")
-    pdf(file.path(out_dir, paste0("cnmops_", s, ".pdf")), width=14, height=8)
-    tryCatch({
-        plot(cnv_result, sample=s)
-        message("Plot saved for ", s)
-    }, error = function(e){
-        message("Failed to plot for ", s, ": ", e$message)
-    })
-    dev.off()
-}
-message("All plots saved")
+# for (s in sample_names) {
+#     message("Creating plot for ", s , "...")
+#     pdf(file.path(out_dir, paste0("cnmops_", s, ".pdf")), width=14, height=8)
+#     tryCatch({
+#         plot(cnv_result, sample=s)
+#         message("Plot saved for ", s)
+#     }, error = function(e){
+#         message("Failed to plot for ", s, ": ", e$message)
+#     })
+#     dev.off()
+# }
+# message("All plots saved")
 
