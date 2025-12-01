@@ -62,7 +62,7 @@ res <- cn.mops(bamDataRanges, minWidth=2, parallel=4)
 
 
 pdf(file.path(out_dir, "cnmops_rawOutput.pdf"), width=14,height=8)
-plot(res, which=1-3)
+plot(res, which=1)
 dev.off()
 message("Raw depth-read values after normalization plot saved.")
 
@@ -70,7 +70,11 @@ message("Raw depth-read values after normalization plot saved.")
 cnv_result <- calcIntegerCopyNumbers(res)
 
 cnv_df <- as.data.frame(cnvr(cnv_result))
-cnv_df <- cnv_df[, c("sampleName", setdiff(colnames(cnv_df), "sampleName"))]
+print(colnames(cnv_df))
+
+sample_col <- intersect(colnames(cnv_df), c("sample", "sampleName"))
+
+cnv_df <- cnv_df[, c(sample_col, setdiff(colnames(cnv_df), sample_col))]
 fwrite(cnv_df, file.path(out_dir, "cnmops_CNVs.csv"), sep=",", quote=FALSE)
 message("CNV calls saved to ", paste0(out_dir, "cnmops_CNVs.csv"))
 
