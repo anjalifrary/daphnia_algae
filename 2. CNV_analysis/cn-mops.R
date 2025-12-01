@@ -85,14 +85,19 @@ dev.off()
 
 ### Plot REED vs UTEX
 pdf(file.path(out_dir, "cnmops_REED_UTEX.pdf"), width = 14, height = 8)
-plot(cnv_result,sample=c("REED_NotSephadex", "UTEX"))
+samples_to_plot <- c("REED_NotSephadex", "UTEX")
+cnv_subset <- cnv_result[, samples_to_plot]   # subset by column names
+plot(cnv_subset)
 dev.off()
 
 ### Plot each group individually
-for (i in seq_along(sample_names)) {
-    pdf(file.path(out_dir, paste0("cnmops_", sample_names[i], ".pdf")), width=14,height=8)
-    plot(cnv_result,sample=i)
+for (s in sample_names) {
+    pdf(file.path(out_dir, paste0("cnmops_", s, ".pdf")), width=14, height=8)
+    samples_to_plot <- c(s)
+    cnv_subset <- cnv_result[, samples_to_plot]   # subset by column names
+    plot(cnv_subset)
+    #plot(res, sample=s)   # use `res`, not cnv_result
     dev.off()
-    message("Plot saved for ", paste0(sample_names[i]))
+    message("Plot saved for ", s)
 }
 message("All plots saved")
