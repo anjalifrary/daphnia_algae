@@ -55,27 +55,15 @@ res <- cn.mops(bamDataRanges, minWidth=2, parallel=4)
 cnv_result <- calcIntegerCopyNumbers(res)
 
 
-# pdf(file.path(out_dir, "cnmops_rawOutput.pdf"), width=14,height=8)
-# plot(res, which=1)
-# dev.off()
-# message("Raw depth-read values after normalization plot saved.")
-
-
-
-# cnvs <- cnvs(cnv_result)  # Individual CNV calls
-# cnvrs <- cnvr(cnv_result)  # CNV regions
-# segments <- segmentation(cnv_result)  # Segmentation results
-
 cnv_df <- as.data.frame(cnvr(cnv_result))
 fwrite(cnv_df, file.path(out_dir, "cnmops_CNVs.csv"), sep=",", quote=FALSE)
 message("CNV calls saved to ", paste0(out_dir, "cnmops_CNVs.csv"))
 
 ### data for plotting
 cn_matrix <- integerCopyNumber(cnv_result)
-positions <- granges(cnv_result)
 plot_data <- data.table(
-    chrom = as.character(seqnames(positions)),
-    pos = start(positions),
+    chrom = as.character(seqnames(bamDataRanges)),
+    pos = start(bamDataRanges),
     REED_NotSephadex = cn_matrix[, "REED_NotSephadex"],
     UTEX = cn_matrix[, "UTEX"]
 )
