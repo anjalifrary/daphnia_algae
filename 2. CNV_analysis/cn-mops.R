@@ -82,13 +82,15 @@ message("CNV calls saved to ", paste0(out_dir, "cnmops_CNVs.csv"))
 pdf(file.path(out_dir, "cnmops_REED_UTEX_sephadex.pdf"), width=14,height=8)
 plot(cnv_result)
 dev.off()
+message("All samples plotted")
 
 ### Plot REED vs UTEX
 pdf(file.path(out_dir, "cnmops_REED_UTEX.pdf"), width = 14, height = 8)
 #samples_to_plot <- c("REED_NotSephadex", "UTEX")
 #cnv_subset <- cnv_result[, samples_to_plot]   # subset by column names
 #plot(cnv_subset)
-plot(res, sample = c("REED_NotSephadex", "UTEX"))
+class(res)
+plot(res, which=1, sample = c("REED_NotSephadex", "UTEX"))
 dev.off()
 
 ### Plot each group individually
@@ -97,7 +99,7 @@ for (s in sample_names) {
     #samples_to_plot <- c(s)
     #cnv_subset <- cnv_result[, samples_to_plot]   # subset by column names
     #plot(cnv_subset)
-    plot(res, sample=s)   # use `res`, not cnv_result
+    plot(res, which=1, sample=s)   # use `res`, not cnv_result
     dev.off()
     message("Plot saved for ", s)
 }
