@@ -2,8 +2,8 @@
 #SBATCH -J cn.mops
 #SBATCH --ntasks=10
 #SBATCH -N 1
-#SBATCH -t 0-10:00 # 10 hours
-#SBATCH --mem=100G
+#SBATCH -t 0-2:00 # 10 hours
+#SBATCH --mem=50G
 #SBATCH -o /scratch/ejy4bu/err_outs/cnmops/cnmops.%A.out
 #SBATCH -e /scratch/ejy4bu/err_outs/cnmops/cnmops.%A.err
 #SBATCH -p standard
