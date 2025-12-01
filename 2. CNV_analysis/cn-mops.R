@@ -28,8 +28,10 @@ sephadex_bams <- c("/scratch/ejy4bu/compBio/cnv/megabams/REED_Sephadex.megabam.b
 REED_bams <- c("/scratch/ejy4bu/compBio/cnv/megabams/REED_NotSephadex.megabam.bam")
 UTEX_bams <- c("/scratch/ejy4bu/compBio/cnv/megabams/UTEX.megabam.bam")
 
-bam_files <- c(sephadex_bams, REED_bams, UTEX_bams)
-sample_names <- c("REED_Sephadex", "REED_NotSephadex", "UTEX")
+bam_files <- c(REED_bams, UTEX_bams)
+sample_names <- c("REED_NotSephadex", "UTEX")
+#bam_files <- c(sephadex_bams, REED_bams, UTEX_bams)
+#sample_names <- c("REED_Sephadex", "REED_NotSephadex", "UTEX")
 
 message("Input bams set")
 
@@ -61,10 +63,10 @@ res <- cn.mops(bamDataRanges, minWidth=2, parallel=4)
 # stopCluster(cl)
 
 
-pdf(file.path(out_dir, "cnmops_rawOutput.pdf"), width=14,height=8)
-plot(res, which=1)
-dev.off()
-message("Raw depth-read values after normalization plot saved.")
+# pdf(file.path(out_dir, "cnmops_rawOutput.pdf"), width=14,height=8)
+# plot(res, which=1)
+# dev.off()
+# message("Raw depth-read values after normalization plot saved.")
 
 ### Calculate CN values
 cnv_result <- calcIntegerCopyNumbers(res)
@@ -79,23 +81,24 @@ fwrite(cnv_df, file.path(out_dir, "cnmops_CNVs.csv"), sep=",", quote=FALSE)
 message("CNV calls saved to ", paste0(out_dir, "cnmops_CNVs.csv"))
 
 ### Plot all samples
-pdf(file.path(out_dir, "cnmops_REED_UTEX_sephadex.pdf"), width=14,height=8)
-plot(cnv_result, useDevice=FALSE)
+pdf(file.path(out_dir, "cnmops_REED_UTEX.pdf"), width=14,height=8)
+plot(cnvr(cnv_result))
 dev.off()
 message("All samples plotted")
 
-### Plot REED vs UTEX
-pdf(file.path(out_dir, "cnmops_REED_UTEX.pdf"), width = 14, height = 8)
-#class(res)
-plot(cnv_result, sample=c("REED_NotSephadex", "UTEX"), useDevice=FALSE)
+# ### Plot REED vs UTEX
+# pdf(file.path(out_dir, "cnmops_REED_UTEX.pdf"), width = 14, height = 8)
+# #class(res)
+# plot(cnvr(cnv_result))
+# sample=c("REED_NotSephadex", "UTEX"), useDevice=FALSE)
 
 #plot(res, which=1, sample = c("REED_NotSephadex", "UTEX"))
-dev.off()
+#dev.off()
 
 ### Plot each group individually
 for (s in sample_names) {
     pdf(file.path(out_dir, paste0("cnmops_", s, ".pdf")), width=14, height=8)
-    plot(cnv_result, sample=s, useDevice=FALSE)
+    plot(cnvr(cnv_result)[,s, drop=FALSE])
 
     #plot(res, which=1, sample=s)   # use `res`, not cnv_result
     dev.off()
