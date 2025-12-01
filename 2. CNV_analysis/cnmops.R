@@ -48,40 +48,58 @@ cnv_df <- as.data.frame(cnvr(cnv_result))
 fwrite(cnv_df, file.path(out_dir, "cnmops_CNVs.csv"), sep=",", quote=FALSE)
 message("CNV calls saved")
 
-# Plot 1: Raw normalized data (before CN calling)
-message("Creating normalized data plot...")
-pdf(file.path(out_dir, "cnmops_normalized.pdf"), width=14, height=8)
+# Plot normalized data
 plot(res, which=1)
-dev.off()
 
-# Plot 2: Segmentation results
-message("Creating segmentation plot...")
-pdf(file.path(out_dir, "cnmops_segments.pdf"), width=14, height=8)
+# Plot segmentation
 plot(cnv_result, which="segments")
-dev.off()
 
-# Plot 3: Individual CNVRs (if any detected)
-message("Plotting CNVRs...")
+# Plot individual CNVRs
 cnvrs <- cnvr(cnv_result)
+message("Number of CNVRs detected: ", length(cnvrs))
+
 if(length(cnvrs) > 0) {
-    # Plot first 5 CNVRs
-    n_plot <- min(5, length(cnvrs))
-    for(i in 1:n_plot) {
-        pdf(file.path(out_dir, paste0("cnmops_CNVR_", i, ".pdf")), width=14, height=8)
+    # Plot first few CNVRs
+    for(i in 1:min(5, length(cnvrs))) {
         plot(cnv_result, which=i)
-        dev.off()
-        message("Plotted CNVR ", i)
+        Sys.sleep(1)  # Pause between plots
     }
-} else {
-    message("No CNVRs detected")
 }
 
-# Plot 4: Try plotting the cnvr object directly
-message("Plotting CNVR overview...")
-pdf(file.path(out_dir, "cnmops_cnvr_overview.pdf"), width=14, height=8)
-if(length(cnvrs) > 0) {
-    plot(cnvrs)
-}
-dev.off()
+# # Plot 1: Raw normalized data (before CN calling)
+# message("Creating normalized data plot...")
+# pdf(file.path(out_dir, "cnmops_normalized.pdf"), width=14, height=8)
+# plot(res, which=1)
+# dev.off()
+
+# # Plot 2: Segmentation results
+# message("Creating segmentation plot...")
+# pdf(file.path(out_dir, "cnmops_segments.pdf"), width=14, height=8)
+# plot(cnv_result, which="segments")
+# dev.off()
+
+# # Plot 3: Individual CNVRs (if any detected)
+# message("Plotting CNVRs...")
+# cnvrs <- cnvr(cnv_result)
+# if(length(cnvrs) > 0) {
+#     # Plot first 5 CNVRs
+#     n_plot <- min(5, length(cnvrs))
+#     for(i in 1:n_plot) {
+#         pdf(file.path(out_dir, paste0("cnmops_CNVR_", i, ".pdf")), width=14, height=8)
+#         plot(cnv_result, which=i)
+#         dev.off()
+#         message("Plotted CNVR ", i)
+#     }
+# } else {
+#     message("No CNVRs detected")
+# }
+
+# # Plot 4: Try plotting the cnvr object directly
+# message("Plotting CNVR overview...")
+# pdf(file.path(out_dir, "cnmops_cnvr_overview.pdf"), width=14, height=8)
+# if(length(cnvrs) > 0) {
+#     plot(cnvrs)
+# }
+# dev.off()
 
 message("end of analysis")
