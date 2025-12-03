@@ -36,7 +36,7 @@ for(sc in unique(cn_data$chrom)) {
   pdf_file <- file.path(out_dir, paste0("cnmops_", sc, "_wrapped.pdf"))
   pdf(pdf_file, width=20, height=10)
   
-  ggplot(sc_data, aes(x=pos)) +
+  cn_plot <- ggplot(sc_data, aes(x=pos)) +
     geom_line(aes(y=REED, color="REED"), linewidth=1.2) +
     geom_line(aes(y=UTEX, color="UTEX"), linewidth=1.2) +
     facet_wrap(~line, scales="free_x", ncol=1) +  # each line is a section of the scaffold
@@ -59,6 +59,7 @@ for(sc in unique(cn_data$chrom)) {
       title = paste("cn.mops Integer Copy Number -", sc)
     )
   
+  print(cn_plot)
   dev.off()
   message(paste0("Saved wrapped PDF for scaffold ", sc, ": ", pdf_file))
 }
