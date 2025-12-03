@@ -115,9 +115,11 @@ coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome_noSeph.pdf")
   ggplot(coverage_avg_sub,
       aes(x=chr_names, y = coverage, fill=algae_group)) + 
       geom_bar(stat="identity", position = position_dodge(width = 0.7), width = 0.3) +
-      ylab("Average Coverage", size=14) + 
-      xlab("Scaffold", size=14) +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1, size=14)) + 
+      ylab("Average Coverage") + 
+      xlab("Scaffold") +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1, size=14),
+            axis.title.x = element_text(size=15),
+            axis.title.y = element_text(size=15)) + 
       scale_fill_manual(values = c("REED_NotSephadex" = "cyan3",
                                  "UTEX" = "dodgerblue3"))
 )
@@ -131,9 +133,11 @@ coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome.pdf")
   ggplot(coverage_avg,
       aes(x=chr_names, y = coverage)) + 
       geom_bar(stat="identity", width = 0.7, fill="dodgerblue3") +
-      ylab("Average Coverage", size=14) + 
-      xlab("Scaffold", size=14) +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1, size=14)) +
+      ylab("Average Coverage") + 
+      xlab("Scaffold") +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1, size=14),
+            axis.title.x = element_text(size=15),
+            axis.title.y = element_text(size=15))
 )
 dev.off()
 message("chr coverage plot written to: ", coverage_plot)
