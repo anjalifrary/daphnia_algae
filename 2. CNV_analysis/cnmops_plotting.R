@@ -24,7 +24,7 @@ colnames(cn_data)[colnames(cn_data) == "REED_NotSephadex"] <- "REED"
 # cn_cont$chrom <- as.character(seqnames(bamDataRanges))
 # cn_cont$pos <- start(bamDataRanges)
 
-fwrap_size <- 1000  # adjust based on scaffold length
+wrap_size <- 1000  # adjust based on scaffold length
 
 for(sc in unique(cn_data$chrom)) {
   sc_data <- cn_data[cn_data$chrom == sc, ]
