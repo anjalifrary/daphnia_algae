@@ -56,7 +56,7 @@ message("CNV calls saved. dimensions = ", nrow(cnv_df), " rows")
 saveRDS(cnv_result, file=file.path(out_dir, "cnmops_results.rds"))
 
 # Extract integer copy numbers
-cn_data <- as.data.frame(integerCopyNumbers(cnv_result))
+cn_data <- as.data.frame(integerCopyNumber(cnv_result))
 cn_data$chrom <- as.character(seqnames(bamDataRanges))
 cn_data$pos <- start(bamDataRanges)
 

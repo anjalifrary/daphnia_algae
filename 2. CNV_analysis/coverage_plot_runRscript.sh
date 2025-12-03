@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#SBATCH -J cn.mops
+#SBATCH -J coverage
 #SBATCH --ntasks=10
 #SBATCH -N 1
 #SBATCH -t 0-2:00 # 10 hours
