@@ -1,7 +1,6 @@
 library(cn.mops)
 library(data.table)
 library(ggplot2)
-library(reshape2)
 
 # load saved files
 out_dir <- "/scratch/ejy4bu/compBio/cnv/cnmops_output"
@@ -40,5 +39,5 @@ ggplot() +
     color = "Sample",
     title = "cn.mops Integer Copy Number Across Genome"
   )
-
 dev.off()
+message("saved to ", coverage_plot)

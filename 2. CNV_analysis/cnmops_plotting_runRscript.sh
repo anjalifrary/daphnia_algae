@@ -4,8 +4,8 @@
 #SBATCH -N 1
 #SBATCH -t 0-2:00 # 10 hours
 #SBATCH --mem=50G
-#SBATCH -o /scratch/ejy4bu/err_outs/cnmops/cnmops.%A.out
-#SBATCH -e /scratch/ejy4bu/err_outs/cnmops/cnmops.%A.err
+#SBATCH -o /scratch/ejy4bu/err_outs/cnmops/cnmops_plotting.%A.out
+#SBATCH -e /scratch/ejy4bu/err_outs/cnmops/cnmops_plotting.%A.err
 #SBATCH -p standard
 #SBATCH --account berglandlab
 
