@@ -4,12 +4,15 @@ library(cn.mops)
 library(data.table)
 library(ggplot2)
 
-# load saved files
+# set directories
 out_dir <- "/scratch/ejy4bu/compBio/cnv/cnmops_output/plots/haploid_5kb"
-cnv_result <- readRDS(file.path(out_dir, "cnmops_results.rds"))
+in_dir <- "/scratch/ejy4bu/compBio/cnv/cnmops_output/dataFiles/haploid_5kb"
+
+# load saved cnv results
+cnv_result <- readRDS(file.path(in_dir, "cnmops_results.rds"))
 
 # load bam data ranges
-bamDataRanges <- readRDS("/scratch/ejy4bu/compBio/cnv/cnmops_output/dataFiles/haploid_5kb/bamDataRanges.rds")
+bamDataRanges <- readRDS(file.path(in_dir, "bamDataRanges.rds"))
 
 # get integer copy numbers
 cn_data <- as.data.frame(integerCopyNumber(cnv_result))
