@@ -14,8 +14,11 @@ cn_data <- as.data.frame(integerCopyNumber(cnv_result))
 cn_data$chrom <- as.character(seqnames(bamDataRanges))
 cn_data$pos <- start(bamDataRanges)
 
+cn_data$REED_NotSephadex <- as.numeric(gsub("CN", "", cn_data$REED_NotSephadex))
+cn_data$UTEX <- as.numeric(gsub("CN", "", cn_data$UTEX))
+
 coverage_plot <- file.path(out_dir, "cnmops_genomewide_plot.pdf")
-pdf(coverage_plot, width=15, height=10)
+pdf(coverage_plot, width=40, height=40)
 
 ggplot() +
   geom_line(data=cn_data, aes(x=pos, y=REED_NotSephadex, color="REED_NotSephadex"), linewidth=1.2) +
