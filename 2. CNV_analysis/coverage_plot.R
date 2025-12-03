@@ -131,8 +131,8 @@ coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome.pdf")
   ggplot(coverage_avg,
       aes(x=chr_names, y = coverage)) + 
       geom_bar(stat="identity", width = 0.7, fill="dodgerblue3") +
-      ylab("Average Coverage") + 
-      xlab("Scaffold") +
+      ylab("Average Coverage", size=14) + 
+      xlab("Scaffold", size=14) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1, size=14)) +
 )
   dev.off()
