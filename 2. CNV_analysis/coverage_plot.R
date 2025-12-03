@@ -87,78 +87,85 @@ out_dir <- "/scratch/ejy4bu/compBio/bam_analysis/coverage_plots/mean_depth"
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
 # save data table
-out_file <- file.path(out_dir, "bam_coverage_table.csv")
-fwrite(coverage, out_file)
-message("Coverage table written to: ", out_file)
+# out_file <- file.path(out_dir, "bam_coverage_table.csv")
+# fwrite(coverage, out_file)
+# message("Coverage table written to: ", out_file)
 
 
 
-### generate coverage plot by chromosomes
+### generate coverage plot by chromosomes for two experimental groups
 
 
 coverage_avg <- coverage[, .(coverage=mean(coverage)), by = chr_names]
 coverage_avg[, chr_names := factor(chr_names, levels=chr)] # order scaffold names
 
+coverage_sub <- coverage[algae_group %in% c("REED_NotSephadex", "UTEX")]
+
+coverage_avg_sub <- coverage_sub[, .(coverage = mean(coverage)), by = .(chr_names, algae_group)]
+coverage_avg_sub[, chr_names := factor(chr_names, level=chr)]
 
 coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome.pdf")
   pdf(coverage_plot, width=20, height=10)
   print(
-  ggplot(coverage_avg, aes(x=chr_names, y = coverage)) + 
+  ggplot(coverage_avg_sub,
+      aes(x=chr_names, y = coverage, fill=algae_group)) + 
       geom_bar(stat="identity") +
       ylab("Average Coverage") + 
       xlab("Scaffold") +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1, size=12))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1, size=14)) + 
+      scale_fill_manual(values = c("REED_NotSephadex" = "cyan3",
+                                 "UTEX" = "dodgerblue3"))
 )
   dev.off()
-message("Chromosomal coverage plot written to: ", coverage_plot)
+message("Grouped chr coverage plot written to: ", coverage_plot)
 
 
 
-### generate coverage plot for genome wide depth by sample
+# ### generate coverage plot for genome wide depth by sample
 
 
-genome_avg <- coverage[, .(avg_coverage = mean(coverage)), by = .(algae_group, sampleID)]
-setorder(genome_avg, algae_group, sampleID)
+# genome_avg <- coverage[, .(avg_coverage = mean(coverage)), by = .(algae_group, sampleID)]
+# setorder(genome_avg, algae_group, sampleID)
 
-genome_avg[, sampleID := factor(sampleID, levels = genome_avg[order(algae_group, sampleID)]$sampleID)]
+# genome_avg[, sampleID := factor(sampleID, levels = genome_avg[order(algae_group, sampleID)]$sampleID)]
 
-genome_plot <- file.path(out_dir, "avg_coverage_across_genome.pdf")
-pdf(genome_plot, width=20, height=10)
-print(
-  ggplot(genome_avg, aes(x=sampleID, y=avg_coverage, fill = algae_group)) + 
-  ggtitle("Mean depth across genome by sample") +
-  geom_bar(stat="identity") + 
-  ylab("Mean Coverage") + 
-  xlab("Sample Name") + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 6)) +
-  scale_fill_manual(values = c("REED_Sephadex" = "brown3", "REED_NotSephadex" = "cyan3", "UTEX" = "dodgerblue3"))
-)
-dev.off()
-message("Genome wide coverage plot written to: ", genome_plot)
+# genome_plot <- file.path(out_dir, "avg_coverage_across_genome.pdf")
+# pdf(genome_plot, width=20, height=10)
+# print(
+#   ggplot(genome_avg, aes(x=sampleID, y=avg_coverage, fill = algae_group)) + 
+#   ggtitle("Mean depth across genome by sample") +
+#   geom_bar(stat="identity") + 
+#   ylab("Mean Coverage") + 
+#   xlab("Sample Name") + 
+#   theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 6)) +
+#   scale_fill_manual(values = c("REED_Sephadex" = "brown3", "REED_NotSephadex" = "cyan3", "UTEX" = "dodgerblue3"))
+# )
+# dev.off()
+# message("Genome wide coverage plot written to: ", genome_plot)
 
 
 
-### generate coverage plot for each sample's mean depth
+# ### generate coverage plot for each sample's mean depth
 
-for (chrom in chr) {
-  chr_data <- coverage[chr_names == chrom]
+# for (chrom in chr) {
+#   chr_data <- coverage[chr_names == chrom]
 
-  chr_avg <- chr_data[, .(avg_coverage = mean(coverage)), by = .(algae_group, sampleID)]
-  setorder(chr_avg, algae_group, sampleID)
+#   chr_avg <- chr_data[, .(avg_coverage = mean(coverage)), by = .(algae_group, sampleID)]
+#   setorder(chr_avg, algae_group, sampleID)
 
-  chr_avg[, sampleID := factor(sampleID, levels = chr_avg[order(algae_group, sampleID)]$sampleID)]  
+#   chr_avg[, sampleID := factor(sampleID, levels = chr_avg[order(algae_group, sampleID)]$sampleID)]  
 
-  chr_plot <- file.path(out_dir, paste0("coverage_", chrom, ".pdf"))
-  pdf(chr_plot, width=20, height=10)
-  print(
-    ggplot(chr_avg, aes(x=sampleID, y=avg_coverage, fill=algae_group)) + 
-    ggtitle(paste("Mean depth across", chrom, "by sample")) +
-    geom_bar(stat="identity") + 
-    ylab("Mean Coverage") + 
-    xlab("Sample Name") + 
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 6)) +
-    scale_fill_manual(values = c("REED_Sephadex" = "brown3", "REED_NotSephadex" = "cyan3", "UTEX" = "dodgerblue3"))
-  )
-  dev.off()
-  message("Chromosomal coverage plot written to: ", chr_plot)
-} 
+#   chr_plot <- file.path(out_dir, paste0("coverage_", chrom, ".pdf"))
+#   pdf(chr_plot, width=20, height=10)
+#   print(
+#     ggplot(chr_avg, aes(x=sampleID, y=avg_coverage, fill=algae_group)) + 
+#     ggtitle(paste("Mean depth across", chrom, "by sample")) +
+#     geom_bar(stat="identity") + 
+#     ylab("Mean Coverage") + 
+#     xlab("Sample Name") + 
+#     theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 6)) +
+#     scale_fill_manual(values = c("REED_Sephadex" = "brown3", "REED_NotSephadex" = "cyan3", "UTEX" = "dodgerblue3"))
+#   )
+#   dev.off()
+#   message("Chromosomal coverage plot written to: ", chr_plot)
+# } 
