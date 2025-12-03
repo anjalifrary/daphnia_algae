@@ -33,10 +33,14 @@ bam <- scanBam(bam_files[1])
 read_length <- mean(nchar(as.character(bam[[1]]$seq)))
 
 # calculate coverage per BAM / per chromosome
-coverage <- foreach(bamFile = bam_files, .combine="rbind") %dopar% {
+
+bam_chunks <- split(bam_files, ceiling(seq_along(bam_files)/50))
+coverage <- rbindlist(lapply(bam_chunks, function(bams){
+  foreach(bamFile = bams, .combine="rbind") %dopar% {
+# coverage <- foreach(bamFile = bam_files, .combine="rbind") %dopar% {
   message("Processing: ", bamFile)
   
-  if(!file.exists(paste(bamFile, ".bai", sep=""))) indexBam(bamFile)
+  if(!file.exists(paste0(bamFile, ".bai", sep=""))) indexBam(bamFile)
 
   # get mapped reads per chromosome 
   stats <- as.data.table(idxstatsBam(bamFile))
@@ -58,6 +62,7 @@ coverage <- foreach(bamFile = bam_files, .combine="rbind") %dopar% {
 
   stats_pulex[, .(sampleID, chr_names, mapped, chr_lengths, coverage)]
 }
+}))
 
 meta <- data.table(
   sampleID = sub(".dedup.bam", "", basename(bam_files)),
