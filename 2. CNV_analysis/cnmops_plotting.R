@@ -18,12 +18,18 @@ cn_data$REED_NotSephadex <- as.numeric(gsub("CN", "", cn_data$REED_NotSephadex))
 cn_data$UTEX <- as.numeric(gsub("CN", "", cn_data$UTEX))
 colnames(cn_data)[colnames(cn_data) == "REED_NotSephadex"] <- "REED"
 
+# continuous cn.mops result
+cn_cont <- as.data.frame(cnv_result@CN)
+cn_cont$chrom <- as.character(seqnames(bamDataRanges))
+cn_cont$pos <- start(bamDataRanges)
+
+
 
 for(sc in unique(cn_data$chrom)) {
   sc_data <- cn_data[cn_data$chrom == sc, ]
   
   # File path for this scaffold
-  pdf_file <- file.path(out_dir, paste0("cnmops_", sc, ".pdf"))
+  pdf_file <- file.path(out_dir, paste0("cnmops_", sc, "integerCN.pdf"))
   pdf(pdf_file, width=20, height=10)
   
   # Plot UTEX and REED cn 
@@ -33,7 +39,6 @@ for(sc in unique(cn_data$chrom)) {
   cn_plot <- ggplot() +
     geom_line(data=sc_data, aes(x=pos, y=REED), color="cyan3", linewidth=1.2) +
     geom_line(data=sc_data, aes(x=pos, y=UTEX), color="dodgerblue3", linewidth=1.2) +
-    geom_hline(yintercept=1, linetype="dashed", color="darkgreen", linewidth=1) +
     scale_y_continuous(breaks=scales::pretty_breaks(n=5)) +
     theme_bw() +
     theme(
