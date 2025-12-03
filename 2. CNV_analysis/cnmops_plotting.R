@@ -7,7 +7,7 @@ out_dir <- "/scratch/ejy4bu/compBio/cnv/cnmops_output"
 cnv_result <- readRDS(file.path(out_dir, "cnmops_results.rds"))
 
 # load bam data ranges
-bamDataRanges <- readRDS("/scratch/ejy4bu/compBio/cnv/bamDataRanges.rds")
+bamDataRanges <- readRDS("/scratch/ejy4bu/compBio/cnv/cnmops_output/bamDataRanges.rds")
 
 # get integer copy numbers
 cn_data <- as.data.frame(integerCopyNumber(cnv_result))
@@ -49,7 +49,7 @@ for(sc in unique(cn_data$chrom)) {
       y = "Copy Number",
       title = paste("cn.mops Integer Copy Number -", sc)
     )
-    
+
   print(cn_plot)
   dev.off()
   message(paste0("Saved PDF for scaffold ", sc, ": ", pdf_file))
