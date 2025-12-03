@@ -114,7 +114,7 @@ coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome_noSeph.pdf")
   print(
   ggplot(coverage_avg_sub,
       aes(x=chr_names, y = coverage, fill=algae_group)) + 
-      geom_bar(stat="identity", position = position_dodge(width=0.8), width = 0.5) +
+      geom_bar(stat="identity", position = position_dodge(width=0.8), width = 0.6) +
       ylab("Average Coverage") + 
       xlab("Scaffold") +
       theme(axis.text.x = element_text(angle = 45, hjust = 1, size=14),
