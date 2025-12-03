@@ -121,7 +121,7 @@ coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome_noSeph.pdf")
       scale_fill_manual(values = c("REED_NotSephadex" = "cyan3",
                                  "UTEX" = "dodgerblue3"))
 )
-  dev.off()
+dev.off()
 message("Grouped chr coverage plot written to: ", coverage_plot)
 
 # including sephadexed
@@ -135,7 +135,7 @@ coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome.pdf")
       xlab("Scaffold", size=14) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1, size=14)) +
 )
-  dev.off()
+dev.off()
 message("chr coverage plot written to: ", coverage_plot)
 
 
