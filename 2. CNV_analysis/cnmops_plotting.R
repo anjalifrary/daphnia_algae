@@ -15,16 +15,30 @@ cn_data <- as.data.frame(integerCopyNumber(cnv_result))
 cn_data$chrom <- as.character(seqnames(bamDataRanges))
 cn_data$pos <- start(bamDataRanges)
 
-coverage_plot <- file.path(out_dir, "cnmops_output.pdf")
-  pdf(coverage_plot, width=15, height=10)
-  print(
-  ggplot() +
-  geom_line(data=cn_data, aes(x=pos, y=REED_NotSephadex), color="cyan3") +
-  geom_line(data=cn_data, aes(x=pos, y=UTEX), color="dodgerblue3") +
-  geom_hline(yintercept=2, linetype="dashed", color="darkgreen") +
+coverage_plot <- file.path(out_dir, "cnmops_genomewide_plot.pdf")
+pdf(coverage_plot, width=15, height=10)
+
+ggplot() +
+  geom_line(data=cn_data, aes(x=pos, y=REED_NotSephadex, color="REED_NotSephadex"), size=1.2) +
+  geom_line(data=cn_data, aes(x=pos, y=UTEX, color="UTEX"), size=1.2) +
+  geom_hline(yintercept=2, linetype="dashed", color="darkgreen", size=1) +
   facet_wrap(~chrom, scales="free_x", ncol=1) +
-  labs(title="cn.mops integer copy number", x="Position (bp)", y="Copy Number") +
-  theme_bw()
+  scale_color_manual(values=c("REED_NotSephadex"="cyan3", "UTEX"="dodgerblue3")) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(angle=45, hjust=1, size=14),
+    axis.text.y = element_text(size=14),
+    axis.title.x = element_text(size=16),
+    axis.title.y = element_text(size=16),
+    legend.position = "top",
+    strip.background = element_rect(fill="lightgray", color="black"),
+    strip.text = element_text(face="bold", size=14)
+  ) +
+  labs(
+    x = "Position (bp)",
+    y = "Copy Number",
+    color = "Sample",
+    title = "cn.mops Integer Copy Number Across Genome"
   )
-  dev.off()
-message("cnmops data saved to: ", coverage_plot)
+
+dev.off()
