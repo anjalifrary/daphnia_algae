@@ -3,11 +3,11 @@ library(data.table)
 library(ggplot2)
 
 # load saved files
-out_dir <- "/scratch/ejy4bu/compBio/cnv/cnmops_output"
+out_dir <- "/scratch/ejy4bu/compBio/cnv/cnmops_output/plots/haploid_5kb"
 cnv_result <- readRDS(file.path(out_dir, "cnmops_results.rds"))
 
 # load bam data ranges
-bamDataRanges <- readRDS("/scratch/ejy4bu/compBio/cnv/cnmops_output/bamDataRanges.rds")
+bamDataRanges <- readRDS("/scratch/ejy4bu/compBio/cnv/cnmops_output/dataFiles/haploid_5kb/bamDataRanges.rds")
 
 # get integer copy numbers
 cn_data <- as.data.frame(integerCopyNumber(cnv_result))
@@ -33,7 +33,7 @@ for(sc in unique(cn_data$chrom)) {
   sc_data$line <- ceiling(seq_len(nrow(sc_data)) / wrap_size)
   
   # File path for this scaffold
-  pdf_file <- file.path(out_dir, paste0("cnmops_", sc, "_wrapped.pdf"))
+  pdf_file <- file.path(out_dir, paste0("cnmops_", sc, ".pdf"))
   pdf(pdf_file, width=20, height=10)
   
   cn_plot <- ggplot(sc_data, aes(x=pos)) +

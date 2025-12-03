@@ -1,5 +1,6 @@
 ### in Rstudio at ood.hpc.virginia.edu 
 
+### could get this working. moved to cnmops.R
 
 ### Documentation
 # https://bioconductor.org/packages/devel/bioc/vignettes/cn.mops/inst/doc/cn.mops.pdf
@@ -54,7 +55,7 @@ message("CNV calls saved. dimensions = ", nrow(cnv_df), " rows")
 
 # Save CNVresults object
 saveRDS(cnv_result, file=file.path(out_dir, "cnmops_results.rds"))
-saveRDS(bamDataRanges, file="/scratch/ejy4bu/compBio/cnv/bamDataRanges.rds")
+saveRDS(bamDataRanges, file=file.path(out_dir, "bamDataRanges.rds"))
 
 # Extract integer copy numbers
 cn_data <- as.data.frame(integerCopyNumber(cnv_result))
