@@ -19,9 +19,10 @@ cn_data$UTEX <- as.numeric(gsub("CN", "", cn_data$UTEX))
 colnames(cn_data)[colnames(cn_data) == "REED_NotSephadex"] <- "REED"
 
 # continuous cn.mops result
-cn_cont <- as.data.frame(calcFractionalCopyNumbers(cnv_result))
-cn_cont$chrom <- as.character(seqnames(bamDataRanges))
-cn_cont$pos <- start(bamDataRanges)
+# this function is exerimental and only works on a reference ?? 
+# cn_cont <- as.data.frame(calcFractionalCopyNumbers(cnv_result))
+# cn_cont$chrom <- as.character(seqnames(bamDataRanges))
+# cn_cont$pos <- start(bamDataRanges)
 
 
 
