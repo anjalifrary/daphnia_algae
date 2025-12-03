@@ -109,12 +109,12 @@ coverage_sub <- coverage[algae_group %in% c("REED_NotSephadex", "UTEX")]
 coverage_avg_sub <- coverage_sub[, .(coverage = mean(coverage)), by = .(chr_names, algae_group)]
 coverage_avg_sub[, chr_names := factor(chr_names, level=chr)]
 
-coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome.pdf")
+coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome_noSeph.pdf")
   pdf(coverage_plot, width=20, height=10)
   print(
   ggplot(coverage_avg,
       aes(x=chr_names, y = coverage, fill=algae_group)) + 
-      geom_bar(stat="identity", position = position_dodge(width = 0.8)) +
+      geom_bar(stat="identity", position = position_dodge(width = 0.7), width = 0.3) +
       ylab("Average Coverage") + 
       xlab("Scaffold") +
       theme(axis.text.x = element_text(angle = 45, hjust = 1, size=14)) + 
