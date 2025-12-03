@@ -18,9 +18,9 @@ coverage_plot <- file.path(out_dir, "cnmops_genomewide_plot.pdf")
 pdf(coverage_plot, width=15, height=10)
 
 ggplot() +
-  geom_line(data=cn_data, aes(x=pos, y=REED_NotSephadex, color="REED_NotSephadex"), size=1.2) +
-  geom_line(data=cn_data, aes(x=pos, y=UTEX, color="UTEX"), size=1.2) +
-  geom_hline(yintercept=2, linetype="dashed", color="darkgreen", size=1) +
+  geom_line(data=cn_data, aes(x=pos, y=REED_NotSephadex, color="REED_NotSephadex"), linewidth=1.2) +
+  geom_line(data=cn_data, aes(x=pos, y=UTEX, color="UTEX"), linewidth=1.2) +
+  geom_hline(yintercept=2, linetype="dashed", color="darkgreen", linewidth=1) +
   facet_wrap(~chrom, scales="free_x", ncol=1) +
   scale_color_manual(values=c("REED_NotSephadex"="cyan3", "UTEX"="dodgerblue3")) +
   theme_bw() +
@@ -39,5 +39,6 @@ ggplot() +
     color = "Sample",
     title = "cn.mops Integer Copy Number Across Genome"
   )
+
 dev.off()
 message("saved to ", coverage_plot)
