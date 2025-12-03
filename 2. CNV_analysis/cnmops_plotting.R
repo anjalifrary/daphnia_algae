@@ -30,7 +30,7 @@ for(sc in unique(cn_data$chrom)) {
   # green line is reference (normalized at 1 for haploid chlorella)
   # each scaffold is a gray bar 
 
-  ggplot() +
+  cn_plot <- ggplot() +
     geom_line(data=sc_data, aes(x=pos, y=REED), color="cyan3", linewidth=1.2) +
     geom_line(data=sc_data, aes(x=pos, y=UTEX), color="dodgerblue3", linewidth=1.2) +
     geom_hline(yintercept=1, linetype="dashed", color="darkgreen", linewidth=1) +
@@ -49,7 +49,8 @@ for(sc in unique(cn_data$chrom)) {
       y = "Copy Number",
       title = paste("cn.mops Integer Copy Number -", sc)
     )
-  
+    
+  print(cn_plot)
   dev.off()
   message(paste0("Saved PDF for scaffold ", sc, ": ", pdf_file))
 }
