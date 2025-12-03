@@ -9,7 +9,7 @@ library(data.table)
 library(ggplot2)
 library(foreach)
 library(doMC)
-registerDoMC(4)
+registerDoMC(2)
 
 
 
