@@ -1,3 +1,5 @@
+# run using cnmops_plotting_runRscript.sh
+
 library(cn.mops)
 library(data.table)
 library(ggplot2)
