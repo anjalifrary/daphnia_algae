@@ -5,8 +5,12 @@ library(data.table)
 library(ggplot2)
 
 # set directories
-out_dir <- "/scratch/ejy4bu/compBio/cnv/cnmops_output/plots/haploid_5kb"
 in_dir <- "/scratch/ejy4bu/compBio/cnv/cnmops_output/dataFiles/haploid_5kb"
+out_dir <- "/scratch/ejy4bu/compBio/cnv/cnmops_output/plots/haploid_5kb"
+
+if (!dir.exists(out_dir)) {
+  dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
+}
 
 # load saved cnv results
 cnv_result <- readRDS(file.path(in_dir, "cnmops_results.rds"))
