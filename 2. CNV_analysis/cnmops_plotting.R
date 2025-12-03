@@ -16,32 +16,40 @@ cn_data$pos <- start(bamDataRanges)
 
 cn_data$REED_NotSephadex <- as.numeric(gsub("CN", "", cn_data$REED_NotSephadex))
 cn_data$UTEX <- as.numeric(gsub("CN", "", cn_data$UTEX))
+colnames(cn_data)[colnames(cn_data) == "REED_NotSephadex"] <- "REED"
 
-coverage_plot <- file.path(out_dir, "cnmops_genomewide_plot.pdf")
-pdf(coverage_plot, width=40, height=40)
 
-ggplot() +
-  geom_line(data=cn_data, aes(x=pos, y=REED_NotSephadex, color="REED_NotSephadex"), linewidth=1.2) +
-  geom_line(data=cn_data, aes(x=pos, y=UTEX, color="UTEX"), linewidth=1.2) +
-  geom_hline(yintercept=2, linetype="dashed", color="darkgreen", linewidth=1) +
-  facet_wrap(~chrom, scales="free_x", ncol=1) +
-  scale_color_manual(values=c("REED_NotSephadex"="cyan3", "UTEX"="dodgerblue3")) +
-  theme_bw() +
-  theme(
-    axis.text.x = element_text(angle=45, hjust=1, size=14),
-    axis.text.y = element_text(size=14),
-    axis.title.x = element_text(size=16),
-    axis.title.y = element_text(size=16),
-    legend.position = "top",
-    strip.background = element_rect(fill="lightgray", color="black"),
-    strip.text = element_text(face="bold", size=14)
-  ) +
-  labs(
-    x = "Position (bp)",
-    y = "Copy Number",
-    color = "Sample",
-    title = "cn.mops Integer Copy Number Across Genome"
-  )
+for(sc in unique(cn_data$chrom)) {
+  sc_data <- cn_data[cn_data$chrom == sc, ]
+  
+  # File path for this scaffold
+  pdf_file <- file.path(out_dir, paste0("cnmops_", sc, ".pdf"))
+  pdf(pdf_file, width=20, height=10)
+  
+  # Plot UTEX and REED cn 
+  # green line is reference (normalized at 1 for haploid chlorella)
+  # each scaffold is a gray bar 
 
-dev.off()
-message("saved to ", coverage_plot)
+  ggplot() +
+    geom_line(data=sc_data, aes(x=pos, y=REED), color="cyan3", linewidth=1.2) +
+    geom_line(data=sc_data, aes(x=pos, y=UTEX), color="dodgerblue3", linewidth=1.2) +
+    geom_hline(yintercept=1, linetype="dashed", color="darkgreen", linewidth=1) +
+    scale_y_continuous(breaks=scales::pretty_breaks(n=5)) +
+    theme_bw() +
+    theme(
+      axis.text.x = element_text(angle=45, hjust=1, size=14),
+      axis.text.y = element_text(size=14),
+      axis.title.x = element_text(size=16),
+      axis.title.y = element_text(size=16),
+      strip.background = element_rect(fill="lightgray", color="black"),
+      strip.text = element_text(face="bold", size=14)
+    ) +
+    labs(
+      x = "Position (bp)",
+      y = "Copy Number",
+      title = paste("cn.mops Integer Copy Number -", sc)
+    )
+  
+  dev.off()
+  message(paste0("Saved PDF for scaffold ", sc, ": ", pdf_file))
+}
