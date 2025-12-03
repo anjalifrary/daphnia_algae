@@ -37,12 +37,15 @@ for(sc in unique(cn_data$chrom)) {
   # green line is reference (normalized at 1 for haploid chlorella)
   # each scaffold is a gray bar 
 
-  cn_plot <- ggplot() +
-    geom_line(data=sc_data, aes(x=pos, y=REED), color="cyan3", linewidth=1.2) +
-    geom_line(data=sc_data, aes(x=pos, y=UTEX), color="dodgerblue3", linewidth=1.2) +
+  cn_plot <- ggplot(cn_plot, aes(x=pos)) +
+    geom_line(aes(y=REED, color="REED"), linewidth=1.2) +
+    geom_line(aes(y=UTEX, color="UTEX"), linewidth=1.2) +
+    facet_wrap(~chrom, scales="free_x", ncol=1) +  # one column, scaffolds stacked vertically
+    scale_color_manual(values=c("REED"="cyan3", "UTEX"="dodgerblue3")) +
     scale_y_continuous(breaks=scales::pretty_breaks(n=5)) +
     theme_bw() +
     theme(
+      legend.position="top",
       axis.text.x = element_text(angle=45, hjust=1, size=14),
       axis.text.y = element_text(size=14),
       axis.title.x = element_text(size=16),
@@ -53,6 +56,7 @@ for(sc in unique(cn_data$chrom)) {
     labs(
       x = "Position (bp)",
       y = "Copy Number",
+      color = "Sample",
       title = paste("cn.mops Integer Copy Number -", sc)
     )
 
