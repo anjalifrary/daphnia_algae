@@ -11,7 +11,7 @@ library(Rsamtools)
 library(data.table)
 
 ### Output directory
-out_dir <- "/scratch/ejy4bu/compBio/cnv/cnmops_output"
+out_dir <- "/scratch/ejy4bu/compBio/cnv/cnmops_output/haploid_5kb"
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
 ### get input bams
@@ -35,12 +35,12 @@ bamDataRanges <- getReadCountsFromBAM(
     BAMFiles = bam_files,
     sampleNames = sample_names,
     refSeqName = chr,
-    WL = 1000
+    WL = 5000
 )
 
 ### Run cn.mops
 message("Running cn.mops")
-res <- cn.mops(bamDataRanges, minWidth=2, parallel=4)
+res <- haplocn.mops(bamDataRanges, minWidth=2, parallel=4)
 cnv_result <- calcIntegerCopyNumbers(res)
 
 # Check what we got
