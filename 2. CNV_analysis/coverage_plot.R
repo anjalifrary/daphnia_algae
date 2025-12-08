@@ -119,6 +119,7 @@ coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome_noSeph.pdf")
       xlab("Scaffold") +
       theme(axis.text.x = element_text(angle = 45, hjust = 1, size=14),
             axis.title.x = element_text(size=16),
+            axis.text.y = element_text(size=14),
             axis.title.y = element_text(size=16)) + 
       scale_fill_manual(values = c("REED_NotSephadex" = "cyan3",
                                  "UTEX" = "dodgerblue3"),
