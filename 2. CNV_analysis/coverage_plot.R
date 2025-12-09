@@ -108,7 +108,7 @@ coverage_avg_sub <- coverage_sub[, .(coverage = mean(coverage)), by = .(chr_name
 coverage_avg_sub[, chr_names := factor(chr_names, levels=chr)]
 
 coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome_byGroup.pdf")
-  pdf(coverage_plot, width=15, height=8)
+  pdf(coverage_plot, width=15, height=6)
   print(
   ggplot(coverage_avg_sub,
       aes(x=chr_names, y = coverage, fill=algae_group)) + 
@@ -119,7 +119,11 @@ coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome_byGroup.pdf")
             axis.title.x = element_text(size=16),
             axis.text.y = element_text(size=14),
             axis.title.y = element_text(size=16)) + 
-      scale_fill_manual(values = c("REED_Sephadex" = "red", "REED_NotSephadex" = "cyan", "UTEX" = "blue"))
+      scale_fill_manual(values = c("REED_NotSephadex" = "cyan3",
+                                 "UTEX" = "dodgerblue3",
+                                 "REED_Sephadex" = "red"))
+                                 
+        # "REED_Sephadex" = "red", "REED_NotSephadex" = "cyan", "UTEX" = "blue"))
 )
 dev.off()
 message("Grouped chr coverage plot written to: ", coverage_plot)
