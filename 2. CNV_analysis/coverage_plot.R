@@ -108,7 +108,7 @@ coverage_avg_sub <- coverage_sub[, .(coverage = mean(coverage)), by = .(chr_name
 coverage_avg_sub[, chr_names := factor(chr_names, levels=chr)]
 
 coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome_byGroup.pdf")
-  pdf(coverage_plot, width=12, height=10)
+  pdf(coverage_plot, width=15, height=10)
   print(
   ggplot(coverage_avg_sub,
       aes(x=chr_names, y = coverage, fill=algae_group)) + 
