@@ -11,8 +11,6 @@ library(foreach)
 library(doMC)
 registerDoMC(2)
 
-
-
 # get bam files
 bam_files <- system("ls -d /scratch/ejy4bu/compBio/bams/*/*/*.dedup.bam", intern=T)
   # bam_files <- bam_files[1:10] #test a subset
@@ -104,12 +102,12 @@ dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 coverage_avg <- coverage[, .(coverage=mean(coverage)), by = chr_names]
 coverage_avg[, chr_names := factor(chr_names, levels=chr)] # order scaffold names
 
-coverage_sub <- coverage[algae_group %in% c("REED_NotSephadex", "UTEX")]
+coverage_sub <- coverage[algae_group %in% c("REED_Sephadex","REED_NotSephadex", "UTEX")]
 
 coverage_avg_sub <- coverage_sub[, .(coverage = mean(coverage)), by = .(chr_names, algae_group)]
 coverage_avg_sub[, chr_names := factor(chr_names, levels=chr)]
 
-coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome_noSeph.pdf")
+coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome_byGroup.pdf")
   pdf(coverage_plot, width=15, height=8)
   print(
   ggplot(coverage_avg_sub,
@@ -121,10 +119,7 @@ coverage_plot <- file.path(out_dir, "avg_coverage_per_chromosome_noSeph.pdf")
             axis.title.x = element_text(size=16),
             axis.text.y = element_text(size=14),
             axis.title.y = element_text(size=16)) + 
-      scale_fill_manual(values = c("REED_NotSephadex" = "cyan3",
-                                 "UTEX" = "dodgerblue3"),
-                        labels = c("REED_NotSephadex" = "REED",
-                                  "UTEX" = "UTEX"))
+      scale_fill_manual(values = c("REED_Sephadex" = "red", "REED_NotSephadex" = "cyan", "UTEX" = "blue"))
 )
 dev.off()
 message("Grouped chr coverage plot written to: ", coverage_plot)
